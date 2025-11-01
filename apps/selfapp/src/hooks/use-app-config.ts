@@ -1,21 +1,25 @@
 import { APP_CONFIG } from "@/main";
 
 /**
- * Hook to access global app configuration parsed from URL
- * Pattern: {base_url}/builds/{userId}/{projectId}/{taskId}/dist
+ * Hook to access global app configuration
+ * For standalone mode (outside CREAO.ai)
  */
 export function useAppConfig() {
 	return {
-		userId: APP_CONFIG.userId,
-		projectId: APP_CONFIG.projectId,
-		taskId: APP_CONFIG.taskId,
-		workspaceId: APP_CONFIG.workspaceId,
-		uploadFolder: APP_CONFIG.uploadFolder,
+		mode: APP_CONFIG.mode,
 		baseUrl: APP_CONFIG.baseUrl,
-		isValidBuildUrl: APP_CONFIG.isValidBuildUrl,
+		
+		// Legacy properties for backward compatibility (null in standalone mode)
+		userId: null,
+		projectId: null,
+		taskId: null,
+		workspaceId: null,
+		uploadFolder: null,
+		isValidBuildUrl: false,
 
-		// Check if we're in a valid build environment
-		isInBuildEnvironment: () => APP_CONFIG.isValidBuildUrl,
+		// Check if we're in standalone mode
+		isStandalone: () => APP_CONFIG.mode === "standalone",
+		isInBuildEnvironment: () => false, // Always false in standalone
 	};
 }
 

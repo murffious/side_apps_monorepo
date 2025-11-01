@@ -13,7 +13,7 @@ interface AuthState {
 
 class AuthIntegration {
 	private state: AuthState = {
-		token: "local-dev-token",
+		token: import.meta.env.VITE_DEV_AUTH_TOKEN || "local-dev-token",
 		status: "authenticated",
 		parentOrigin: null,
 	};
@@ -23,6 +23,8 @@ class AuthIntegration {
 	constructor() {
 		// In standalone mode, immediately mark as authenticated
 		console.log("Running in standalone mode - auth bypassed");
+		console.log("Using dev token:", this.state.token === "local-dev-token" ? "default" : "from environment");
+	}
 	}
 
 	private async initialize(): Promise<void> {
