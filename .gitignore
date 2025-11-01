@@ -44,7 +44,7 @@ lerna-debug.log*
 Thumbs.db
 
 # IDE
-.vscode/
+# .vscode/ - Keeping VSCode settings for team consistency
 .idea/
 *.swp
 *.swo
