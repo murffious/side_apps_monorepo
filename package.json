@@ -1,0 +1,31 @@
+{
+  "name": "side-apps-monorepo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Monorepo for side apps optimized for AI copilot development",
+  "scripts": {
+    "dev": "pnpm --filter '*' dev",
+    "build": "pnpm --filter '*' build",
+    "test": "pnpm --filter '*' test",
+    "lint": "pnpm --filter '*' lint",
+    "format": "prettier --write \"**/*.{js,ts,jsx,tsx,json,md}\"",
+    "clean": "pnpm --filter '*' clean && rm -rf node_modules"
+  },
+  "keywords": [
+    "monorepo",
+    "workspace",
+    "ai-copilot",
+    "javascript",
+    "python",
+    "docker"
+  ],
+  "author": "",
+  "license": "MIT",
+  "devDependencies": {
+    "prettier": "^3.1.0"
+  },
+  "engines": {
+    "node": ">=18.0.0",
+    "pnpm": ">=8.0.0"
+  }
+}
