@@ -1,0 +1,21 @@
+version: '3.8'
+
+services:
+  example-app:
+    build:
+      context: .
+      dockerfile: docker/node/Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    restart: unless-stopped
+
+  example-agent:
+    build:
+      context: .
+      dockerfile: docker/python/Dockerfile
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
