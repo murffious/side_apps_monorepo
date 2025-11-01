@@ -1,6 +1,6 @@
 /**
  * Main ESLint Configuration
- * 
+ *
  * This is the primary ESLint configuration that combines base settings
  * with Radix UI validation. For specialized linting (like MCP validation),
  * use the specific configurations in config/eslint/

@@ -3,9 +3,8 @@
 /* tslint:disable */
 /* eslint-disable */
 export type QueryContext = {
-    /**
-     * The original search query
-     */
-    originalQuery: string;
+  /**
+   * The original search query
+   */
+  originalQuery: string;
 };
-

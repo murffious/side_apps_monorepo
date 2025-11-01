@@ -8,12 +8,12 @@ export default [
     files: ['**/*.{ts,tsx}'],
     plugins: {
       'radix-custom': {
-        rules: radixRules
-      }
+        rules: radixRules,
+      },
     },
     languageOptions: commonLanguageOptions,
     rules: {
-      'radix-custom/no-empty-select-item': 'error'
-    }
-  }
+      'radix-custom/no-empty-select-item': 'error',
+    },
+  },
 ];

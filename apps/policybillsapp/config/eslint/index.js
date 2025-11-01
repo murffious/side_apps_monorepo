@@ -1,6 +1,6 @@
 /**
  * ESLint Configuration Index
- * 
+ *
  * Centralized configuration management for different linting contexts.
  * This provides a single entry point for all ESLint configurations.
  */
@@ -19,11 +19,11 @@ export default [
     files: ['**/*.{ts,tsx}'],
     plugins: {
       'radix-custom': {
-        rules: radixRules
-      }
+        rules: radixRules,
+      },
     },
     rules: {
-      'radix-custom/no-empty-select-item': 'error'
-    }
-  }
-]; 
+      'radix-custom/no-empty-select-item': 'error',
+    },
+  },
+];

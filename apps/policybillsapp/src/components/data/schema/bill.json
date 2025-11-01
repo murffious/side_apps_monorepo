@@ -207,48 +207,34 @@
     ],
     "indexes": [
       {
-        "fields": [
-          "id"
-        ],
+        "fields": ["id"],
         "unique": true,
         "primary": true,
         "order": false
       },
       {
-        "fields": [
-          "data_creator"
-        ],
+        "fields": ["data_creator"],
         "order": false
       },
       {
-        "fields": [
-          "data_updater"
-        ],
+        "fields": ["data_updater"],
         "order": false
       },
       {
-        "fields": [
-          "bill_number"
-        ],
+        "fields": ["bill_number"],
         "unique": true,
         "order": false
       },
       {
-        "fields": [
-          "issue_category"
-        ],
+        "fields": ["issue_category"],
         "order": false
       },
       {
-        "fields": [
-          "impact_rank"
-        ],
+        "fields": ["impact_rank"],
         "order": true
       },
       {
-        "fields": [
-          "year"
-        ],
+        "fields": ["year"],
         "order": false
       }
     ]

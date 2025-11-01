@@ -156,50 +156,35 @@
     ],
     "indexes": [
       {
-        "fields": [
-          "id"
-        ],
+        "fields": ["id"],
         "unique": true,
         "primary": true,
         "order": false
       },
       {
-        "fields": [
-          "data_creator"
-        ],
+        "fields": ["data_creator"],
         "order": false
       },
       {
-        "fields": [
-          "data_updater"
-        ],
+        "fields": ["data_updater"],
         "order": false
       },
       {
-        "fields": [
-          "politician_id"
-        ],
+        "fields": ["politician_id"],
         "order": false
       },
       {
-        "fields": [
-          "issue_category",
-          "politician_id"
-        ],
+        "fields": ["issue_category", "politician_id"],
         "order": false
       }
     ],
     "relations": [
       {
-        "referencing_fields": [
-          "politician_id"
-        ],
+        "referencing_fields": ["politician_id"],
         "referenced_entity": {
           "name": "politician"
         },
-        "referenced_fields": [
-          "id"
-        ],
+        "referenced_fields": ["id"],
         "cascade": true
       }
     ]

@@ -42,7 +42,7 @@ services:
       context: .
       dockerfile: docker/node/Dockerfile
     ports:
-      - "3000:3000"
+      - '3000:3000'
     environment:
       - NODE_ENV=production
 

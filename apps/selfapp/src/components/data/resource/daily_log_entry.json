@@ -273,29 +273,21 @@
     ],
     "indexes": [
       {
-        "fields": [
-          "id"
-        ],
+        "fields": ["id"],
         "unique": true,
         "primary": true,
         "order": false
       },
       {
-        "fields": [
-          "data_creator"
-        ],
+        "fields": ["data_creator"],
         "order": false
       },
       {
-        "fields": [
-          "data_updater"
-        ],
+        "fields": ["data_updater"],
         "order": false
       },
       {
-        "fields": [
-          "date"
-        ],
+        "fields": ["date"],
         "unique": true,
         "order": true
       }

@@ -1,48 +1,53 @@
 /**
  * Custom ESLint Rules for Radix UI Components
- * 
+ *
  * These rules enforce proper usage patterns for Radix UI components
  * to prevent common mistakes and ensure consistent implementation.
  */
 
 export default {
-  "no-empty-select-item": {
+  'no-empty-select-item': {
     meta: {
-      type: "problem",
+      type: 'problem',
       docs: {
-        description: "Prevent SelectItem components from having empty string values",
-        category: "Best Practices",
+        description:
+          'Prevent SelectItem components from having empty string values',
+        category: 'Best Practices',
         recommended: true,
       },
-      fixable: "code",
+      fixable: 'code',
       schema: [],
       messages: {
-        emptySelectValue: 'SelectItem cannot have empty string value. Auto-fixed to use "none" instead.',
+        emptySelectValue:
+          'SelectItem cannot have empty string value. Auto-fixed to use "none" instead.',
       },
     },
-    create: function(context) {
+    create: function (context) {
       return {
         JSXElement(node) {
           if (node.openingElement.name.name === 'SelectItem') {
             const valueAttr = node.openingElement.attributes.find(
-              attr => attr.name && attr.name.name === 'value'
+              (attr) => attr.name && attr.name.name === 'value'
             );
-            
+
             if (valueAttr && valueAttr.value) {
               // Check if value is an empty string
-              if (valueAttr.value.type === 'Literal' && valueAttr.value.value === '') {
+              if (
+                valueAttr.value.type === 'Literal' &&
+                valueAttr.value.value === ''
+              ) {
                 context.report({
                   node: valueAttr,
                   messageId: 'emptySelectValue',
-                  fix: function(fixer) {
+                  fix: function (fixer) {
                     return fixer.replaceText(valueAttr.value, '"none"');
-                  }
+                  },
                 });
               }
             }
           }
-        }
+        },
       };
-    }
-  }
-}; 
+    },
+  },
+};

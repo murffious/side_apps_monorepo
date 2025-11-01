@@ -41,14 +41,7 @@
             "required": false,
             "schema": {
               "type": "string",
-              "enum": [
-                "en",
-                "es",
-                "fr",
-                "de",
-                "zh",
-                "ja"
-              ],
+              "enum": ["en", "es", "fr", "de", "zh", "ja"],
               "default": "en"
             },
             "description": "Language setting for search results"
@@ -61,16 +54,11 @@
               "application/json": {
                 "schema": {
                   "type": "object",
-                  "required": [
-                    "queryContext",
-                    "webPages"
-                  ],
+                  "required": ["queryContext", "webPages"],
                   "properties": {
                     "queryContext": {
                       "type": "object",
-                      "required": [
-                        "originalQuery"
-                      ],
+                      "required": ["originalQuery"],
                       "properties": {
                         "originalQuery": {
                           "type": "string",
@@ -81,19 +69,14 @@
                     },
                     "webPages": {
                       "type": "object",
-                      "required": [
-                        "value"
-                      ],
+                      "required": ["value"],
                       "properties": {
                         "value": {
                           "type": "array",
                           "description": "Array of web page search results",
                           "items": {
                             "type": "object",
-                            "required": [
-                              "name",
-                              "url"
-                            ],
+                            "required": ["name", "url"],
                             "properties": {
                               "name": {
                                 "type": "string",
@@ -174,16 +157,11 @@
     "schemas": {
       "SearchResponse": {
         "type": "object",
-        "required": [
-          "queryContext",
-          "webPages"
-        ],
+        "required": ["queryContext", "webPages"],
         "properties": {
           "queryContext": {
             "type": "object",
-            "required": [
-              "originalQuery"
-            ],
+            "required": ["originalQuery"],
             "properties": {
               "originalQuery": {
                 "type": "string",
@@ -194,19 +172,14 @@
           },
           "webPages": {
             "type": "object",
-            "required": [
-              "value"
-            ],
+            "required": ["value"],
             "properties": {
               "value": {
                 "type": "array",
                 "description": "Array of web page search results",
                 "items": {
                   "type": "object",
-                  "required": [
-                    "name",
-                    "url"
-                  ],
+                  "required": ["name", "url"],
                   "properties": {
                     "name": {
                       "type": "string",
@@ -261,9 +234,7 @@
       },
       "QueryContext": {
         "type": "object",
-        "required": [
-          "originalQuery"
-        ],
+        "required": ["originalQuery"],
         "properties": {
           "originalQuery": {
             "type": "string",
@@ -274,19 +245,14 @@
       },
       "WebPages": {
         "type": "object",
-        "required": [
-          "value"
-        ],
+        "required": ["value"],
         "properties": {
           "value": {
             "type": "array",
             "description": "Array of web page search results",
             "items": {
               "type": "object",
-              "required": [
-                "name",
-                "url"
-              ],
+              "required": ["name", "url"],
               "properties": {
                 "name": {
                   "type": "string",
@@ -339,10 +305,7 @@
       },
       "WebPageResult": {
         "type": "object",
-        "required": [
-          "name",
-          "url"
-        ],
+        "required": ["name", "url"],
         "properties": {
           "name": {
             "type": "string",

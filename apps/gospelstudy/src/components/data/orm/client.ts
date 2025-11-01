@@ -1,5 +1,5 @@
-import { getAuthTokenAsync } from "@/lib/auth-integration";
-import { DataType, Direction, SimpleSelector } from "./common";
+import { getAuthTokenAsync } from '@/lib/auth-integration';
+import { DataType, Direction, SimpleSelector } from './common';
 import type {
   Page,
   Format,
@@ -33,11 +33,10 @@ import type {
   ListResponse,
   IncreaseCounterResponse,
   CountRankedListResponse,
-} from "./common";
+} from './common';
 
-const BASE_URL = "https://api-production.creao.ai";
+const BASE_URL = 'https://api-production.creao.ai';
 const BASE_TIMEOUT = 30000;
-
 
 /**
  * Client for DataStore service.
@@ -67,7 +66,7 @@ export class DataStoreClient {
   protected async getHeaders(): Promise<Record<string, string>> {
     const authToken = await getAuthTokenAsync();
     const headers: Record<string, string> = {
-      "Content-Type": "application/json",
+      'Content-Type': 'application/json',
       Authorization: `Bearer ${authToken}`,
     };
 
@@ -80,7 +79,7 @@ export class DataStoreClient {
 
     try {
       const response = await fetch(`${this.host}${endpoint}`, {
-        method: "POST",
+        method: 'POST',
         headers: await this.getHeaders(),
         body: JSON.stringify(data),
         signal: controller.signal,
@@ -92,7 +91,7 @@ export class DataStoreClient {
 
       return response.json();
     } catch (error) {
-      if (error instanceof Error && error.name === "AbortError") {
+      if (error instanceof Error && error.name === 'AbortError') {
         console.error(`Request timeout after ${this.timeout} seconds`);
         throw new Error(`Request timeout after ${this.timeout} seconds`);
       }
@@ -104,41 +103,41 @@ export class DataStoreClient {
 
   // General operations
   async all(request: AllRequest): Promise<AllResponse> {
-    return this.request<AllResponse>("/data/store/v1/all", request);
+    return this.request<AllResponse>('/data/store/v1/all', request);
   }
 
   async insert(request: InsertRequest): Promise<InsertResponse> {
-    return this.request<InsertResponse>("/data/store/v1/insert", request);
+    return this.request<InsertResponse>('/data/store/v1/insert', request);
   }
 
   async purge(request: PurgeRequest): Promise<PurgeResponse> {
-    return this.request<PurgeResponse>("/data/store/v1/purge", request);
+    return this.request<PurgeResponse>('/data/store/v1/purge', request);
   }
 
   // Index operations
   async get(request: GetRequest): Promise<GetResponse> {
-    return this.request<GetResponse>("/data/store/v1/get", request);
+    return this.request<GetResponse>('/data/store/v1/get', request);
   }
 
   async set(request: SetRequest): Promise<SetResponse> {
-    return this.request<SetResponse>("/data/store/v1/set", request);
+    return this.request<SetResponse>('/data/store/v1/set', request);
   }
 
   async delete(request: DeleteRequest): Promise<DeleteResponse> {
-    return this.request<DeleteResponse>("/data/store/v1/delete", request);
+    return this.request<DeleteResponse>('/data/store/v1/delete', request);
   }
 
   async mGet(request: MGetRequest): Promise<MGetResponse> {
-    return this.request<MGetResponse>("/data/store/v1/mget", request);
+    return this.request<MGetResponse>('/data/store/v1/mget', request);
   }
 
   async mSet(request: MSetRequest): Promise<MSetResponse> {
-    return this.request<MSetResponse>("/data/store/v1/mset", request);
+    return this.request<MSetResponse>('/data/store/v1/mset', request);
   }
 
   // List operations
   async list(request: ListRequest): Promise<ListResponse> {
-    return this.request<ListResponse>("/data/store/v1/list", request);
+    return this.request<ListResponse>('/data/store/v1/list', request);
   }
 
   // Counter operations
@@ -146,7 +145,7 @@ export class DataStoreClient {
     request: IncreaseCounterRequest
   ): Promise<IncreaseCounterResponse> {
     return this.request<IncreaseCounterResponse>(
-      "/data/store/v1/increase_counter",
+      '/data/store/v1/increase_counter',
       request
     );
   }
@@ -156,7 +155,7 @@ export class DataStoreClient {
     request: CountRankedListRequest
   ): Promise<CountRankedListResponse> {
     return this.request<CountRankedListResponse>(
-      "/data/store/v1/count_ranked_list",
+      '/data/store/v1/count_ranked_list',
       request
     );
   }
@@ -286,7 +285,7 @@ export function CreateValue(
       v.boolean = Boolean(value);
       break;
     case DataType.enumeration:
-      v.enumeration = typeof value === "bigint" ? Number(value) : Number(value);
+      v.enumeration = typeof value === 'bigint' ? Number(value) : Number(value);
       break;
     case DataType.array:
       v.array = createArrayValue(value);
@@ -315,7 +314,7 @@ function createArrayValue(value: unknown): Value[] {
 }
 
 function createObjectValue(value: unknown): Value[] {
-  if (typeof value !== "object" || value === null || Array.isArray(value)) {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
     return [];
   }
 
@@ -329,11 +328,11 @@ function createObjectValue(value: unknown): Value[] {
 }
 
 function determineValueType(value: unknown): DataType {
-  if (typeof value === "string") return DataType.string;
-  if (typeof value === "number") return DataType.number;
-  if (typeof value === "boolean") return DataType.boolean;
+  if (typeof value === 'string') return DataType.string;
+  if (typeof value === 'number') return DataType.number;
+  if (typeof value === 'boolean') return DataType.boolean;
   if (Array.isArray(value)) return DataType.array;
-  if (typeof value === "object" && value !== null) return DataType.object;
+  if (typeof value === 'object' && value !== null) return DataType.object;
 
   // Default to string for unknown types
   return DataType.string;
@@ -342,7 +341,7 @@ function determineValueType(value: unknown): DataType {
 export function ParseValue(value: Value, type: DataType): unknown {
   switch (type) {
     case DataType.string:
-      return value.string || "";
+      return value.string || '';
     case DataType.number:
       return value.number !== undefined ? Number(value.number) : 0;
     case DataType.boolean:
@@ -357,7 +356,7 @@ export function ParseValue(value: Value, type: DataType): unknown {
     case DataType.reference:
       return parseObjectValue(value.object);
     default:
-      return "";
+      return '';
   }
 }
 
@@ -368,8 +367,8 @@ function parseArrayValue(value: Value[]): unknown[] {
 
   // Sort by name (which should be the index) to maintain order
   const sortedItems = value.sort((a, b) => {
-    const indexA = Number.parseInt(a.name ?? "") || 0;
-    const indexB = Number.parseInt(b.name ?? "") || 0;
+    const indexA = Number.parseInt(a.name ?? '') || 0;
+    const indexB = Number.parseInt(b.name ?? '') || 0;
     return indexA - indexB;
   });
 

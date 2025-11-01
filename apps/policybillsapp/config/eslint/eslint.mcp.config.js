@@ -1,9 +1,9 @@
 /**
  * ESLint Configuration for MCP Integration Validation
- * 
+ *
  * This configuration specifically validates MCP integrations to ensure
  * proper testing and verification before implementation.
- * 
+ *
  * Usage: npm run eslint:mcp
  */
 
@@ -12,11 +12,7 @@ import mcpRules from './rules/mcp-integration.js';
 
 export default [
   {
-    ignores: [
-      ...commonIgnores,
-      '**/*.config.js',
-      '**/*.config.ts',
-    ],
+    ignores: [...commonIgnores, '**/*.config.js', '**/*.config.ts'],
   },
   {
     files: ['src/**/*.{js,jsx,ts,tsx}'],
@@ -57,9 +53,9 @@ export default [
     rules: {
       // Enable MCP validation rule
       'mcp-integration/mcp-test-first': 'error',
-      
+
       // Disable other rules to focus on MCP validation
       'no-console': 'off',
     },
-  }
+  },
 ];

@@ -6,17 +6,9 @@
 // - Task ID: 68eb211728d943f890989a85.
 // - Task Root ID: 68eb0c3d756cd0854078e14b.
 
-import { DataType } from "./common";
-import type { Value, Page, Index, Filter, Sort, Data } from "./common";
-import { DataStoreClient, CreateData, CreateValue, ParseValue } from "./client";
-
-
-
-
-
-
-
-
+import { DataType } from './common';
+import type { Value, Page, Index, Filter, Sort, Data } from './common';
+import { DataStoreClient, CreateData, CreateValue, ParseValue } from './client';
 
 /**
  * Interface for DailyLogEntryScorecardModel
@@ -88,7 +80,7 @@ export class DailyLogEntryORM {
     if (!DailyLogEntryORM.instance) {
       DailyLogEntryORM.instance = new DailyLogEntryORM();
     }
-    
+
     return DailyLogEntryORM.instance;
   }
 
@@ -105,8 +97,8 @@ export class DailyLogEntryORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -116,8 +108,12 @@ export class DailyLogEntryORM {
    * DO NOT SET `id`, `data_creator`, `data_updater`, `create_time` and `update_time` since backend will fill it automatically.
    * It will respond the inserted record(s), with `id`, `data_creator`, `data_updater`, `create_time` and `update_time` filled by backend.
    */
-  async insertDailyLogEntry(data: DailyLogEntryModel[]): Promise<DailyLogEntryModel[]> {
-    const structured = data.map((item) => CreateData(DailyLogEntryModelToValues(item)));
+  async insertDailyLogEntry(
+    data: DailyLogEntryModel[]
+  ): Promise<DailyLogEntryModel[]> {
+    const structured = data.map((item) =>
+      CreateData(DailyLogEntryModelToValues(item))
+    );
     const response = await this.client.insert({
       id: this.entityId,
       namespace: this.namespace,
@@ -126,8 +122,8 @@ export class DailyLogEntryORM {
       task: this.taskId,
       batch: structured,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -143,8 +139,8 @@ export class DailyLogEntryORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -152,7 +148,11 @@ export class DailyLogEntryORM {
    * List DailyLogEntry records with filters
    * This function provides search capabilities like filtering, sorting, pagination.
    */
-  async listDailyLogEntry(filter?: Filter, sort?: Sort, paginate?: Page): Promise<[DailyLogEntryModel[], Page]> {
+  async listDailyLogEntry(
+    filter?: Filter,
+    sort?: Sort,
+    paginate?: Page
+  ): Promise<[DailyLogEntryModel[], Page]> {
     const response = await this.client.list({
       id: this.entityId,
       namespace: this.namespace,
@@ -163,23 +163,21 @@ export class DailyLogEntryORM {
       sort: sort,
       paginate: paginate,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
-    return [this.resultToData(response.data?.values || []), response.data?.page || { number: 0, size: 0 }];
+    return [
+      this.resultToData(response.data?.values || []),
+      response.data?.page || { number: 0, size: 0 },
+    ];
   }
-
 
   /**
    * Get daily_log_entry by Id index
    * This function gets data by index.
    */
-  async getDailyLogEntryById(
-    id: string,
-  ): Promise<DailyLogEntryModel[]> {
-    const index = createIndexId(
-      id
-    );
+  async getDailyLogEntryById(id: string): Promise<DailyLogEntryModel[]> {
+    const index = createIndexId(id);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -189,8 +187,8 @@ export class DailyLogEntryORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -207,9 +205,7 @@ export class DailyLogEntryORM {
     id: string,
     data: DailyLogEntryModel
   ): Promise<DailyLogEntryModel[]> {
-    const index = createIndexId(
-      id
-    );
+    const index = createIndexId(id);
 
     const values = DailyLogEntryModelToValues(data);
     const structuredData = CreateData(values);
@@ -223,8 +219,8 @@ export class DailyLogEntryORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -233,12 +229,8 @@ export class DailyLogEntryORM {
   /**
    * Delete daily_log_entry by Id index
    */
-  async deleteDailyLogEntryById(
-    id: string
-  ): Promise<void> {
-    const index = createIndexId(
-      id
-    );
+  async deleteDailyLogEntryById(id: string): Promise<void> {
+    const index = createIndexId(id);
 
     await this.client.delete({
       id: this.entityId,
@@ -248,8 +240,8 @@ export class DailyLogEntryORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -257,11 +249,9 @@ export class DailyLogEntryORM {
    * This function gets data by index.
    */
   async getDailyLogEntryByDataCreator(
-    data_creator: string,
+    data_creator: string
   ): Promise<DailyLogEntryModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -271,8 +261,8 @@ export class DailyLogEntryORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -289,9 +279,7 @@ export class DailyLogEntryORM {
     data_creator: string,
     data: DailyLogEntryModel
   ): Promise<DailyLogEntryModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     const values = DailyLogEntryModelToValues(data);
     const structuredData = CreateData(values);
@@ -305,8 +293,8 @@ export class DailyLogEntryORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -315,12 +303,8 @@ export class DailyLogEntryORM {
   /**
    * Delete daily_log_entry by DataCreator index
    */
-  async deleteDailyLogEntryByDataCreator(
-    data_creator: string
-  ): Promise<void> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+  async deleteDailyLogEntryByDataCreator(data_creator: string): Promise<void> {
+    const index = createIndexDataCreator(data_creator);
 
     await this.client.delete({
       id: this.entityId,
@@ -330,8 +314,8 @@ export class DailyLogEntryORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -339,11 +323,9 @@ export class DailyLogEntryORM {
    * This function gets data by index.
    */
   async getDailyLogEntryByDataUpdater(
-    data_updater: string,
+    data_updater: string
   ): Promise<DailyLogEntryModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -353,8 +335,8 @@ export class DailyLogEntryORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -371,9 +353,7 @@ export class DailyLogEntryORM {
     data_updater: string,
     data: DailyLogEntryModel
   ): Promise<DailyLogEntryModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     const values = DailyLogEntryModelToValues(data);
     const structuredData = CreateData(values);
@@ -387,8 +367,8 @@ export class DailyLogEntryORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -397,12 +377,8 @@ export class DailyLogEntryORM {
   /**
    * Delete daily_log_entry by DataUpdater index
    */
-  async deleteDailyLogEntryByDataUpdater(
-    data_updater: string
-  ): Promise<void> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+  async deleteDailyLogEntryByDataUpdater(data_updater: string): Promise<void> {
+    const index = createIndexDataUpdater(data_updater);
 
     await this.client.delete({
       id: this.entityId,
@@ -412,20 +388,16 @@ export class DailyLogEntryORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get daily_log_entry by Date index
    * This function gets data by index.
    */
-  async getDailyLogEntryByDate(
-    date: string,
-  ): Promise<DailyLogEntryModel[]> {
-    const index = createIndexDate(
-      date
-    );
+  async getDailyLogEntryByDate(date: string): Promise<DailyLogEntryModel[]> {
+    const index = createIndexDate(date);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -435,8 +407,8 @@ export class DailyLogEntryORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -453,9 +425,7 @@ export class DailyLogEntryORM {
     date: string,
     data: DailyLogEntryModel
   ): Promise<DailyLogEntryModel[]> {
-    const index = createIndexDate(
-      date
-    );
+    const index = createIndexDate(date);
 
     const values = DailyLogEntryModelToValues(data);
     const structuredData = CreateData(values);
@@ -469,8 +439,8 @@ export class DailyLogEntryORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -479,12 +449,8 @@ export class DailyLogEntryORM {
   /**
    * Delete daily_log_entry by Date index
    */
-  async deleteDailyLogEntryByDate(
-    date: string
-  ): Promise<void> {
-    const index = createIndexDate(
-      date
-    );
+  async deleteDailyLogEntryByDate(date: string): Promise<void> {
+    const index = createIndexDate(date);
 
     await this.client.delete({
       id: this.entityId,
@@ -494,8 +460,8 @@ export class DailyLogEntryORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -503,23 +469,31 @@ export class DailyLogEntryORM {
    * Convert result data to DailyLogEntryModel data array
    */
   private resultToData(values: Data[]): DailyLogEntryModel[] {
-    return values.map((item: Data) => {
-      if (item.structured && item.structured.length > 0) {
-        return DailyLogEntryModelFromValues(item.structured);
-      }
-
-      if (item.serialized) {
-        try {
-          const parsedData = JSON.parse(item.serialized) as DailyLogEntryModel;
-          return parsedData;
-        } catch (error) {
-          console.error('Error parsing serialized DailyLogEntryModel data: ', error, item.serialized);
-          return null;
+    return values
+      .map((item: Data) => {
+        if (item.structured && item.structured.length > 0) {
+          return DailyLogEntryModelFromValues(item.structured);
         }
-      }
 
-      return null;
-    }).filter((item): item is DailyLogEntryModel => item !== null);
+        if (item.serialized) {
+          try {
+            const parsedData = JSON.parse(
+              item.serialized
+            ) as DailyLogEntryModel;
+            return parsedData;
+          } catch (error) {
+            console.error(
+              'Error parsing serialized DailyLogEntryModel data: ',
+              error,
+              item.serialized
+            );
+            return null;
+          }
+        }
+
+        return null;
+      })
+      .filter((item): item is DailyLogEntryModel => item !== null);
   }
 }
 
@@ -562,10 +536,10 @@ function DailyLogEntryModelToValues(data: DailyLogEntryModel): Value[] {
  */
 function DailyLogEntryModelFromValues(values: Value[]): DailyLogEntryModel {
   const data: Partial<DailyLogEntryModel> = {};
-  
+
   for (const value of values) {
     if (!value.name) continue;
-    
+
     switch (value.name) {
       case 'id':
         data.id = ParseValue(value, DataType.string) as string;
@@ -589,7 +563,9 @@ function DailyLogEntryModelFromValues(values: Value[]): DailyLogEntryModel {
         data.goals = ParseValue(value, DataType.array) as string[];
         break;
       case 'execution_notes':
-        data.execution_notes = ParseValue(value, DataType.string) as string | null;
+        data.execution_notes = ParseValue(value, DataType.string) as
+          | string
+          | null;
         break;
       case 'focus_rating':
         data.focus_rating = ParseValue(value, DataType.number) as number;
@@ -610,7 +586,9 @@ function DailyLogEntryModelFromValues(values: Value[]): DailyLogEntryModel {
         data.reasoning = ParseValue(value, DataType.string) as string | null;
         break;
       case 'improvement_notes':
-        data.improvement_notes = ParseValue(value, DataType.string) as string | null;
+        data.improvement_notes = ParseValue(value, DataType.string) as
+          | string
+          | null;
         break;
       case 'motivation':
         data.motivation = ParseValue(value, DataType.number) as number;
@@ -628,73 +606,63 @@ function DailyLogEntryModelFromValues(values: Value[]): DailyLogEntryModel {
         data.strengths = ParseValue(value, DataType.array) as string[] | null;
         break;
       case 'scorecard':
-        data.scorecard = ParseValue(value, DataType.object) as DailyLogEntryScorecardModel;
+        data.scorecard = ParseValue(
+          value,
+          DataType.object
+        ) as DailyLogEntryScorecardModel;
         break;
     }
   }
-  
+
   return data as DailyLogEntryModel;
 }
-
 
 /**
  * Create index for Id fields
  */
-function createIndexId(
-  id: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, id, 'id'),
-  ];
+function createIndexId(id: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, id, 'id')];
 
   return {
     fields: ['id'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataCreator fields
  */
-function createIndexDataCreator(
-  data_creator: string
-): Index {
+function createIndexDataCreator(data_creator: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_creator, 'data_creator'),
   ];
 
   return {
     fields: ['data_creator'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataUpdater fields
  */
-function createIndexDataUpdater(
-  data_updater: string
-): Index {
+function createIndexDataUpdater(data_updater: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_updater, 'data_updater'),
   ];
 
   return {
     fields: ['data_updater'],
-    values
+    values,
   };
 }
 /**
  * Create index for Date fields
  */
-function createIndexDate(
-  date: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, date, 'date'),
-  ];
+function createIndexDate(date: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, date, 'date')];
 
   return {
     fields: ['date'],
-    values
+    values,
   };
 }
 

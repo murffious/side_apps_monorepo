@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 /**
  * ESLint Configuration Validation Script
- * 
+ *
  * This script validates that all ESLint configurations are working correctly
  * and can be used to catch configuration issues early.
  */
@@ -18,25 +18,25 @@ const configs = [
   {
     name: 'Main Configuration',
     config: 'config/eslint/index.js',
-    testFile: 'src/routes/index.tsx'
+    testFile: 'src/routes/index.tsx',
   },
   {
     name: 'MCP Configuration',
     config: 'config/eslint/eslint.mcp.config.js',
-    testFile: 'src/hooks/use-mcp-client.ts'
+    testFile: 'src/hooks/use-mcp-client.ts',
   },
   {
-    name: 'Radix Configuration', 
+    name: 'Radix Configuration',
     config: 'config/eslint/eslint.radix.config.js',
-    testFile: 'src/components/ui/select.tsx'
-  }
+    testFile: 'src/components/ui/select.tsx',
+  },
 ];
 
 async function runEslint(config, testFile) {
   return new Promise((resolve, reject) => {
     const eslint = spawn('npx', ['eslint', testFile, '--config', config], {
       cwd: projectRoot,
-      stdio: ['pipe', 'pipe', 'pipe']
+      stdio: ['pipe', 'pipe', 'pipe'],
     });
 
     let stdout = '';
@@ -69,7 +69,7 @@ async function validateConfigs() {
     try {
       console.log(`Testing ${name}...`);
       const result = await runEslint(config, testFile);
-      
+
       if (result.stderr && !result.stderr.includes('warning')) {
         console.log(`❌ ${name} failed:`);
         console.log(`   Error: ${result.stderr}`);
@@ -85,12 +85,14 @@ async function validateConfigs() {
   }
 
   console.log('\n' + '='.repeat(50));
-  
+
   if (allPassed) {
     console.log('🎉 All ESLint configurations are working correctly!');
     process.exit(0);
   } else {
-    console.log('💥 Some ESLint configurations have issues. Please check the errors above.');
+    console.log(
+      '💥 Some ESLint configurations have issues. Please check the errors above.'
+    );
     process.exit(1);
   }
 }
@@ -100,4 +102,4 @@ if (import.meta.url === `file://${process.argv[1]}`) {
   validateConfigs().catch(console.error);
 }
 
-export { validateConfigs }; 
+export { validateConfigs };

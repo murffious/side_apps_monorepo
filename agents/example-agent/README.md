@@ -51,6 +51,7 @@ pip freeze > requirements.txt
 ## Development
 
 This agent can be extended for various tasks:
+
 - Data processing
 - API integrations
 - Automation scripts

@@ -22,13 +22,13 @@
     "noUncheckedSideEffectImports": false,
     "noImplicitReturns": false,
     "noImplicitThis": false,
-    
+
     /* Keep only critical type safety */
     "noImplicitAny": true,
     "strictNullChecks": true,
-    
+
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     }
   }
 }

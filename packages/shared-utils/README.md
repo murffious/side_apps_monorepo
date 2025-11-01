@@ -13,7 +13,12 @@ pnpm --filter <your-app> add @side-apps/shared-utils@workspace:*
 ## Usage
 
 ```javascript
-const { formatDate, generateId, sleep, deepClone } = require('@side-apps/shared-utils');
+const {
+  formatDate,
+  generateId,
+  sleep,
+  deepClone,
+} = require('@side-apps/shared-utils');
 
 // Format current date
 const now = formatDate();
