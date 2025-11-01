@@ -6,16 +6,19 @@ A monorepo optimized for AI copilot development, supporting multiple JavaScript/
 
 ```
 side_apps_monorepo/
-├── apps/              # Full-stack applications
-│   └── example-app/   # Example Next.js/Express app
-├── packages/          # Shared libraries and utilities
-│   └── shared-utils/  # Common utilities
-├── agents/            # Python AI agents and scripts
-│   └── example-agent/ # Example Python agent
-├── docker/            # Docker configurations
-│   ├── node/          # Node.js Dockerfiles
-│   └── python/        # Python Dockerfiles
-└── package.json       # Root workspace configuration
+├── apps/                  # Full-stack applications
+│   ├── example-app/       # Example Express.js API (port 3000)
+│   ├── gospelstudy/       # Gospel study & scripture analysis (port 3001)
+│   ├── policybillsapp/    # Policy & bills tracking (port 3002)
+│   └── selfapp/           # Personal self-improvement tracking (port 3003)
+├── packages/              # Shared libraries and utilities
+│   └── shared-utils/      # Common utilities
+├── agents/                # Python AI agents and scripts
+│   └── example-agent/     # Example Python agent
+├── docker/                # Docker configurations
+│   ├── node/              # Node.js Dockerfiles
+│   └── python/            # Python Dockerfiles
+└── package.json           # Root workspace configuration
 ```
 
 ## 🚀 Getting Started
@@ -27,7 +30,18 @@ side_apps_monorepo/
 - Python >= 3.9 (for agents)
 - Docker (optional, for containerization)
 
-### Installation
+### Quick Setup
+
+```bash
+# Clone the repository
+git clone https://github.com/murffious/side_apps_monorepo.git
+cd side_apps_monorepo
+
+# Run automated setup
+./scripts/setup.sh
+```
+
+### Manual Installation
 
 ```bash
 # Install pnpm if you haven't already
@@ -37,7 +51,39 @@ npm install -g pnpm
 pnpm install
 ```
 
-## 📦 Workspaces
+## 📦 Applications
+
+### React Applications (from CREAO.ai)
+
+#### 🕊️ Gospel Study (Port 3001)
+Scripture study and analysis application with AI-powered insights.
+```bash
+pnpm --filter gospelstudy dev
+```
+[View Documentation](apps/gospelstudy/README.md)
+
+#### 🏛️ Policy Bills App (Port 3002)
+Track and analyze legislative bills and policy documents.
+```bash
+pnpm --filter policybillsapp dev
+```
+[View Documentation](apps/policybillsapp/README.md)
+
+#### 🎯 Self App (Port 3003)
+Personal self-improvement and habit tracking application.
+```bash
+pnpm --filter selfapp dev
+```
+[View Documentation](apps/selfapp/README.md)
+
+#### 🔧 Example App (Port 3000)
+Simple Express.js API demonstrating monorepo structure.
+```bash
+pnpm --filter example-app dev
+```
+[View Documentation](apps/example-app/README.md)
+
+### Workspaces
 
 This monorepo uses pnpm workspaces to manage multiple packages:
 
@@ -114,6 +160,29 @@ docker run -p 3000:3000 my-node-app
 # Build and run a Python agent
 docker build -f docker/python/Dockerfile -t my-python-agent .
 docker run my-python-agent
+```
+
+## 🔄 CREAO.ai Migration
+
+Three applications (gospelstudy, policybillsapp, selfapp) were migrated from the CREAO.ai platform to run standalone:
+
+### What Was Changed
+- ✅ Removed CREAO.ai-specific URL parsing and routing
+- ✅ Replaced CREAO.ai authentication with standalone stub for local development
+- ✅ Updated package.json with unique names and ports (3001-3003)
+- ✅ Configured for standalone development mode
+- ✅ Preserved all original functionality and components
+
+### Original Files
+Original CREAO.ai integration files are backed up as `*.creao.bak` and `*.creao.ts.bak` in case you need to reference the original implementation.
+
+### Running Standalone
+Each app now runs independently without CREAO.ai platform dependencies:
+```bash
+# All apps run on different ports to avoid conflicts
+pnpm --filter gospelstudy dev      # Port 3001
+pnpm --filter policybillsapp dev   # Port 3002
+pnpm --filter selfapp dev          # Port 3003
 ```
 
 ## 🤖 AI Copilot Optimization
