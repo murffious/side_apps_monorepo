@@ -56,31 +56,43 @@ pnpm install
 ### React Applications (from CREAO.ai)
 
 #### 🕊️ Gospel Study (Port 3001)
+
 Scripture study and analysis application with AI-powered insights.
+
 ```bash
 pnpm --filter gospelstudy dev
 ```
+
 [View Documentation](apps/gospelstudy/README.md)
 
 #### 🏛️ Policy Bills App (Port 3002)
+
 Track and analyze legislative bills and policy documents.
+
 ```bash
 pnpm --filter policybillsapp dev
 ```
+
 [View Documentation](apps/policybillsapp/README.md)
 
 #### 🎯 Self App (Port 3003)
+
 Personal self-improvement and habit tracking application.
+
 ```bash
 pnpm --filter selfapp dev
 ```
+
 [View Documentation](apps/selfapp/README.md)
 
 #### 🔧 Example App (Port 3000)
+
 Simple Express.js API demonstrating monorepo structure.
+
 ```bash
 pnpm --filter example-app dev
 ```
+
 [View Documentation](apps/example-app/README.md)
 
 ### Workspaces
@@ -167,6 +179,7 @@ docker run my-python-agent
 Three applications (gospelstudy, policybillsapp, selfapp) were migrated from the CREAO.ai platform to run standalone:
 
 ### What Was Changed
+
 - ✅ Removed CREAO.ai-specific URL parsing and routing
 - ✅ Replaced CREAO.ai authentication with standalone stub for local development
 - ✅ Updated package.json with unique names and ports (3001-3003)
@@ -174,10 +187,13 @@ Three applications (gospelstudy, policybillsapp, selfapp) were migrated from the
 - ✅ Preserved all original functionality and components
 
 ### Original Files
+
 Original CREAO.ai integration files are backed up as `*.creao.bak` and `*.creao.ts.bak` in case you need to reference the original implementation.
 
 ### Running Standalone
+
 Each app now runs independently without CREAO.ai platform dependencies:
+
 ```bash
 # All apps run on different ports to avoid conflicts
 pnpm --filter gospelstudy dev      # Port 3001

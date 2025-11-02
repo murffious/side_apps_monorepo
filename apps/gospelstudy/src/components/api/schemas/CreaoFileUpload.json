@@ -26,10 +26,7 @@
             "application/json": {
               "schema": {
                 "type": "object",
-                "required": [
-                  "fileName",
-                  "contentType"
-                ],
+                "required": ["fileName", "contentType"],
                 "properties": {
                   "fileName": {
                     "type": "string",

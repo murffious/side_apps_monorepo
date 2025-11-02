@@ -6,15 +6,9 @@
 // - Task ID: 68ffd975a776938453c6e20b.
 // - Task Root ID: 68feec8dcd635a6ece0a6396.
 
-import { DataType } from "./common";
-import type { Value, Page, Index, Filter, Sort, Data } from "./common";
-import { DataStoreClient, CreateData, CreateValue, ParseValue } from "./client";
-
-
-
-
-
-
+import { DataType } from './common';
+import type { Value, Page, Index, Filter, Sort, Data } from './common';
+import { DataStoreClient, CreateData, CreateValue, ParseValue } from './client';
 
 /**
  * Enumeration for VotingRecordVoteChoice
@@ -25,8 +19,6 @@ export enum VotingRecordVoteChoice {
   No = 2,
   Abstain = 3,
 }
-
-
 
 /**
  * Interface for VotingRecordModel
@@ -79,7 +71,7 @@ export class VotingRecordORM {
     if (!VotingRecordORM.instance) {
       VotingRecordORM.instance = new VotingRecordORM();
     }
-    
+
     return VotingRecordORM.instance;
   }
 
@@ -96,8 +88,8 @@ export class VotingRecordORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -107,8 +99,12 @@ export class VotingRecordORM {
    * DO NOT SET `id`, `data_creator`, `data_updater`, `create_time` and `update_time` since backend will fill it automatically.
    * It will respond the inserted record(s), with `id`, `data_creator`, `data_updater`, `create_time` and `update_time` filled by backend.
    */
-  async insertVotingRecord(data: VotingRecordModel[]): Promise<VotingRecordModel[]> {
-    const structured = data.map((item) => CreateData(VotingRecordModelToValues(item)));
+  async insertVotingRecord(
+    data: VotingRecordModel[]
+  ): Promise<VotingRecordModel[]> {
+    const structured = data.map((item) =>
+      CreateData(VotingRecordModelToValues(item))
+    );
     const response = await this.client.insert({
       id: this.entityId,
       namespace: this.namespace,
@@ -117,8 +113,8 @@ export class VotingRecordORM {
       task: this.taskId,
       batch: structured,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -134,8 +130,8 @@ export class VotingRecordORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -143,7 +139,11 @@ export class VotingRecordORM {
    * List VotingRecord records with filters
    * This function provides search capabilities like filtering, sorting, pagination.
    */
-  async listVotingRecord(filter?: Filter, sort?: Sort, paginate?: Page): Promise<[VotingRecordModel[], Page]> {
+  async listVotingRecord(
+    filter?: Filter,
+    sort?: Sort,
+    paginate?: Page
+  ): Promise<[VotingRecordModel[], Page]> {
     const response = await this.client.list({
       id: this.entityId,
       namespace: this.namespace,
@@ -154,23 +154,21 @@ export class VotingRecordORM {
       sort: sort,
       paginate: paginate,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
-    return [this.resultToData(response.data?.values || []), response.data?.page || { number: 0, size: 0 }];
+    return [
+      this.resultToData(response.data?.values || []),
+      response.data?.page || { number: 0, size: 0 },
+    ];
   }
-
 
   /**
    * Get voting_record by Id index
    * This function gets data by index.
    */
-  async getVotingRecordById(
-    id: string,
-  ): Promise<VotingRecordModel[]> {
-    const index = createIndexId(
-      id
-    );
+  async getVotingRecordById(id: string): Promise<VotingRecordModel[]> {
+    const index = createIndexId(id);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -180,8 +178,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -198,9 +196,7 @@ export class VotingRecordORM {
     id: string,
     data: VotingRecordModel
   ): Promise<VotingRecordModel[]> {
-    const index = createIndexId(
-      id
-    );
+    const index = createIndexId(id);
 
     const values = VotingRecordModelToValues(data);
     const structuredData = CreateData(values);
@@ -214,8 +210,8 @@ export class VotingRecordORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -224,12 +220,8 @@ export class VotingRecordORM {
   /**
    * Delete voting_record by Id index
    */
-  async deleteVotingRecordById(
-    id: string
-  ): Promise<void> {
-    const index = createIndexId(
-      id
-    );
+  async deleteVotingRecordById(id: string): Promise<void> {
+    const index = createIndexId(id);
 
     await this.client.delete({
       id: this.entityId,
@@ -239,8 +231,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -248,11 +240,9 @@ export class VotingRecordORM {
    * This function gets data by index.
    */
   async getVotingRecordByDataCreator(
-    data_creator: string,
+    data_creator: string
   ): Promise<VotingRecordModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -262,8 +252,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -280,9 +270,7 @@ export class VotingRecordORM {
     data_creator: string,
     data: VotingRecordModel
   ): Promise<VotingRecordModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     const values = VotingRecordModelToValues(data);
     const structuredData = CreateData(values);
@@ -296,8 +284,8 @@ export class VotingRecordORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -306,12 +294,8 @@ export class VotingRecordORM {
   /**
    * Delete voting_record by DataCreator index
    */
-  async deleteVotingRecordByDataCreator(
-    data_creator: string
-  ): Promise<void> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+  async deleteVotingRecordByDataCreator(data_creator: string): Promise<void> {
+    const index = createIndexDataCreator(data_creator);
 
     await this.client.delete({
       id: this.entityId,
@@ -321,8 +305,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -330,11 +314,9 @@ export class VotingRecordORM {
    * This function gets data by index.
    */
   async getVotingRecordByDataUpdater(
-    data_updater: string,
+    data_updater: string
   ): Promise<VotingRecordModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -344,8 +326,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -362,9 +344,7 @@ export class VotingRecordORM {
     data_updater: string,
     data: VotingRecordModel
   ): Promise<VotingRecordModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     const values = VotingRecordModelToValues(data);
     const structuredData = CreateData(values);
@@ -378,8 +358,8 @@ export class VotingRecordORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -388,12 +368,8 @@ export class VotingRecordORM {
   /**
    * Delete voting_record by DataUpdater index
    */
-  async deleteVotingRecordByDataUpdater(
-    data_updater: string
-  ): Promise<void> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+  async deleteVotingRecordByDataUpdater(data_updater: string): Promise<void> {
+    const index = createIndexDataUpdater(data_updater);
 
     await this.client.delete({
       id: this.entityId,
@@ -403,8 +379,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -412,11 +388,9 @@ export class VotingRecordORM {
    * This function gets data by index.
    */
   async getVotingRecordByPoliticianId(
-    politician_id: string,
+    politician_id: string
   ): Promise<VotingRecordModel[]> {
-    const index = createIndexPoliticianId(
-      politician_id
-    );
+    const index = createIndexPoliticianId(politician_id);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -426,8 +400,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -444,9 +418,7 @@ export class VotingRecordORM {
     politician_id: string,
     data: VotingRecordModel
   ): Promise<VotingRecordModel[]> {
-    const index = createIndexPoliticianId(
-      politician_id
-    );
+    const index = createIndexPoliticianId(politician_id);
 
     const values = VotingRecordModelToValues(data);
     const structuredData = CreateData(values);
@@ -460,8 +432,8 @@ export class VotingRecordORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -470,12 +442,8 @@ export class VotingRecordORM {
   /**
    * Delete voting_record by PoliticianId index
    */
-  async deleteVotingRecordByPoliticianId(
-    politician_id: string
-  ): Promise<void> {
-    const index = createIndexPoliticianId(
-      politician_id
-    );
+  async deleteVotingRecordByPoliticianId(politician_id: string): Promise<void> {
+    const index = createIndexPoliticianId(politician_id);
 
     await this.client.delete({
       id: this.entityId,
@@ -485,20 +453,16 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get voting_record by BillId index
    * This function gets data by index.
    */
-  async getVotingRecordByBillId(
-    bill_id: string,
-  ): Promise<VotingRecordModel[]> {
-    const index = createIndexBillId(
-      bill_id
-    );
+  async getVotingRecordByBillId(bill_id: string): Promise<VotingRecordModel[]> {
+    const index = createIndexBillId(bill_id);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -508,8 +472,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -526,9 +490,7 @@ export class VotingRecordORM {
     bill_id: string,
     data: VotingRecordModel
   ): Promise<VotingRecordModel[]> {
-    const index = createIndexBillId(
-      bill_id
-    );
+    const index = createIndexBillId(bill_id);
 
     const values = VotingRecordModelToValues(data);
     const structuredData = CreateData(values);
@@ -542,8 +504,8 @@ export class VotingRecordORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -552,12 +514,8 @@ export class VotingRecordORM {
   /**
    * Delete voting_record by BillId index
    */
-  async deleteVotingRecordByBillId(
-    bill_id: string
-  ): Promise<void> {
-    const index = createIndexBillId(
-      bill_id
-    );
+  async deleteVotingRecordByBillId(bill_id: string): Promise<void> {
+    const index = createIndexBillId(bill_id);
 
     await this.client.delete({
       id: this.entityId,
@@ -567,8 +525,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -577,12 +535,9 @@ export class VotingRecordORM {
    */
   async getVotingRecordByBillIdPoliticianId(
     bill_id: string,
-    politician_id: string,
+    politician_id: string
   ): Promise<VotingRecordModel[]> {
-    const index = createIndexBillIdPoliticianId(
-      bill_id,
-      politician_id
-    );
+    const index = createIndexBillIdPoliticianId(bill_id, politician_id);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -592,8 +547,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -611,10 +566,7 @@ export class VotingRecordORM {
     politician_id: string,
     data: VotingRecordModel
   ): Promise<VotingRecordModel[]> {
-    const index = createIndexBillIdPoliticianId(
-      bill_id,
-      politician_id
-    );
+    const index = createIndexBillIdPoliticianId(bill_id, politician_id);
 
     const values = VotingRecordModelToValues(data);
     const structuredData = CreateData(values);
@@ -628,8 +580,8 @@ export class VotingRecordORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -642,10 +594,7 @@ export class VotingRecordORM {
     bill_id: string,
     politician_id: string
   ): Promise<void> {
-    const index = createIndexBillIdPoliticianId(
-      bill_id,
-      politician_id
-    );
+    const index = createIndexBillIdPoliticianId(bill_id, politician_id);
 
     await this.client.delete({
       id: this.entityId,
@@ -655,8 +604,8 @@ export class VotingRecordORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -664,23 +613,29 @@ export class VotingRecordORM {
    * Convert result data to VotingRecordModel data array
    */
   private resultToData(values: Data[]): VotingRecordModel[] {
-    return values.map((item: Data) => {
-      if (item.structured && item.structured.length > 0) {
-        return VotingRecordModelFromValues(item.structured);
-      }
-
-      if (item.serialized) {
-        try {
-          const parsedData = JSON.parse(item.serialized) as VotingRecordModel;
-          return parsedData;
-        } catch (error) {
-          console.error('Error parsing serialized VotingRecordModel data: ', error, item.serialized);
-          return null;
+    return values
+      .map((item: Data) => {
+        if (item.structured && item.structured.length > 0) {
+          return VotingRecordModelFromValues(item.structured);
         }
-      }
 
-      return null;
-    }).filter((item): item is VotingRecordModel => item !== null);
+        if (item.serialized) {
+          try {
+            const parsedData = JSON.parse(item.serialized) as VotingRecordModel;
+            return parsedData;
+          } catch (error) {
+            console.error(
+              'Error parsing serialized VotingRecordModel data: ',
+              error,
+              item.serialized
+            );
+            return null;
+          }
+        }
+
+        return null;
+      })
+      .filter((item): item is VotingRecordModel => item !== null);
   }
 }
 
@@ -712,10 +667,10 @@ function VotingRecordModelToValues(data: VotingRecordModel): Value[] {
  */
 function VotingRecordModelFromValues(values: Value[]): VotingRecordModel {
   const data: Partial<VotingRecordModel> = {};
-  
+
   for (const value of values) {
     if (!value.name) continue;
-    
+
     switch (value.name) {
       case 'id':
         data.id = ParseValue(value, DataType.string) as string;
@@ -739,7 +694,10 @@ function VotingRecordModelFromValues(values: Value[]): VotingRecordModel {
         data.bill_id = ParseValue(value, DataType.string) as string;
         break;
       case 'vote_choice':
-        data.vote_choice = ParseValue(value, DataType.enumeration) as VotingRecordVoteChoice;
+        data.vote_choice = ParseValue(
+          value,
+          DataType.enumeration
+        ) as VotingRecordVoteChoice;
         break;
       case 'date_recorded':
         data.date_recorded = ParseValue(value, DataType.string) as string;
@@ -749,84 +707,69 @@ function VotingRecordModelFromValues(values: Value[]): VotingRecordModel {
         break;
     }
   }
-  
+
   return data as VotingRecordModel;
 }
-
 
 /**
  * Create index for Id fields
  */
-function createIndexId(
-  id: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, id, 'id'),
-  ];
+function createIndexId(id: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, id, 'id')];
 
   return {
     fields: ['id'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataCreator fields
  */
-function createIndexDataCreator(
-  data_creator: string
-): Index {
+function createIndexDataCreator(data_creator: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_creator, 'data_creator'),
   ];
 
   return {
     fields: ['data_creator'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataUpdater fields
  */
-function createIndexDataUpdater(
-  data_updater: string
-): Index {
+function createIndexDataUpdater(data_updater: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_updater, 'data_updater'),
   ];
 
   return {
     fields: ['data_updater'],
-    values
+    values,
   };
 }
 /**
  * Create index for PoliticianId fields
  */
-function createIndexPoliticianId(
-  politician_id: string
-): Index {
+function createIndexPoliticianId(politician_id: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, politician_id, 'politician_id'),
   ];
 
   return {
     fields: ['politician_id'],
-    values
+    values,
   };
 }
 /**
  * Create index for BillId fields
  */
-function createIndexBillId(
-  bill_id: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, bill_id, 'bill_id'),
-  ];
+function createIndexBillId(bill_id: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, bill_id, 'bill_id')];
 
   return {
     fields: ['bill_id'],
-    values
+    values,
   };
 }
 /**
@@ -843,7 +786,7 @@ function createIndexBillIdPoliticianId(
 
   return {
     fields: ['bill_id', 'politician_id'],
-    values
+    values,
   };
 }
 

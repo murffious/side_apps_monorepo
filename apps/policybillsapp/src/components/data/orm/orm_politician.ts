@@ -6,15 +6,9 @@
 // - Task ID: 68ffd975a776938453c6e20b.
 // - Task Root ID: 68feec8dcd635a6ece0a6396.
 
-import { DataType } from "./common";
-import type { Value, Page, Index, Filter, Sort, Data } from "./common";
-import { DataStoreClient, CreateData, CreateValue, ParseValue } from "./client";
-
-
-
-
-
-
+import { DataType } from './common';
+import type { Value, Page, Index, Filter, Sort, Data } from './common';
+import { DataStoreClient, CreateData, CreateValue, ParseValue } from './client';
 
 /**
  * Enumeration for PoliticianRole
@@ -24,8 +18,6 @@ export enum PoliticianRole {
   Senator = 1,
   Representative = 2,
 }
-
-
 
 /**
  * Interface for PoliticianModel
@@ -82,7 +74,7 @@ export class PoliticianORM {
     if (!PoliticianORM.instance) {
       PoliticianORM.instance = new PoliticianORM();
     }
-    
+
     return PoliticianORM.instance;
   }
 
@@ -99,8 +91,8 @@ export class PoliticianORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -111,7 +103,9 @@ export class PoliticianORM {
    * It will respond the inserted record(s), with `id`, `data_creator`, `data_updater`, `create_time` and `update_time` filled by backend.
    */
   async insertPolitician(data: PoliticianModel[]): Promise<PoliticianModel[]> {
-    const structured = data.map((item) => CreateData(PoliticianModelToValues(item)));
+    const structured = data.map((item) =>
+      CreateData(PoliticianModelToValues(item))
+    );
     const response = await this.client.insert({
       id: this.entityId,
       namespace: this.namespace,
@@ -120,8 +114,8 @@ export class PoliticianORM {
       task: this.taskId,
       batch: structured,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -137,8 +131,8 @@ export class PoliticianORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -146,7 +140,11 @@ export class PoliticianORM {
    * List Politician records with filters
    * This function provides search capabilities like filtering, sorting, pagination.
    */
-  async listPolitician(filter?: Filter, sort?: Sort, paginate?: Page): Promise<[PoliticianModel[], Page]> {
+  async listPolitician(
+    filter?: Filter,
+    sort?: Sort,
+    paginate?: Page
+  ): Promise<[PoliticianModel[], Page]> {
     const response = await this.client.list({
       id: this.entityId,
       namespace: this.namespace,
@@ -157,23 +155,21 @@ export class PoliticianORM {
       sort: sort,
       paginate: paginate,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
-    return [this.resultToData(response.data?.values || []), response.data?.page || { number: 0, size: 0 }];
+    return [
+      this.resultToData(response.data?.values || []),
+      response.data?.page || { number: 0, size: 0 },
+    ];
   }
-
 
   /**
    * Get politician by Id index
    * This function gets data by index.
    */
-  async getPoliticianById(
-    id: string,
-  ): Promise<PoliticianModel[]> {
-    const index = createIndexId(
-      id
-    );
+  async getPoliticianById(id: string): Promise<PoliticianModel[]> {
+    const index = createIndexId(id);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -183,8 +179,8 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -201,9 +197,7 @@ export class PoliticianORM {
     id: string,
     data: PoliticianModel
   ): Promise<PoliticianModel[]> {
-    const index = createIndexId(
-      id
-    );
+    const index = createIndexId(id);
 
     const values = PoliticianModelToValues(data);
     const structuredData = CreateData(values);
@@ -217,8 +211,8 @@ export class PoliticianORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -227,12 +221,8 @@ export class PoliticianORM {
   /**
    * Delete politician by Id index
    */
-  async deletePoliticianById(
-    id: string
-  ): Promise<void> {
-    const index = createIndexId(
-      id
-    );
+  async deletePoliticianById(id: string): Promise<void> {
+    const index = createIndexId(id);
 
     await this.client.delete({
       id: this.entityId,
@@ -242,8 +232,8 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -251,11 +241,9 @@ export class PoliticianORM {
    * This function gets data by index.
    */
   async getPoliticianByDataCreator(
-    data_creator: string,
+    data_creator: string
   ): Promise<PoliticianModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -265,8 +253,8 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -283,9 +271,7 @@ export class PoliticianORM {
     data_creator: string,
     data: PoliticianModel
   ): Promise<PoliticianModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     const values = PoliticianModelToValues(data);
     const structuredData = CreateData(values);
@@ -299,8 +285,8 @@ export class PoliticianORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -309,12 +295,8 @@ export class PoliticianORM {
   /**
    * Delete politician by DataCreator index
    */
-  async deletePoliticianByDataCreator(
-    data_creator: string
-  ): Promise<void> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+  async deletePoliticianByDataCreator(data_creator: string): Promise<void> {
+    const index = createIndexDataCreator(data_creator);
 
     await this.client.delete({
       id: this.entityId,
@@ -324,8 +306,8 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -333,11 +315,9 @@ export class PoliticianORM {
    * This function gets data by index.
    */
   async getPoliticianByDataUpdater(
-    data_updater: string,
+    data_updater: string
   ): Promise<PoliticianModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -347,8 +327,8 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -365,9 +345,7 @@ export class PoliticianORM {
     data_updater: string,
     data: PoliticianModel
   ): Promise<PoliticianModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     const values = PoliticianModelToValues(data);
     const structuredData = CreateData(values);
@@ -381,8 +359,8 @@ export class PoliticianORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -391,12 +369,8 @@ export class PoliticianORM {
   /**
    * Delete politician by DataUpdater index
    */
-  async deletePoliticianByDataUpdater(
-    data_updater: string
-  ): Promise<void> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+  async deletePoliticianByDataUpdater(data_updater: string): Promise<void> {
+    const index = createIndexDataUpdater(data_updater);
 
     await this.client.delete({
       id: this.entityId,
@@ -406,20 +380,16 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get politician by State index
    * This function gets data by index.
    */
-  async getPoliticianByState(
-    state: string,
-  ): Promise<PoliticianModel[]> {
-    const index = createIndexState(
-      state
-    );
+  async getPoliticianByState(state: string): Promise<PoliticianModel[]> {
+    const index = createIndexState(state);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -429,8 +399,8 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -447,9 +417,7 @@ export class PoliticianORM {
     state: string,
     data: PoliticianModel
   ): Promise<PoliticianModel[]> {
-    const index = createIndexState(
-      state
-    );
+    const index = createIndexState(state);
 
     const values = PoliticianModelToValues(data);
     const structuredData = CreateData(values);
@@ -463,8 +431,8 @@ export class PoliticianORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -473,12 +441,8 @@ export class PoliticianORM {
   /**
    * Delete politician by State index
    */
-  async deletePoliticianByState(
-    state: string
-  ): Promise<void> {
-    const index = createIndexState(
-      state
-    );
+  async deletePoliticianByState(state: string): Promise<void> {
+    const index = createIndexState(state);
 
     await this.client.delete({
       id: this.entityId,
@@ -488,20 +452,16 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get politician by Party index
    * This function gets data by index.
    */
-  async getPoliticianByParty(
-    party: string,
-  ): Promise<PoliticianModel[]> {
-    const index = createIndexParty(
-      party
-    );
+  async getPoliticianByParty(party: string): Promise<PoliticianModel[]> {
+    const index = createIndexParty(party);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -511,8 +471,8 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -529,9 +489,7 @@ export class PoliticianORM {
     party: string,
     data: PoliticianModel
   ): Promise<PoliticianModel[]> {
-    const index = createIndexParty(
-      party
-    );
+    const index = createIndexParty(party);
 
     const values = PoliticianModelToValues(data);
     const structuredData = CreateData(values);
@@ -545,8 +503,8 @@ export class PoliticianORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -555,12 +513,8 @@ export class PoliticianORM {
   /**
    * Delete politician by Party index
    */
-  async deletePoliticianByParty(
-    party: string
-  ): Promise<void> {
-    const index = createIndexParty(
-      party
-    );
+  async deletePoliticianByParty(party: string): Promise<void> {
+    const index = createIndexParty(party);
 
     await this.client.delete({
       id: this.entityId,
@@ -570,20 +524,16 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get politician by Role index
    * This function gets data by index.
    */
-  async getPoliticianByRole(
-    role: PoliticianRole,
-  ): Promise<PoliticianModel[]> {
-    const index = createIndexRole(
-      role
-    );
+  async getPoliticianByRole(role: PoliticianRole): Promise<PoliticianModel[]> {
+    const index = createIndexRole(role);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -593,8 +543,8 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -611,9 +561,7 @@ export class PoliticianORM {
     role: PoliticianRole,
     data: PoliticianModel
   ): Promise<PoliticianModel[]> {
-    const index = createIndexRole(
-      role
-    );
+    const index = createIndexRole(role);
 
     const values = PoliticianModelToValues(data);
     const structuredData = CreateData(values);
@@ -627,8 +575,8 @@ export class PoliticianORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -637,12 +585,8 @@ export class PoliticianORM {
   /**
    * Delete politician by Role index
    */
-  async deletePoliticianByRole(
-    role: PoliticianRole
-  ): Promise<void> {
-    const index = createIndexRole(
-      role
-    );
+  async deletePoliticianByRole(role: PoliticianRole): Promise<void> {
+    const index = createIndexRole(role);
 
     await this.client.delete({
       id: this.entityId,
@@ -652,8 +596,8 @@ export class PoliticianORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -661,23 +605,29 @@ export class PoliticianORM {
    * Convert result data to PoliticianModel data array
    */
   private resultToData(values: Data[]): PoliticianModel[] {
-    return values.map((item: Data) => {
-      if (item.structured && item.structured.length > 0) {
-        return PoliticianModelFromValues(item.structured);
-      }
-
-      if (item.serialized) {
-        try {
-          const parsedData = JSON.parse(item.serialized) as PoliticianModel;
-          return parsedData;
-        } catch (error) {
-          console.error('Error parsing serialized PoliticianModel data: ', error, item.serialized);
-          return null;
+    return values
+      .map((item: Data) => {
+        if (item.structured && item.structured.length > 0) {
+          return PoliticianModelFromValues(item.structured);
         }
-      }
 
-      return null;
-    }).filter((item): item is PoliticianModel => item !== null);
+        if (item.serialized) {
+          try {
+            const parsedData = JSON.parse(item.serialized) as PoliticianModel;
+            return parsedData;
+          } catch (error) {
+            console.error(
+              'Error parsing serialized PoliticianModel data: ',
+              error,
+              item.serialized
+            );
+            return null;
+          }
+        }
+
+        return null;
+      })
+      .filter((item): item is PoliticianModel => item !== null);
   }
 }
 
@@ -713,10 +663,10 @@ function PoliticianModelToValues(data: PoliticianModel): Value[] {
  */
 function PoliticianModelFromValues(values: Value[]): PoliticianModel {
   const data: Partial<PoliticianModel> = {};
-  
+
   for (const value of values) {
     if (!value.name) continue;
-    
+
     switch (value.name) {
       case 'id':
         data.id = ParseValue(value, DataType.string) as string;
@@ -746,7 +696,9 @@ function PoliticianModelFromValues(values: Value[]): PoliticianModel {
         data.role = ParseValue(value, DataType.enumeration) as PoliticianRole;
         break;
       case 'years_of_service':
-        data.years_of_service = ParseValue(value, DataType.string) as string | null;
+        data.years_of_service = ParseValue(value, DataType.string) as
+          | string
+          | null;
         break;
       case 'start_year':
         data.start_year = ParseValue(value, DataType.number) as number;
@@ -762,99 +714,78 @@ function PoliticianModelFromValues(values: Value[]): PoliticianModel {
         break;
     }
   }
-  
+
   return data as PoliticianModel;
 }
-
 
 /**
  * Create index for Id fields
  */
-function createIndexId(
-  id: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, id, 'id'),
-  ];
+function createIndexId(id: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, id, 'id')];
 
   return {
     fields: ['id'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataCreator fields
  */
-function createIndexDataCreator(
-  data_creator: string
-): Index {
+function createIndexDataCreator(data_creator: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_creator, 'data_creator'),
   ];
 
   return {
     fields: ['data_creator'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataUpdater fields
  */
-function createIndexDataUpdater(
-  data_updater: string
-): Index {
+function createIndexDataUpdater(data_updater: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_updater, 'data_updater'),
   ];
 
   return {
     fields: ['data_updater'],
-    values
+    values,
   };
 }
 /**
  * Create index for State fields
  */
-function createIndexState(
-  state: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, state, 'state'),
-  ];
+function createIndexState(state: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, state, 'state')];
 
   return {
     fields: ['state'],
-    values
+    values,
   };
 }
 /**
  * Create index for Party fields
  */
-function createIndexParty(
-  party: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, party, 'party'),
-  ];
+function createIndexParty(party: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, party, 'party')];
 
   return {
     fields: ['party'],
-    values
+    values,
   };
 }
 /**
  * Create index for Role fields
  */
-function createIndexRole(
-  role: PoliticianRole
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.enumeration, role, 'role'),
-  ];
+function createIndexRole(role: PoliticianRole): Index {
+  const values: Value[] = [CreateValue(DataType.enumeration, role, 'role')];
 
   return {
     fields: ['role'],
-    values
+    values,
   };
 }
 

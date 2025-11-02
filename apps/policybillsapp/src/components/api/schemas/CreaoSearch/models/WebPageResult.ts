@@ -3,37 +3,36 @@
 /* tslint:disable */
 /* eslint-disable */
 export type WebPageResult = {
-    /**
-     * Title of the web page
-     */
-    name: string;
-    /**
-     * URL of the web page
-     */
-    url: string;
-    /**
-     * Display-friendly version of the URL
-     */
-    displayUrl?: string;
-    /**
-     * Brief excerpt or summary of the content
-     */
-    snippet?: string;
-    /**
-     * When the content was last crawled
-     */
-    dateLastCrawled?: string;
-    /**
-     * Name of the website
-     */
-    siteName?: string;
-    /**
-     * When the content was published (optional)
-     */
-    datePublished?: string;
-    /**
-     * URL of thumbnail image (optional)
-     */
-    thumbnailUrl?: string;
+  /**
+   * Title of the web page
+   */
+  name: string;
+  /**
+   * URL of the web page
+   */
+  url: string;
+  /**
+   * Display-friendly version of the URL
+   */
+  displayUrl?: string;
+  /**
+   * Brief excerpt or summary of the content
+   */
+  snippet?: string;
+  /**
+   * When the content was last crawled
+   */
+  dateLastCrawled?: string;
+  /**
+   * Name of the website
+   */
+  siteName?: string;
+  /**
+   * When the content was published (optional)
+   */
+  datePublished?: string;
+  /**
+   * URL of thumbnail image (optional)
+   */
+  thumbnailUrl?: string;
 };
-

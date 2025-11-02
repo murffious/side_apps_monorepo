@@ -6,15 +6,9 @@
 // - Task ID: 68ffd975a776938453c6e20b.
 // - Task Root ID: 68feec8dcd635a6ece0a6396.
 
-import { DataType } from "./common";
-import type { Value, Page, Index, Filter, Sort, Data } from "./common";
-import { DataStoreClient, CreateData, CreateValue, ParseValue } from "./client";
-
-
-
-
-
-
+import { DataType } from './common';
+import type { Value, Page, Index, Filter, Sort, Data } from './common';
+import { DataStoreClient, CreateData, CreateValue, ParseValue } from './client';
 
 /**
  * Enumeration for PoliticianQuoteIssueCategory
@@ -32,8 +26,6 @@ export enum PoliticianQuoteIssueCategory {
   SocialSecurity = 9,
   CivilRights = 10,
 }
-
-
 
 /**
  * Interface for PoliticianQuoteModel
@@ -87,7 +79,7 @@ export class PoliticianQuoteORM {
     if (!PoliticianQuoteORM.instance) {
       PoliticianQuoteORM.instance = new PoliticianQuoteORM();
     }
-    
+
     return PoliticianQuoteORM.instance;
   }
 
@@ -104,8 +96,8 @@ export class PoliticianQuoteORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -115,8 +107,12 @@ export class PoliticianQuoteORM {
    * DO NOT SET `id`, `data_creator`, `data_updater`, `create_time` and `update_time` since backend will fill it automatically.
    * It will respond the inserted record(s), with `id`, `data_creator`, `data_updater`, `create_time` and `update_time` filled by backend.
    */
-  async insertPoliticianQuote(data: PoliticianQuoteModel[]): Promise<PoliticianQuoteModel[]> {
-    const structured = data.map((item) => CreateData(PoliticianQuoteModelToValues(item)));
+  async insertPoliticianQuote(
+    data: PoliticianQuoteModel[]
+  ): Promise<PoliticianQuoteModel[]> {
+    const structured = data.map((item) =>
+      CreateData(PoliticianQuoteModelToValues(item))
+    );
     const response = await this.client.insert({
       id: this.entityId,
       namespace: this.namespace,
@@ -125,8 +121,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       batch: structured,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -142,8 +138,8 @@ export class PoliticianQuoteORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -151,7 +147,11 @@ export class PoliticianQuoteORM {
    * List PoliticianQuote records with filters
    * This function provides search capabilities like filtering, sorting, pagination.
    */
-  async listPoliticianQuote(filter?: Filter, sort?: Sort, paginate?: Page): Promise<[PoliticianQuoteModel[], Page]> {
+  async listPoliticianQuote(
+    filter?: Filter,
+    sort?: Sort,
+    paginate?: Page
+  ): Promise<[PoliticianQuoteModel[], Page]> {
     const response = await this.client.list({
       id: this.entityId,
       namespace: this.namespace,
@@ -162,23 +162,21 @@ export class PoliticianQuoteORM {
       sort: sort,
       paginate: paginate,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
-    return [this.resultToData(response.data?.values || []), response.data?.page || { number: 0, size: 0 }];
+    return [
+      this.resultToData(response.data?.values || []),
+      response.data?.page || { number: 0, size: 0 },
+    ];
   }
-
 
   /**
    * Get politician_quote by Id index
    * This function gets data by index.
    */
-  async getPoliticianQuoteById(
-    id: string,
-  ): Promise<PoliticianQuoteModel[]> {
-    const index = createIndexId(
-      id
-    );
+  async getPoliticianQuoteById(id: string): Promise<PoliticianQuoteModel[]> {
+    const index = createIndexId(id);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -188,8 +186,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -206,9 +204,7 @@ export class PoliticianQuoteORM {
     id: string,
     data: PoliticianQuoteModel
   ): Promise<PoliticianQuoteModel[]> {
-    const index = createIndexId(
-      id
-    );
+    const index = createIndexId(id);
 
     const values = PoliticianQuoteModelToValues(data);
     const structuredData = CreateData(values);
@@ -222,8 +218,8 @@ export class PoliticianQuoteORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -232,12 +228,8 @@ export class PoliticianQuoteORM {
   /**
    * Delete politician_quote by Id index
    */
-  async deletePoliticianQuoteById(
-    id: string
-  ): Promise<void> {
-    const index = createIndexId(
-      id
-    );
+  async deletePoliticianQuoteById(id: string): Promise<void> {
+    const index = createIndexId(id);
 
     await this.client.delete({
       id: this.entityId,
@@ -247,8 +239,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -256,11 +248,9 @@ export class PoliticianQuoteORM {
    * This function gets data by index.
    */
   async getPoliticianQuoteByDataCreator(
-    data_creator: string,
+    data_creator: string
   ): Promise<PoliticianQuoteModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -270,8 +260,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -288,9 +278,7 @@ export class PoliticianQuoteORM {
     data_creator: string,
     data: PoliticianQuoteModel
   ): Promise<PoliticianQuoteModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     const values = PoliticianQuoteModelToValues(data);
     const structuredData = CreateData(values);
@@ -304,8 +292,8 @@ export class PoliticianQuoteORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -317,9 +305,7 @@ export class PoliticianQuoteORM {
   async deletePoliticianQuoteByDataCreator(
     data_creator: string
   ): Promise<void> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     await this.client.delete({
       id: this.entityId,
@@ -329,8 +315,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -338,11 +324,9 @@ export class PoliticianQuoteORM {
    * This function gets data by index.
    */
   async getPoliticianQuoteByDataUpdater(
-    data_updater: string,
+    data_updater: string
   ): Promise<PoliticianQuoteModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -352,8 +336,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -370,9 +354,7 @@ export class PoliticianQuoteORM {
     data_updater: string,
     data: PoliticianQuoteModel
   ): Promise<PoliticianQuoteModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     const values = PoliticianQuoteModelToValues(data);
     const structuredData = CreateData(values);
@@ -386,8 +368,8 @@ export class PoliticianQuoteORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -399,9 +381,7 @@ export class PoliticianQuoteORM {
   async deletePoliticianQuoteByDataUpdater(
     data_updater: string
   ): Promise<void> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     await this.client.delete({
       id: this.entityId,
@@ -411,8 +391,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -420,11 +400,9 @@ export class PoliticianQuoteORM {
    * This function gets data by index.
    */
   async getPoliticianQuoteByPoliticianId(
-    politician_id: string,
+    politician_id: string
   ): Promise<PoliticianQuoteModel[]> {
-    const index = createIndexPoliticianId(
-      politician_id
-    );
+    const index = createIndexPoliticianId(politician_id);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -434,8 +412,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -452,9 +430,7 @@ export class PoliticianQuoteORM {
     politician_id: string,
     data: PoliticianQuoteModel
   ): Promise<PoliticianQuoteModel[]> {
-    const index = createIndexPoliticianId(
-      politician_id
-    );
+    const index = createIndexPoliticianId(politician_id);
 
     const values = PoliticianQuoteModelToValues(data);
     const structuredData = CreateData(values);
@@ -468,8 +444,8 @@ export class PoliticianQuoteORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -481,9 +457,7 @@ export class PoliticianQuoteORM {
   async deletePoliticianQuoteByPoliticianId(
     politician_id: string
   ): Promise<void> {
-    const index = createIndexPoliticianId(
-      politician_id
-    );
+    const index = createIndexPoliticianId(politician_id);
 
     await this.client.delete({
       id: this.entityId,
@@ -493,8 +467,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -503,7 +477,7 @@ export class PoliticianQuoteORM {
    */
   async getPoliticianQuoteByIssueCategoryPoliticianId(
     issue_category: PoliticianQuoteIssueCategory,
-    politician_id: string,
+    politician_id: string
   ): Promise<PoliticianQuoteModel[]> {
     const index = createIndexIssueCategoryPoliticianId(
       issue_category,
@@ -518,8 +492,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -554,8 +528,8 @@ export class PoliticianQuoteORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -581,8 +555,8 @@ export class PoliticianQuoteORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -590,23 +564,31 @@ export class PoliticianQuoteORM {
    * Convert result data to PoliticianQuoteModel data array
    */
   private resultToData(values: Data[]): PoliticianQuoteModel[] {
-    return values.map((item: Data) => {
-      if (item.structured && item.structured.length > 0) {
-        return PoliticianQuoteModelFromValues(item.structured);
-      }
-
-      if (item.serialized) {
-        try {
-          const parsedData = JSON.parse(item.serialized) as PoliticianQuoteModel;
-          return parsedData;
-        } catch (error) {
-          console.error('Error parsing serialized PoliticianQuoteModel data: ', error, item.serialized);
-          return null;
+    return values
+      .map((item: Data) => {
+        if (item.structured && item.structured.length > 0) {
+          return PoliticianQuoteModelFromValues(item.structured);
         }
-      }
 
-      return null;
-    }).filter((item): item is PoliticianQuoteModel => item !== null);
+        if (item.serialized) {
+          try {
+            const parsedData = JSON.parse(
+              item.serialized
+            ) as PoliticianQuoteModel;
+            return parsedData;
+          } catch (error) {
+            console.error(
+              'Error parsing serialized PoliticianQuoteModel data: ',
+              error,
+              item.serialized
+            );
+            return null;
+          }
+        }
+
+        return null;
+      })
+      .filter((item): item is PoliticianQuoteModel => item !== null);
   }
 }
 
@@ -639,10 +621,10 @@ function PoliticianQuoteModelToValues(data: PoliticianQuoteModel): Value[] {
  */
 function PoliticianQuoteModelFromValues(values: Value[]): PoliticianQuoteModel {
   const data: Partial<PoliticianQuoteModel> = {};
-  
+
   for (const value of values) {
     if (!value.name) continue;
-    
+
     switch (value.name) {
       case 'id':
         data.id = ParseValue(value, DataType.string) as string;
@@ -666,7 +648,10 @@ function PoliticianQuoteModelFromValues(values: Value[]): PoliticianQuoteModel {
         data.quote_text = ParseValue(value, DataType.string) as string;
         break;
       case 'issue_category':
-        data.issue_category = ParseValue(value, DataType.enumeration) as PoliticianQuoteIssueCategory;
+        data.issue_category = ParseValue(
+          value,
+          DataType.enumeration
+        ) as PoliticianQuoteIssueCategory;
         break;
       case 'source':
         data.source = ParseValue(value, DataType.string) as string;
@@ -679,69 +664,58 @@ function PoliticianQuoteModelFromValues(values: Value[]): PoliticianQuoteModel {
         break;
     }
   }
-  
+
   return data as PoliticianQuoteModel;
 }
-
 
 /**
  * Create index for Id fields
  */
-function createIndexId(
-  id: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, id, 'id'),
-  ];
+function createIndexId(id: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, id, 'id')];
 
   return {
     fields: ['id'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataCreator fields
  */
-function createIndexDataCreator(
-  data_creator: string
-): Index {
+function createIndexDataCreator(data_creator: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_creator, 'data_creator'),
   ];
 
   return {
     fields: ['data_creator'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataUpdater fields
  */
-function createIndexDataUpdater(
-  data_updater: string
-): Index {
+function createIndexDataUpdater(data_updater: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_updater, 'data_updater'),
   ];
 
   return {
     fields: ['data_updater'],
-    values
+    values,
   };
 }
 /**
  * Create index for PoliticianId fields
  */
-function createIndexPoliticianId(
-  politician_id: string
-): Index {
+function createIndexPoliticianId(politician_id: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, politician_id, 'politician_id'),
   ];
 
   return {
     fields: ['politician_id'],
-    values
+    values,
   };
 }
 /**
@@ -758,7 +732,7 @@ function createIndexIssueCategoryPoliticianId(
 
   return {
     fields: ['issue_category', 'politician_id'],
-    values
+    values,
   };
 }
 

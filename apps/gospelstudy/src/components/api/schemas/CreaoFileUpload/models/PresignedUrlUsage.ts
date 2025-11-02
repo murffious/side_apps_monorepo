@@ -7,17 +7,17 @@
  * Example using fetch:
  * ```javascript
  * const response = await fetch(presignedUrl, {
-     * method: 'PUT',
-     * headers: {
-         * 'Content-Type': contentType
-         * },
-         * body: fileData // The actual file content
-         * });
-         *
-         * if (response.ok) {
-             * // File uploaded successfully
-             * // You can now access the file at realFileUrl
-             * }
-             * ```
-             */
-            export type PresignedUrlUsage = Record<string, any>;
+ * method: 'PUT',
+ * headers: {
+ * 'Content-Type': contentType
+ * },
+ * body: fileData // The actual file content
+ * });
+ *
+ * if (response.ok) {
+ * // File uploaded successfully
+ * // You can now access the file at realFileUrl
+ * }
+ * ```
+ */
+export type PresignedUrlUsage = Record<string, any>;

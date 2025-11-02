@@ -6,18 +6,9 @@
 // - Task ID: 69059abed7a8c0e91c950372.
 // - Task Root ID: 68fdb6cd7faee3e1b79090cd.
 
-import { DataType } from "./common";
-import type { Value, Page, Index, Filter, Sort, Data } from "./common";
-import { DataStoreClient, CreateData, CreateValue, ParseValue } from "./client";
-
-
-
-
-
-
-
-
-
+import { DataType } from './common';
+import type { Value, Page, Index, Filter, Sort, Data } from './common';
+import { DataStoreClient, CreateData, CreateValue, ParseValue } from './client';
 
 /**
  * Interface for TalkModel
@@ -74,7 +65,7 @@ export class TalkORM {
     if (!TalkORM.instance) {
       TalkORM.instance = new TalkORM();
     }
-    
+
     return TalkORM.instance;
   }
 
@@ -91,8 +82,8 @@ export class TalkORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -112,8 +103,8 @@ export class TalkORM {
       task: this.taskId,
       batch: structured,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -129,8 +120,8 @@ export class TalkORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -138,7 +129,11 @@ export class TalkORM {
    * List Talk records with filters
    * This function provides search capabilities like filtering, sorting, pagination.
    */
-  async listTalk(filter?: Filter, sort?: Sort, paginate?: Page): Promise<[TalkModel[], Page]> {
+  async listTalk(
+    filter?: Filter,
+    sort?: Sort,
+    paginate?: Page
+  ): Promise<[TalkModel[], Page]> {
     const response = await this.client.list({
       id: this.entityId,
       namespace: this.namespace,
@@ -149,23 +144,21 @@ export class TalkORM {
       sort: sort,
       paginate: paginate,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
-    return [this.resultToData(response.data?.values || []), response.data?.page || { number: 0, size: 0 }];
+    return [
+      this.resultToData(response.data?.values || []),
+      response.data?.page || { number: 0, size: 0 },
+    ];
   }
-
 
   /**
    * Get talk by Id index
    * This function gets data by index.
    */
-  async getTalkById(
-    id: string,
-  ): Promise<TalkModel[]> {
-    const index = createIndexId(
-      id
-    );
+  async getTalkById(id: string): Promise<TalkModel[]> {
+    const index = createIndexId(id);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -175,8 +168,8 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -189,13 +182,8 @@ export class TalkORM {
    * DO NOT SET `data_updater` and `update_time` since backend will fill it automatically.
    * It will respond the set record, with `data_updater` and `update_time` filled by backend.
    */
-  async setTalkById(
-    id: string,
-    data: TalkModel
-  ): Promise<TalkModel[]> {
-    const index = createIndexId(
-      id
-    );
+  async setTalkById(id: string, data: TalkModel): Promise<TalkModel[]> {
+    const index = createIndexId(id);
 
     const values = TalkModelToValues(data);
     const structuredData = CreateData(values);
@@ -209,8 +197,8 @@ export class TalkORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -219,12 +207,8 @@ export class TalkORM {
   /**
    * Delete talk by Id index
    */
-  async deleteTalkById(
-    id: string
-  ): Promise<void> {
-    const index = createIndexId(
-      id
-    );
+  async deleteTalkById(id: string): Promise<void> {
+    const index = createIndexId(id);
 
     await this.client.delete({
       id: this.entityId,
@@ -234,20 +218,16 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get talk by TalkUrl index
    * This function gets data by index.
    */
-  async getTalkByTalkUrl(
-    talk_url: string,
-  ): Promise<TalkModel[]> {
-    const index = createIndexTalkUrl(
-      talk_url
-    );
+  async getTalkByTalkUrl(talk_url: string): Promise<TalkModel[]> {
+    const index = createIndexTalkUrl(talk_url);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -257,8 +237,8 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -275,9 +255,7 @@ export class TalkORM {
     talk_url: string,
     data: TalkModel
   ): Promise<TalkModel[]> {
-    const index = createIndexTalkUrl(
-      talk_url
-    );
+    const index = createIndexTalkUrl(talk_url);
 
     const values = TalkModelToValues(data);
     const structuredData = CreateData(values);
@@ -291,8 +269,8 @@ export class TalkORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -301,12 +279,8 @@ export class TalkORM {
   /**
    * Delete talk by TalkUrl index
    */
-  async deleteTalkByTalkUrl(
-    talk_url: string
-  ): Promise<void> {
-    const index = createIndexTalkUrl(
-      talk_url
-    );
+  async deleteTalkByTalkUrl(talk_url: string): Promise<void> {
+    const index = createIndexTalkUrl(talk_url);
 
     await this.client.delete({
       id: this.entityId,
@@ -316,22 +290,16 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get talk by MonthYear index
    * This function gets data by index.
    */
-  async getTalkByMonthYear(
-    month: string,
-    year: number,
-  ): Promise<TalkModel[]> {
-    const index = createIndexMonthYear(
-      month,
-      year
-    );
+  async getTalkByMonthYear(month: string, year: number): Promise<TalkModel[]> {
+    const index = createIndexMonthYear(month, year);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -341,8 +309,8 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -360,10 +328,7 @@ export class TalkORM {
     year: number,
     data: TalkModel
   ): Promise<TalkModel[]> {
-    const index = createIndexMonthYear(
-      month,
-      year
-    );
+    const index = createIndexMonthYear(month, year);
 
     const values = TalkModelToValues(data);
     const structuredData = CreateData(values);
@@ -377,8 +342,8 @@ export class TalkORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -387,14 +352,8 @@ export class TalkORM {
   /**
    * Delete talk by MonthYear index
    */
-  async deleteTalkByMonthYear(
-    month: string,
-    year: number
-  ): Promise<void> {
-    const index = createIndexMonthYear(
-      month,
-      year
-    );
+  async deleteTalkByMonthYear(month: string, year: number): Promise<void> {
+    const index = createIndexMonthYear(month, year);
 
     await this.client.delete({
       id: this.entityId,
@@ -404,20 +363,16 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get talk by Speaker index
    * This function gets data by index.
    */
-  async getTalkBySpeaker(
-    speaker: string,
-  ): Promise<TalkModel[]> {
-    const index = createIndexSpeaker(
-      speaker
-    );
+  async getTalkBySpeaker(speaker: string): Promise<TalkModel[]> {
+    const index = createIndexSpeaker(speaker);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -427,8 +382,8 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -445,9 +400,7 @@ export class TalkORM {
     speaker: string,
     data: TalkModel
   ): Promise<TalkModel[]> {
-    const index = createIndexSpeaker(
-      speaker
-    );
+    const index = createIndexSpeaker(speaker);
 
     const values = TalkModelToValues(data);
     const structuredData = CreateData(values);
@@ -461,8 +414,8 @@ export class TalkORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -471,12 +424,8 @@ export class TalkORM {
   /**
    * Delete talk by Speaker index
    */
-  async deleteTalkBySpeaker(
-    speaker: string
-  ): Promise<void> {
-    const index = createIndexSpeaker(
-      speaker
-    );
+  async deleteTalkBySpeaker(speaker: string): Promise<void> {
+    const index = createIndexSpeaker(speaker);
 
     await this.client.delete({
       id: this.entityId,
@@ -486,20 +435,16 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get talk by Title index
    * This function gets data by index.
    */
-  async getTalkByTitle(
-    title: string,
-  ): Promise<TalkModel[]> {
-    const index = createIndexTitle(
-      title
-    );
+  async getTalkByTitle(title: string): Promise<TalkModel[]> {
+    const index = createIndexTitle(title);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -509,8 +454,8 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -523,13 +468,8 @@ export class TalkORM {
    * DO NOT SET `data_updater` and `update_time` since backend will fill it automatically.
    * It will respond the set record, with `data_updater` and `update_time` filled by backend.
    */
-  async setTalkByTitle(
-    title: string,
-    data: TalkModel
-  ): Promise<TalkModel[]> {
-    const index = createIndexTitle(
-      title
-    );
+  async setTalkByTitle(title: string, data: TalkModel): Promise<TalkModel[]> {
+    const index = createIndexTitle(title);
 
     const values = TalkModelToValues(data);
     const structuredData = CreateData(values);
@@ -543,8 +483,8 @@ export class TalkORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -553,12 +493,8 @@ export class TalkORM {
   /**
    * Delete talk by Title index
    */
-  async deleteTalkByTitle(
-    title: string
-  ): Promise<void> {
-    const index = createIndexTitle(
-      title
-    );
+  async deleteTalkByTitle(title: string): Promise<void> {
+    const index = createIndexTitle(title);
 
     await this.client.delete({
       id: this.entityId,
@@ -568,20 +504,16 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get talk by DataCreator index
    * This function gets data by index.
    */
-  async getTalkByDataCreator(
-    data_creator: string,
-  ): Promise<TalkModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+  async getTalkByDataCreator(data_creator: string): Promise<TalkModel[]> {
+    const index = createIndexDataCreator(data_creator);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -591,8 +523,8 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -609,9 +541,7 @@ export class TalkORM {
     data_creator: string,
     data: TalkModel
   ): Promise<TalkModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     const values = TalkModelToValues(data);
     const structuredData = CreateData(values);
@@ -625,8 +555,8 @@ export class TalkORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -635,12 +565,8 @@ export class TalkORM {
   /**
    * Delete talk by DataCreator index
    */
-  async deleteTalkByDataCreator(
-    data_creator: string
-  ): Promise<void> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+  async deleteTalkByDataCreator(data_creator: string): Promise<void> {
+    const index = createIndexDataCreator(data_creator);
 
     await this.client.delete({
       id: this.entityId,
@@ -650,20 +576,16 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get talk by DataUpdater index
    * This function gets data by index.
    */
-  async getTalkByDataUpdater(
-    data_updater: string,
-  ): Promise<TalkModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+  async getTalkByDataUpdater(data_updater: string): Promise<TalkModel[]> {
+    const index = createIndexDataUpdater(data_updater);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -673,8 +595,8 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -691,9 +613,7 @@ export class TalkORM {
     data_updater: string,
     data: TalkModel
   ): Promise<TalkModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     const values = TalkModelToValues(data);
     const structuredData = CreateData(values);
@@ -707,8 +627,8 @@ export class TalkORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -717,12 +637,8 @@ export class TalkORM {
   /**
    * Delete talk by DataUpdater index
    */
-  async deleteTalkByDataUpdater(
-    data_updater: string
-  ): Promise<void> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+  async deleteTalkByDataUpdater(data_updater: string): Promise<void> {
+    const index = createIndexDataUpdater(data_updater);
 
     await this.client.delete({
       id: this.entityId,
@@ -732,8 +648,8 @@ export class TalkORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -741,23 +657,29 @@ export class TalkORM {
    * Convert result data to TalkModel data array
    */
   private resultToData(values: Data[]): TalkModel[] {
-    return values.map((item: Data) => {
-      if (item.structured && item.structured.length > 0) {
-        return TalkModelFromValues(item.structured);
-      }
-
-      if (item.serialized) {
-        try {
-          const parsedData = JSON.parse(item.serialized) as TalkModel;
-          return parsedData;
-        } catch (error) {
-          console.error('Error parsing serialized TalkModel data: ', error, item.serialized);
-          return null;
+    return values
+      .map((item: Data) => {
+        if (item.structured && item.structured.length > 0) {
+          return TalkModelFromValues(item.structured);
         }
-      }
 
-      return null;
-    }).filter((item): item is TalkModel => item !== null);
+        if (item.serialized) {
+          try {
+            const parsedData = JSON.parse(item.serialized) as TalkModel;
+            return parsedData;
+          } catch (error) {
+            console.error(
+              'Error parsing serialized TalkModel data: ',
+              error,
+              item.serialized
+            );
+            return null;
+          }
+        }
+
+        return null;
+      })
+      .filter((item): item is TalkModel => item !== null);
   }
 }
 
@@ -793,10 +715,10 @@ function TalkModelToValues(data: TalkModel): Value[] {
  */
 function TalkModelFromValues(values: Value[]): TalkModel {
   const data: Partial<TalkModel> = {};
-  
+
   for (const value of values) {
     if (!value.name) continue;
-    
+
     switch (value.name) {
       case 'id':
         data.id = ParseValue(value, DataType.string) as string;
@@ -842,48 +764,36 @@ function TalkModelFromValues(values: Value[]): TalkModel {
         break;
     }
   }
-  
+
   return data as TalkModel;
 }
-
 
 /**
  * Create index for Id fields
  */
-function createIndexId(
-  id: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, id, 'id'),
-  ];
+function createIndexId(id: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, id, 'id')];
 
   return {
     fields: ['id'],
-    values
+    values,
   };
 }
 /**
  * Create index for TalkUrl fields
  */
-function createIndexTalkUrl(
-  talk_url: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, talk_url, 'talk_url'),
-  ];
+function createIndexTalkUrl(talk_url: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, talk_url, 'talk_url')];
 
   return {
     fields: ['talk_url'],
-    values
+    values,
   };
 }
 /**
  * Create index for MonthYear fields
  */
-function createIndexMonthYear(
-  month: string,
-  year: number
-): Index {
+function createIndexMonthYear(month: string, year: number): Index {
   const values: Value[] = [
     CreateValue(DataType.string, month, 'month'),
     CreateValue(DataType.number, year, 'year'),
@@ -891,67 +801,55 @@ function createIndexMonthYear(
 
   return {
     fields: ['month', 'year'],
-    values
+    values,
   };
 }
 /**
  * Create index for Speaker fields
  */
-function createIndexSpeaker(
-  speaker: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, speaker, 'speaker'),
-  ];
+function createIndexSpeaker(speaker: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, speaker, 'speaker')];
 
   return {
     fields: ['speaker'],
-    values
+    values,
   };
 }
 /**
  * Create index for Title fields
  */
-function createIndexTitle(
-  title: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, title, 'title'),
-  ];
+function createIndexTitle(title: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, title, 'title')];
 
   return {
     fields: ['title'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataCreator fields
  */
-function createIndexDataCreator(
-  data_creator: string
-): Index {
+function createIndexDataCreator(data_creator: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_creator, 'data_creator'),
   ];
 
   return {
     fields: ['data_creator'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataUpdater fields
  */
-function createIndexDataUpdater(
-  data_updater: string
-): Index {
+function createIndexDataUpdater(data_updater: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_updater, 'data_updater'),
   ];
 
   return {
     fields: ['data_updater'],
-    values
+    values,
   };
 }
 

@@ -78,6 +78,7 @@ gospelstudy/
 ## Adapting from CREAO.ai
 
 This app has been adapted to run standalone outside of CREAO.ai:
+
 - Removed CREAO.ai-specific URL parsing
 - Replaced authentication with standalone stub
 - Updated package.json for monorepo

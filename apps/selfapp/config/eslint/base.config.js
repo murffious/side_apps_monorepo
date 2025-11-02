@@ -1,6 +1,6 @@
 /**
  * Base ESLint Configuration
- * 
+ *
  * Common settings shared across all ESLint configurations.
  * This reduces duplication and ensures consistency.
  */
@@ -47,7 +47,7 @@ export const commonGlobals = {
   navigator: 'readonly',
   event: 'readonly',
   Blob: 'readonly',
-  
+
   // Node.js globals
   setTimeout: 'readonly',
   clearTimeout: 'readonly',
@@ -57,7 +57,7 @@ export const commonGlobals = {
   process: 'readonly',
   __dirname: 'readonly',
   __filename: 'readonly',
-  
+
   // React globals
   React: 'readonly',
   JSX: 'readonly',
@@ -96,7 +96,7 @@ export default [
     files: ['**/*.{js,mjs,cjs,ts,jsx,tsx}'],
     plugins: {
       '@typescript-eslint': typescriptEslint,
-      'react': react,
+      react: react,
       'react-hooks': reactHooks,
     },
     languageOptions: commonLanguageOptions,
@@ -108,11 +108,11 @@ export default [
     rules: {
       // Base recommended rules
       ...js.configs.recommended.rules,
-      
+
       // React rules
       'react/jsx-uses-react': 'off',
       'react/react-in-jsx-scope': 'off',
-      
+
       // Disable problematic rules for generated/complex code
       'no-undef': 'off',
       'no-unused-vars': 'off',
@@ -144,4 +144,4 @@ export default [
       'no-unused-vars': 'off',
     },
   },
-]; 
+];

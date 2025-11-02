@@ -153,49 +153,34 @@
     ],
     "indexes": [
       {
-        "fields": [
-          "id"
-        ],
+        "fields": ["id"],
         "unique": true,
         "primary": true,
         "order": false
       },
       {
-        "fields": [
-          "talk_url"
-        ],
+        "fields": ["talk_url"],
         "unique": true,
         "order": false
       },
       {
-        "fields": [
-          "month",
-          "year"
-        ],
+        "fields": ["month", "year"],
         "order": true
       },
       {
-        "fields": [
-          "speaker"
-        ],
+        "fields": ["speaker"],
         "order": false
       },
       {
-        "fields": [
-          "title"
-        ],
+        "fields": ["title"],
         "order": false
       },
       {
-        "fields": [
-          "data_creator"
-        ],
+        "fields": ["data_creator"],
         "order": false
       },
       {
-        "fields": [
-          "data_updater"
-        ],
+        "fields": ["data_updater"],
         "order": false
       }
     ]

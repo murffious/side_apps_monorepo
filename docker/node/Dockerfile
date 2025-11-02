@@ -5,11 +5,11 @@ FROM node:18-alpine AS builder
 WORKDIR /app
 
 # Copy package files
-COPY package.json pnpm-workspace.yaml ./
+COPY package.json pnpm-workspace.yaml pnpm-lock.yaml ./
 COPY apps/example-app/package.json ./apps/example-app/
 
 # Install pnpm
-RUN npm install -g pnpm
+RUN npm install -g pnpm@8
 
 # Install dependencies
 RUN pnpm install --frozen-lockfile
@@ -23,7 +23,7 @@ FROM node:18-alpine
 WORKDIR /app
 
 # Install pnpm
-RUN npm install -g pnpm
+RUN npm install -g pnpm@8
 
 # Copy dependencies and built app
 COPY --from=builder /app/node_modules ./node_modules

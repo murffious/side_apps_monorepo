@@ -1,12 +1,12 @@
-import { useMutation } from "@tanstack/react-query";
-import { useState } from "react";
+import { useMutation } from '@tanstack/react-query';
+import { useState } from 'react';
 
 interface TalkAnalysisInput {
-	talkTitle?: string;
-	talkText?: string;
-	speaker?: string;
-	question?: string;
-	context?: string;
+  talkTitle?: string;
+  talkText?: string;
+  speaker?: string;
+  question?: string;
+  context?: string;
 }
 
 /**
@@ -14,13 +14,13 @@ interface TalkAnalysisInput {
  * Uses OpenAI GPT to provide insights, summaries, and answer questions
  */
 export function useTalkAnalysis() {
-	const [analysisResult, setAnalysisResult] = useState<string>("");
+  const [analysisResult, setAnalysisResult] = useState<string>('');
 
-	const mutation = useMutation({
-		mutationFn: async (input: TalkAnalysisInput) => {
-			// If a question is provided, answer it using the context
-			if (input.question && input.context) {
-				const prompt = `You are a knowledgeable scripture study assistant specializing in LDS General Conference talks.
+  const mutation = useMutation({
+    mutationFn: async (input: TalkAnalysisInput) => {
+      // If a question is provided, answer it using the context
+      if (input.question && input.context) {
+        const prompt = `You are a knowledgeable scripture study assistant specializing in LDS General Conference talks.
 
 A user is studying General Conference talks and has asked the following question:
 
@@ -38,15 +38,15 @@ Please provide a thoughtful, comprehensive answer to the question based on these
 
 Keep your answer focused on the content of the provided talks.`;
 
-				return await analyzeWithOpenAI(prompt);
-			}
+        return await analyzeWithOpenAI(prompt);
+      }
 
-			// Otherwise, analyze a single talk
-			if (input.talkText) {
-				const prompt = `You are a scripture study assistant analyzing an LDS General Conference talk.
+      // Otherwise, analyze a single talk
+      if (input.talkText) {
+        const prompt = `You are a scripture study assistant analyzing an LDS General Conference talk.
 
-Title: ${input.talkTitle || "Untitled"}
-Speaker: ${input.speaker || "Unknown"}
+Title: ${input.talkTitle || 'Untitled'}
+Speaker: ${input.speaker || 'Unknown'}
 
 Full Text:
 ${input.talkText}
@@ -69,22 +69,22 @@ Please provide a comprehensive analysis including:
 
 Format your response in a clear, organized way using markdown-style headers.`;
 
-				return await analyzeWithOpenAI(prompt);
-			}
+        return await analyzeWithOpenAI(prompt);
+      }
 
-			throw new Error(
-				"Invalid input: must provide either a question with context, or talk text",
-			);
-		},
-		onSuccess: (data) => {
-			setAnalysisResult(data);
-		},
-	});
+      throw new Error(
+        'Invalid input: must provide either a question with context, or talk text'
+      );
+    },
+    onSuccess: (data) => {
+      setAnalysisResult(data);
+    },
+  });
 
-	return {
-		...mutation,
-		data: analysisResult,
-	};
+  return {
+    ...mutation,
+    data: analysisResult,
+  };
 }
 
 /**
@@ -92,14 +92,14 @@ Format your response in a clear, organized way using markdown-style headers.`;
  * In production, this would use the actual OpenAI API
  */
 async function analyzeWithOpenAI(prompt: string): Promise<string> {
-	// Simulate AI analysis with a delay
-	await new Promise((resolve) => setTimeout(resolve, 2000));
+  // Simulate AI analysis with a delay
+  await new Promise((resolve) => setTimeout(resolve, 2000));
 
-	// For now, return a mock analysis
-	// In production, this would call the OpenAI API
-	const mockAnalysis = `# AI Analysis
+  // For now, return a mock analysis
+  // In production, this would call the OpenAI API
+  const mockAnalysis = `# AI Analysis
 
-${prompt.includes("question") ? "## Answer to Your Question" : "## Main Message"}
+${prompt.includes('question') ? '## Answer to Your Question' : '## Main Message'}
 
 ${generateMockAnalysis(prompt)}
 
@@ -107,12 +107,12 @@ ${generateMockAnalysis(prompt)}
 
 *Note: This is a demonstration. In production, this would use OpenAI's GPT API to provide real AI-powered insights.*`;
 
-	return mockAnalysis;
+  return mockAnalysis;
 }
 
 function generateMockAnalysis(prompt: string): string {
-	if (prompt.includes("question")) {
-		return `Based on the General Conference talks you've selected, here's what we can learn:
+  if (prompt.includes('question')) {
+    return `Based on the General Conference talks you've selected, here's what we can learn:
 
 **Key Teachings:**
 The speakers emphasize the importance of faith, obedience, and enduring to the end. They teach that through the Atonement of Jesus Christ, we can overcome our challenges and return to our Heavenly Father.
@@ -130,9 +130,9 @@ The speakers emphasize the importance of faith, obedience, and enduring to the e
 - Peace comes through trusting in the Lord's plan
 
 The speakers remind us that discipleship requires sacrifice, but the blessings far exceed the cost. By following the Savior's example and keeping our covenants, we can find joy, peace, and eternal life.`;
-	}
+  }
 
-	return `The central message of this talk focuses on fundamental gospel principles and their practical application in our lives.
+  return `The central message of this talk focuses on fundamental gospel principles and their practical application in our lives.
 
 **Key Doctrines:**
 - The Atonement of Jesus Christ provides power to change and overcome

@@ -6,15 +6,9 @@
 // - Task ID: 68ffd975a776938453c6e20b.
 // - Task Root ID: 68feec8dcd635a6ece0a6396.
 
-import { DataType } from "./common";
-import type { Value, Page, Index, Filter, Sort, Data } from "./common";
-import { DataStoreClient, CreateData, CreateValue, ParseValue } from "./client";
-
-
-
-
-
-
+import { DataType } from './common';
+import type { Value, Page, Index, Filter, Sort, Data } from './common';
+import { DataStoreClient, CreateData, CreateValue, ParseValue } from './client';
 
 /**
  * Enumeration for BillIssueCategory
@@ -32,8 +26,6 @@ export enum BillIssueCategory {
   SocialSecurity = 9,
   CivilRights = 10,
 }
-
-
 
 /**
  * Interface for BillModel
@@ -92,7 +84,7 @@ export class BillORM {
     if (!BillORM.instance) {
       BillORM.instance = new BillORM();
     }
-    
+
     return BillORM.instance;
   }
 
@@ -109,8 +101,8 @@ export class BillORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -130,8 +122,8 @@ export class BillORM {
       task: this.taskId,
       batch: structured,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
     return this.resultToData(response.data?.values || []);
   }
@@ -147,8 +139,8 @@ export class BillORM {
       version: this.entityVersion,
       task: this.taskId,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -156,7 +148,11 @@ export class BillORM {
    * List Bill records with filters
    * This function provides search capabilities like filtering, sorting, pagination.
    */
-  async listBill(filter?: Filter, sort?: Sort, paginate?: Page): Promise<[BillModel[], Page]> {
+  async listBill(
+    filter?: Filter,
+    sort?: Sort,
+    paginate?: Page
+  ): Promise<[BillModel[], Page]> {
     const response = await this.client.list({
       id: this.entityId,
       namespace: this.namespace,
@@ -167,23 +163,21 @@ export class BillORM {
       sort: sort,
       paginate: paginate,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
-    return [this.resultToData(response.data?.values || []), response.data?.page || { number: 0, size: 0 }];
+    return [
+      this.resultToData(response.data?.values || []),
+      response.data?.page || { number: 0, size: 0 },
+    ];
   }
-
 
   /**
    * Get bill by Id index
    * This function gets data by index.
    */
-  async getBillById(
-    id: string,
-  ): Promise<BillModel[]> {
-    const index = createIndexId(
-      id
-    );
+  async getBillById(id: string): Promise<BillModel[]> {
+    const index = createIndexId(id);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -193,8 +187,8 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -207,13 +201,8 @@ export class BillORM {
    * DO NOT SET `data_updater` and `update_time` since backend will fill it automatically.
    * It will respond the set record, with `data_updater` and `update_time` filled by backend.
    */
-  async setBillById(
-    id: string,
-    data: BillModel
-  ): Promise<BillModel[]> {
-    const index = createIndexId(
-      id
-    );
+  async setBillById(id: string, data: BillModel): Promise<BillModel[]> {
+    const index = createIndexId(id);
 
     const values = BillModelToValues(data);
     const structuredData = CreateData(values);
@@ -227,8 +216,8 @@ export class BillORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -237,12 +226,8 @@ export class BillORM {
   /**
    * Delete bill by Id index
    */
-  async deleteBillById(
-    id: string
-  ): Promise<void> {
-    const index = createIndexId(
-      id
-    );
+  async deleteBillById(id: string): Promise<void> {
+    const index = createIndexId(id);
 
     await this.client.delete({
       id: this.entityId,
@@ -252,20 +237,16 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get bill by DataCreator index
    * This function gets data by index.
    */
-  async getBillByDataCreator(
-    data_creator: string,
-  ): Promise<BillModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+  async getBillByDataCreator(data_creator: string): Promise<BillModel[]> {
+    const index = createIndexDataCreator(data_creator);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -275,8 +256,8 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -293,9 +274,7 @@ export class BillORM {
     data_creator: string,
     data: BillModel
   ): Promise<BillModel[]> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+    const index = createIndexDataCreator(data_creator);
 
     const values = BillModelToValues(data);
     const structuredData = CreateData(values);
@@ -309,8 +288,8 @@ export class BillORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -319,12 +298,8 @@ export class BillORM {
   /**
    * Delete bill by DataCreator index
    */
-  async deleteBillByDataCreator(
-    data_creator: string
-  ): Promise<void> {
-    const index = createIndexDataCreator(
-      data_creator
-    );
+  async deleteBillByDataCreator(data_creator: string): Promise<void> {
+    const index = createIndexDataCreator(data_creator);
 
     await this.client.delete({
       id: this.entityId,
@@ -334,20 +309,16 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get bill by DataUpdater index
    * This function gets data by index.
    */
-  async getBillByDataUpdater(
-    data_updater: string,
-  ): Promise<BillModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+  async getBillByDataUpdater(data_updater: string): Promise<BillModel[]> {
+    const index = createIndexDataUpdater(data_updater);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -357,8 +328,8 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -375,9 +346,7 @@ export class BillORM {
     data_updater: string,
     data: BillModel
   ): Promise<BillModel[]> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+    const index = createIndexDataUpdater(data_updater);
 
     const values = BillModelToValues(data);
     const structuredData = CreateData(values);
@@ -391,8 +360,8 @@ export class BillORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -401,12 +370,8 @@ export class BillORM {
   /**
    * Delete bill by DataUpdater index
    */
-  async deleteBillByDataUpdater(
-    data_updater: string
-  ): Promise<void> {
-    const index = createIndexDataUpdater(
-      data_updater
-    );
+  async deleteBillByDataUpdater(data_updater: string): Promise<void> {
+    const index = createIndexDataUpdater(data_updater);
 
     await this.client.delete({
       id: this.entityId,
@@ -416,20 +381,16 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get bill by BillNumber index
    * This function gets data by index.
    */
-  async getBillByBillNumber(
-    bill_number: string,
-  ): Promise<BillModel[]> {
-    const index = createIndexBillNumber(
-      bill_number
-    );
+  async getBillByBillNumber(bill_number: string): Promise<BillModel[]> {
+    const index = createIndexBillNumber(bill_number);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -439,8 +400,8 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -457,9 +418,7 @@ export class BillORM {
     bill_number: string,
     data: BillModel
   ): Promise<BillModel[]> {
-    const index = createIndexBillNumber(
-      bill_number
-    );
+    const index = createIndexBillNumber(bill_number);
 
     const values = BillModelToValues(data);
     const structuredData = CreateData(values);
@@ -473,8 +432,8 @@ export class BillORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -483,12 +442,8 @@ export class BillORM {
   /**
    * Delete bill by BillNumber index
    */
-  async deleteBillByBillNumber(
-    bill_number: string
-  ): Promise<void> {
-    const index = createIndexBillNumber(
-      bill_number
-    );
+  async deleteBillByBillNumber(bill_number: string): Promise<void> {
+    const index = createIndexBillNumber(bill_number);
 
     await this.client.delete({
       id: this.entityId,
@@ -498,8 +453,8 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
@@ -507,11 +462,9 @@ export class BillORM {
    * This function gets data by index.
    */
   async getBillByIssueCategory(
-    issue_category: BillIssueCategory,
+    issue_category: BillIssueCategory
   ): Promise<BillModel[]> {
-    const index = createIndexIssueCategory(
-      issue_category
-    );
+    const index = createIndexIssueCategory(issue_category);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -521,8 +474,8 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -539,9 +492,7 @@ export class BillORM {
     issue_category: BillIssueCategory,
     data: BillModel
   ): Promise<BillModel[]> {
-    const index = createIndexIssueCategory(
-      issue_category
-    );
+    const index = createIndexIssueCategory(issue_category);
 
     const values = BillModelToValues(data);
     const structuredData = CreateData(values);
@@ -555,8 +506,8 @@ export class BillORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -568,9 +519,7 @@ export class BillORM {
   async deleteBillByIssueCategory(
     issue_category: BillIssueCategory
   ): Promise<void> {
-    const index = createIndexIssueCategory(
-      issue_category
-    );
+    const index = createIndexIssueCategory(issue_category);
 
     await this.client.delete({
       id: this.entityId,
@@ -580,20 +529,16 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get bill by ImpactRank index
    * This function gets data by index.
    */
-  async getBillByImpactRank(
-    impact_rank: number,
-  ): Promise<BillModel[]> {
-    const index = createIndexImpactRank(
-      impact_rank
-    );
+  async getBillByImpactRank(impact_rank: number): Promise<BillModel[]> {
+    const index = createIndexImpactRank(impact_rank);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -603,8 +548,8 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -621,9 +566,7 @@ export class BillORM {
     impact_rank: number,
     data: BillModel
   ): Promise<BillModel[]> {
-    const index = createIndexImpactRank(
-      impact_rank
-    );
+    const index = createIndexImpactRank(impact_rank);
 
     const values = BillModelToValues(data);
     const structuredData = CreateData(values);
@@ -637,8 +580,8 @@ export class BillORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -647,12 +590,8 @@ export class BillORM {
   /**
    * Delete bill by ImpactRank index
    */
-  async deleteBillByImpactRank(
-    impact_rank: number
-  ): Promise<void> {
-    const index = createIndexImpactRank(
-      impact_rank
-    );
+  async deleteBillByImpactRank(impact_rank: number): Promise<void> {
+    const index = createIndexImpactRank(impact_rank);
 
     await this.client.delete({
       id: this.entityId,
@@ -662,20 +601,16 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
   /**
    * Get bill by Year index
    * This function gets data by index.
    */
-  async getBillByYear(
-    year: number,
-  ): Promise<BillModel[]> {
-    const index = createIndexYear(
-      year
-    );
+  async getBillByYear(year: number): Promise<BillModel[]> {
+    const index = createIndexYear(year);
 
     const response = await this.client.get({
       id: this.entityId,
@@ -685,8 +620,8 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -699,13 +634,8 @@ export class BillORM {
    * DO NOT SET `data_updater` and `update_time` since backend will fill it automatically.
    * It will respond the set record, with `data_updater` and `update_time` filled by backend.
    */
-  async setBillByYear(
-    year: number,
-    data: BillModel
-  ): Promise<BillModel[]> {
-    const index = createIndexYear(
-      year
-    );
+  async setBillByYear(year: number, data: BillModel): Promise<BillModel[]> {
+    const index = createIndexYear(year);
 
     const values = BillModelToValues(data);
     const structuredData = CreateData(values);
@@ -719,8 +649,8 @@ export class BillORM {
       index: index,
       data: structuredData,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
 
     return this.resultToData(response.data?.values || []);
@@ -729,12 +659,8 @@ export class BillORM {
   /**
    * Delete bill by Year index
    */
-  async deleteBillByYear(
-    year: number
-  ): Promise<void> {
-    const index = createIndexYear(
-      year
-    );
+  async deleteBillByYear(year: number): Promise<void> {
+    const index = createIndexYear(year);
 
     await this.client.delete({
       id: this.entityId,
@@ -744,8 +670,8 @@ export class BillORM {
       task: this.taskId,
       index: index,
       format: {
-        structured: true
-      }
+        structured: true,
+      },
     });
   }
 
@@ -753,23 +679,29 @@ export class BillORM {
    * Convert result data to BillModel data array
    */
   private resultToData(values: Data[]): BillModel[] {
-    return values.map((item: Data) => {
-      if (item.structured && item.structured.length > 0) {
-        return BillModelFromValues(item.structured);
-      }
-
-      if (item.serialized) {
-        try {
-          const parsedData = JSON.parse(item.serialized) as BillModel;
-          return parsedData;
-        } catch (error) {
-          console.error('Error parsing serialized BillModel data: ', error, item.serialized);
-          return null;
+    return values
+      .map((item: Data) => {
+        if (item.structured && item.structured.length > 0) {
+          return BillModelFromValues(item.structured);
         }
-      }
 
-      return null;
-    }).filter((item): item is BillModel => item !== null);
+        if (item.serialized) {
+          try {
+            const parsedData = JSON.parse(item.serialized) as BillModel;
+            return parsedData;
+          } catch (error) {
+            console.error(
+              'Error parsing serialized BillModel data: ',
+              error,
+              item.serialized
+            );
+            return null;
+          }
+        }
+
+        return null;
+      })
+      .filter((item): item is BillModel => item !== null);
   }
 }
 
@@ -807,10 +739,10 @@ function BillModelToValues(data: BillModel): Value[] {
  */
 function BillModelFromValues(values: Value[]): BillModel {
   const data: Partial<BillModel> = {};
-  
+
   for (const value of values) {
     if (!value.name) continue;
-    
+
     switch (value.name) {
       case 'id':
         data.id = ParseValue(value, DataType.string) as string;
@@ -840,7 +772,10 @@ function BillModelFromValues(values: Value[]): BillModel {
         data.description = ParseValue(value, DataType.string) as string;
         break;
       case 'issue_category':
-        data.issue_category = ParseValue(value, DataType.enumeration) as BillIssueCategory;
+        data.issue_category = ParseValue(
+          value,
+          DataType.enumeration
+        ) as BillIssueCategory;
         break;
       case 'final_yes_votes':
         data.final_yes_votes = ParseValue(value, DataType.number) as number;
@@ -862,114 +797,95 @@ function BillModelFromValues(values: Value[]): BillModel {
         break;
     }
   }
-  
+
   return data as BillModel;
 }
-
 
 /**
  * Create index for Id fields
  */
-function createIndexId(
-  id: string
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.string, id, 'id'),
-  ];
+function createIndexId(id: string): Index {
+  const values: Value[] = [CreateValue(DataType.string, id, 'id')];
 
   return {
     fields: ['id'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataCreator fields
  */
-function createIndexDataCreator(
-  data_creator: string
-): Index {
+function createIndexDataCreator(data_creator: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_creator, 'data_creator'),
   ];
 
   return {
     fields: ['data_creator'],
-    values
+    values,
   };
 }
 /**
  * Create index for DataUpdater fields
  */
-function createIndexDataUpdater(
-  data_updater: string
-): Index {
+function createIndexDataUpdater(data_updater: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, data_updater, 'data_updater'),
   ];
 
   return {
     fields: ['data_updater'],
-    values
+    values,
   };
 }
 /**
  * Create index for BillNumber fields
  */
-function createIndexBillNumber(
-  bill_number: string
-): Index {
+function createIndexBillNumber(bill_number: string): Index {
   const values: Value[] = [
     CreateValue(DataType.string, bill_number, 'bill_number'),
   ];
 
   return {
     fields: ['bill_number'],
-    values
+    values,
   };
 }
 /**
  * Create index for IssueCategory fields
  */
-function createIndexIssueCategory(
-  issue_category: BillIssueCategory
-): Index {
+function createIndexIssueCategory(issue_category: BillIssueCategory): Index {
   const values: Value[] = [
     CreateValue(DataType.enumeration, issue_category, 'issue_category'),
   ];
 
   return {
     fields: ['issue_category'],
-    values
+    values,
   };
 }
 /**
  * Create index for ImpactRank fields
  */
-function createIndexImpactRank(
-  impact_rank: number
-): Index {
+function createIndexImpactRank(impact_rank: number): Index {
   const values: Value[] = [
     CreateValue(DataType.number, impact_rank, 'impact_rank'),
   ];
 
   return {
     fields: ['impact_rank'],
-    values
+    values,
   };
 }
 /**
  * Create index for Year fields
  */
-function createIndexYear(
-  year: number
-): Index {
-  const values: Value[] = [
-    CreateValue(DataType.number, year, 'year'),
-  ];
+function createIndexYear(year: number): Index {
+  const values: Value[] = [CreateValue(DataType.number, year, 'year')];
 
   return {
     fields: ['year'],
-    values
+    values,
   };
 }
 
