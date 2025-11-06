@@ -112,10 +112,8 @@ export default function SideNav({ active, onChange }: Props) {
     <nav className="hidden md:block pr-6">
       <div className="sticky top-6">
         <div className="mb-6 px-3">
-          <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
-            Journal
-          </h2>
-          <p className="text-xs text-zinc-600 dark:text-zinc-300">
+          <h2 className="text-xl font-semibold app-text-strong">Journal</h2>
+          <p className="text-xs app-text-subtle">
             Moments that shape who you are
           </p>
         </div>
@@ -130,7 +128,7 @@ export default function SideNav({ active, onChange }: Props) {
                   className={`flex items-center w-full gap-3 px-3 py-2 rounded-md text-left transition-colors text-sm font-medium ${
                     isActive
                       ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow'
-                      : 'text-zinc-800 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-700'
+                      : 'app-text-strong hover:bg-zinc-100 dark:hover:bg-zinc-700'
                   }`}
                 >
                   <span className="opacity-90">{it.icon}</span>
@@ -142,10 +140,8 @@ export default function SideNav({ active, onChange }: Props) {
         </ul>
 
         <div className="mt-6 px-3">
-          <p className="text-xs text-zinc-600 dark:text-zinc-300 font-medium">
-            Quick tip
-          </p>
-          <p className="text-xs text-zinc-700 dark:text-zinc-200 mt-1">
+          <p className="text-xs app-text-subtle font-medium">Quick tip</p>
+          <p className="text-xs app-text-subtle mt-1">
             Log a moment in under 15s — review weekly patterns.
           </p>
         </div>

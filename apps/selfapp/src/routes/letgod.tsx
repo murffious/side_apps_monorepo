@@ -122,14 +122,12 @@ function RouteComponent() {
   return (
     <div className="space-y-6 max-w-4xl mx-auto">
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-50">
-          Let God Prevail
-        </h1>
-        <p className="text-lg text-zinc-700 dark:text-zinc-200">
+        <h1 className="text-3xl font-bold app-text-strong">Let God Prevail</h1>
+        <p className="text-lg app-text-subtle">
           "My ability to seek and receive my determination in seeking and
           receiving my ability to receive and respond to the Holy Ghost"
         </p>
-        <p className="text-sm text-zinc-600 dark:text-zinc-300 italic">
+        <p className="text-sm app-text-muted italic">
           Aligning my desires with God's will
         </p>
       </div>
@@ -140,7 +138,7 @@ function RouteComponent() {
             <div className="flex items-center justify-between">
               <div className="flex items-center gap-3">
                 <Heart className="w-5 h-5 text-blue-600" />
-                <span className="font-medium text-zinc-900 dark:text-zinc-100">
+                <span className="font-medium app-text-strong">
                   Recent Alignment (last 10 entries)
                 </span>
               </div>

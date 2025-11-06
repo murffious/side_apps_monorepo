@@ -204,7 +204,12 @@ code {
 }
 
 .dark .text-gray-400,
-.dark .text-gray-300 {
+.dark .text-gray-300,
+.dark .text-zinc-400,
+.dark .text-zinc-300,
+.dark .text-zinc-200,
+.dark .text-zinc-100,
+.dark .text-zinc-50 {
   color: var(--color-muted-foreground) !important;
 }
 
@@ -283,4 +288,35 @@ code {
 .dark body {
   background-color: var(--color-background) !important;
   color: var(--color-foreground) !important;
+}
+
+/*
+  App semantic text/background utilities
+  Use these classes across the app to ensure consistent light/dark behavior.
+*/
+.app-text-strong {
+  color: var(--color-foreground) !important;
+}
+.app-text-subtle {
+  color: color-mix(
+    in srgb,
+    var(--color-muted-foreground) 80%,
+    var(--color-foreground) 20%
+  ) !important;
+}
+.app-text-muted {
+  color: var(--color-muted-foreground) !important;
+}
+.app-bg-surface {
+  background-color: var(--color-card) !important;
+}
+.app-bg-surface-alt {
+  background-color: color-mix(
+    in srgb,
+    var(--color-card) 80%,
+    black 20%
+  ) !important;
+}
+.app-border-default {
+  border-color: var(--color-border) !important;
 }

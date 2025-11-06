@@ -176,14 +176,12 @@ function RouteComponent() {
           <Crown className="w-8 h-8 text-yellow-600" />
           <Target className="w-8 h-8 text-blue-600" />
         </div>
-        <h1 className="text-4xl font-bold text-zinc-900 dark:text-zinc-50">
-          Define Success
-        </h1>
-        <p className="text-lg text-zinc-700 dark:text-zinc-200 max-w-2xl mx-auto">
+        <h1 className="text-4xl font-bold app-text-strong">Define Success</h1>
+        <p className="text-lg app-text-subtle max-w-2xl mx-auto">
           "I urge you to discern through the Spirit your divinely given
           capacities"
         </p>
-        <p className="text-sm text-zinc-600 dark:text-zinc-300 italic">
+        <p className="text-sm app-text-muted italic">
           Begin with the end in mind — align your success with eternal
           principles
         </p>
@@ -192,24 +190,24 @@ function RouteComponent() {
       {/* Inspirational Quotes */}
       <Card className="bg-gradient-to-r from-blue-50 to-purple-50 border-blue-200 dark:from-blue-950/50 dark:to-purple-950/50 dark:border-blue-800">
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+          <CardTitle className="flex items-center gap-2 app-text-strong">
             <BookOpen className="w-5 h-5 text-blue-600" />
             Guiding Wisdom
           </CardTitle>
         </CardHeader>
         <CardContent className="space-y-4">
           <div className="grid md:grid-cols-2 gap-4">
-            <blockquote className="text-sm text-zinc-700 dark:text-zinc-300 italic border-l-2 border-blue-300 pl-3">
+            <blockquote className="text-sm app-text-subtle italic border-l-2 border-blue-300 pl-3">
               "He that is slow to anger is better than the mighty; and he that
               ruleth his spirit than he that taketh a city."
-              <cite className="block text-xs text-zinc-600 dark:text-zinc-400 mt-1 not-italic">
+              <cite className="block text-xs app-text-muted mt-1 not-italic">
                 — Proverbs 16:32
               </cite>
             </blockquote>
-            <blockquote className="text-sm text-zinc-700 dark:text-zinc-300 italic border-l-2 border-purple-300 pl-3">
+            <blockquote className="text-sm app-text-subtle italic border-l-2 border-purple-300 pl-3">
               "Success is gauged by self-mastery. Character is determined by the
               extent to which we can master ourselves toward good ends."
-              <cite className="block text-xs text-zinc-600 dark:text-zinc-400 mt-1 not-italic">
+              <cite className="block text-xs app-text-muted mt-1 not-italic">
                 — President N. Eldon Tanner
               </cite>
             </blockquote>
@@ -220,11 +218,11 @@ function RouteComponent() {
       {/* Vision Statement */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+          <CardTitle className="flex items-center gap-2 app-text-strong">
             <Compass className="w-5 h-5 text-purple-600" />
             Your North Star Vision
           </CardTitle>
-          <CardDescription className="text-zinc-700 dark:text-zinc-300">
+          <CardDescription className="app-text-subtle">
             What does success look like when viewed through eternal perspective?
           </CardDescription>
         </CardHeader>
@@ -242,11 +240,11 @@ function RouteComponent() {
       {/* Divine Capacities */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+          <CardTitle className="flex items-center gap-2 app-text-strong">
             <Star className="w-5 h-5 text-yellow-600" />
             Divinely Given Capacities
           </CardTitle>
-          <CardDescription className="text-zinc-700 dark:text-zinc-300">
+          <CardDescription className="app-text-subtle">
             What unique gifts, talents, and abilities has God given you to
             develop?
           </CardDescription>
@@ -287,11 +285,11 @@ function RouteComponent() {
       {/* Self-Mastery Goals */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+          <CardTitle className="flex items-center gap-2 app-text-strong">
             <Shield className="w-5 h-5 text-green-600" />
             Self-Mastery Goals
           </CardTitle>
-          <CardDescription className="text-zinc-700 dark:text-zinc-300">
+          <CardDescription className="app-text-subtle">
             "He that ruleth his spirit than he that taketh a city" — What
             aspects of yourself will you master?
           </CardDescription>
@@ -332,11 +330,11 @@ function RouteComponent() {
       {/* Guiding Principles */}
       <Card>
         <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+          <CardTitle className="flex items-center gap-2 app-text-strong">
             <Heart className="w-5 h-5 text-red-600" />
             Guiding Principles
           </CardTitle>
-          <CardDescription className="text-zinc-700 dark:text-zinc-300">
+          <CardDescription className="app-text-subtle">
             "Never compromise [your principles]. Strength comes from making no
             exceptions to guiding principles."
           </CardDescription>
@@ -352,16 +350,16 @@ function RouteComponent() {
                 >
                   <div className="flex items-start justify-between">
                     <div className="flex-1">
-                      <h4 className="font-semibold text-zinc-900 dark:text-zinc-100">
+                      <h4 className="font-semibold app-text-strong">
                         {principle.principle}
                       </h4>
                       {principle.scripture && (
-                        <p className="text-sm text-zinc-600 dark:text-zinc-400 italic">
+                        <p className="text-sm app-text-muted italic">
                           "{principle.scripture}"
                         </p>
                       )}
                       {principle.commitment && (
-                        <p className="text-sm text-zinc-700 dark:text-zinc-300 mt-1">
+                        <p className="text-sm app-text-subtle mt-1">
                           {principle.commitment}
                         </p>
                       )}
@@ -382,9 +380,7 @@ function RouteComponent() {
 
           {/* Add New Principle Form */}
           <div className="border-2 border-dashed border-zinc-300 dark:border-zinc-600 rounded-lg p-4 space-y-4">
-            <h4 className="font-medium text-zinc-900 dark:text-zinc-100">
-              Add New Principle
-            </h4>
+            <h4 className="font-medium app-text-strong">Add New Principle</h4>
             <div>
               <Label
                 htmlFor="newPrinciple"
@@ -441,11 +437,11 @@ function RouteComponent() {
         {/* Temporal Success */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+            <CardTitle className="flex items-center gap-2 app-text-strong">
               <TrendingUp className="w-5 h-5 text-blue-600" />
               Temporal Success
             </CardTitle>
-            <CardDescription className="text-zinc-700 dark:text-zinc-300">
+            <CardDescription className="app-text-subtle">
               Career, skills, financial stewardship, earthly achievements
             </CardDescription>
           </CardHeader>
@@ -462,11 +458,11 @@ function RouteComponent() {
         {/* Spiritual Success */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+            <CardTitle className="flex items-center gap-2 app-text-strong">
               <Sparkles className="w-5 h-5 text-purple-600" />
               Spiritual Success
             </CardTitle>
-            <CardDescription className="text-zinc-700 dark:text-zinc-300">
+            <CardDescription className="app-text-subtle">
               Relationship with God, discipleship, eternal perspective
             </CardDescription>
           </CardHeader>
@@ -483,11 +479,11 @@ function RouteComponent() {
         {/* Character Success */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+            <CardTitle className="flex items-center gap-2 app-text-strong">
               <Heart className="w-5 h-5 text-red-600" />
               Character Success
             </CardTitle>
-            <CardDescription className="text-zinc-700 dark:text-zinc-300">
+            <CardDescription className="app-text-subtle">
               Christlike attributes, integrity, love, service to others
             </CardDescription>
           </CardHeader>
@@ -504,11 +500,11 @@ function RouteComponent() {
         {/* Intelligence Success */}
         <Card>
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+            <CardTitle className="flex items-center gap-2 app-text-strong">
               <Brain className="w-5 h-5 text-green-600" />
               Intelligence Success
             </CardTitle>
-            <CardDescription className="text-zinc-700 dark:text-zinc-300">
+            <CardDescription className="app-text-subtle">
               Learning, wisdom, using knowledge for good like God would
             </CardDescription>
           </CardHeader>
@@ -550,11 +546,11 @@ function RouteComponent() {
       {definition && (
         <Card className="bg-gradient-to-r from-green-50 to-blue-50 border-green-200 dark:from-green-950/50 dark:to-blue-950/50 dark:border-green-800">
           <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-zinc-900 dark:text-zinc-100">
+            <CardTitle className="flex items-center gap-2 app-text-strong">
               <Target className="w-5 h-5 text-green-600" />
               Your Success Framework
             </CardTitle>
-            <CardDescription className="text-zinc-700 dark:text-zinc-300">
+            <CardDescription className="app-text-subtle">
               A quick reference to keep you aligned with your eternal
               perspective
             </CardDescription>
@@ -562,18 +558,14 @@ function RouteComponent() {
           <CardContent className="space-y-4">
             {definition.vision && (
               <div>
-                <h4 className="font-medium text-zinc-900 dark:text-zinc-100 mb-1">
-                  Vision
-                </h4>
-                <p className="text-sm text-zinc-700 dark:text-zinc-300">
-                  {definition.vision}
-                </p>
+                <h4 className="font-medium app-text-strong mb-1">Vision</h4>
+                <p className="text-sm app-text-subtle">{definition.vision}</p>
               </div>
             )}
 
             {definition.divineCapacities.length > 0 && (
               <div>
-                <h4 className="font-medium text-zinc-900 dark:text-zinc-100 mb-2">
+                <h4 className="font-medium app-text-strong mb-2">
                   Divine Capacities
                 </h4>
                 <div className="flex flex-wrap gap-1">
@@ -588,20 +580,17 @@ function RouteComponent() {
 
             {definition.principles.length > 0 && (
               <div>
-                <h4 className="font-medium text-zinc-900 dark:text-zinc-100 mb-2">
+                <h4 className="font-medium app-text-strong mb-2">
                   Core Principles ({definition.principles.length})
                 </h4>
                 <div className="space-y-1">
                   {definition.principles.slice(0, 3).map((principle) => (
-                    <p
-                      key={principle.id}
-                      className="text-xs text-zinc-600 dark:text-zinc-400"
-                    >
+                    <p key={principle.id} className="text-xs app-text-muted">
                       • {principle.principle}
                     </p>
                   ))}
                   {definition.principles.length > 3 && (
-                    <p className="text-xs text-zinc-500 dark:text-zinc-500">
+                    <p className="text-xs app-text-muted">
                       + {definition.principles.length - 3} more principles
                     </p>
                   )}

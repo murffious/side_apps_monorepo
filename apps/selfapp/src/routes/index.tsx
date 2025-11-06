@@ -458,9 +458,7 @@ function Dashboard() {
     return (
       <Card>
         <CardContent className="p-12 text-center">
-          <p className="text-zinc-600 dark:text-zinc-400">
-            Loading dashboard...
-          </p>
+          <p className="app-text-subtle">Loading dashboard...</p>
         </CardContent>
       </Card>
     );
@@ -470,7 +468,7 @@ function Dashboard() {
     return (
       <Card>
         <CardContent className="p-12 text-center">
-          <p className="text-zinc-600 dark:text-zinc-400">
+          <p className="app-text-subtle">
             No entries yet. Start logging your daily performance!
           </p>
         </CardContent>
@@ -549,52 +547,44 @@ function Dashboard() {
       <div className="grid grid-cols-4 gap-3">
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-2">
+            <p className="text-xs font-medium app-text-subtle mb-2">
               Avg Performance
             </p>
             <div className="text-3xl font-bold bg-gradient-to-br from-blue-600 to-blue-400 bg-clip-text text-transparent">
               {avgPerformance}
             </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">
-              / 10
-            </p>
+            <p className="text-xs app-text-muted mt-1">/ 10</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-2">
+            <p className="text-xs font-medium app-text-subtle mb-2">
               Avg Focus
             </p>
             <div className="text-3xl font-bold bg-gradient-to-br from-purple-600 to-purple-400 bg-clip-text text-transparent">
               {avgFocus}
             </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">
-              / 10
-            </p>
+            <p className="text-xs app-text-muted mt-1">/ 10</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-2">
+            <p className="text-xs font-medium app-text-subtle mb-2">
               Avg Energy
             </p>
             <div className="text-3xl font-bold bg-gradient-to-br from-orange-600 to-orange-400 bg-clip-text text-transparent">
               {avgEnergy}
             </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">
-              / 10
-            </p>
+            <p className="text-xs app-text-muted mt-1">/ 10</p>
           </CardContent>
         </Card>
         <Card>
           <CardContent className="p-4 text-center">
-            <p className="text-xs font-medium text-zinc-600 dark:text-zinc-400 mb-2">
-              Win Rate
-            </p>
+            <p className="text-xs font-medium app-text-subtle mb-2">Win Rate</p>
             <div className="text-3xl font-bold bg-gradient-to-br from-green-600 to-green-400 bg-clip-text text-transparent">
               {winRate}
             </div>
-            <p className="text-xs text-zinc-500 dark:text-zinc-500 mt-1">%</p>
+            <p className="text-xs app-text-muted mt-1">%</p>
           </CardContent>
         </Card>
       </div>
@@ -607,26 +597,20 @@ function Dashboard() {
         <CardContent>
           <div className="grid grid-cols-3 gap-4">
             <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">
-                Total Hours
-              </p>
-              <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+              <p className="text-sm app-text-subtle mb-1">Total Hours</p>
+              <p className="text-2xl font-bold app-text-strong">
                 {totalHours}h
               </p>
             </div>
             <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">
-                Total Tasks
-              </p>
-              <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+              <p className="text-sm app-text-subtle mb-1">Total Tasks</p>
+              <p className="text-2xl font-bold app-text-strong">
                 {totalTaskCount}
               </p>
             </div>
             <div className="text-center p-4 bg-zinc-50 dark:bg-zinc-900 rounded-lg">
-              <p className="text-sm text-zinc-600 dark:text-zinc-400 mb-1">
-                Avg Hours/Day
-              </p>
-              <p className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+              <p className="text-sm app-text-subtle mb-1">Avg Hours/Day</p>
+              <p className="text-2xl font-bold app-text-strong">
                 {avgTimePerDay}h
               </p>
             </div>
@@ -671,7 +655,7 @@ function Dashboard() {
                       <p className="font-semibold">
                         {new Date(entry.date).toLocaleDateString()}
                       </p>
-                      <p className="text-sm text-zinc-600 dark:text-zinc-400">
+                      <p className="text-sm app-text-subtle">
                         Performance: {entry.performance_score}/10 | Focus:{' '}
                         {entry.focus_rating}/10 | Energy: {entry.energy_rating}
                         /10
@@ -685,7 +669,7 @@ function Dashboard() {
                   </div>
                   <div className="text-sm">
                     <p className="font-medium">Goals:</p>
-                    <ul className="list-disc list-inside text-zinc-600 dark:text-zinc-400">
+                    <ul className="list-disc list-inside app-text-subtle">
                       {entry.goals.map(
                         (goal, idx) =>
                           goal && (
@@ -742,16 +726,16 @@ function Dashboard() {
                             </a>
                           )}
                           {task.notes && (
-                            <p className="text-sm text-zinc-600 dark:text-zinc-400 mt-1">
+                            <p className="text-sm app-text-subtle mt-1">
                               {task.notes}
                             </p>
                           )}
                         </div>
                         <div className="text-right">
-                          <p className="text-lg font-bold text-zinc-900 dark:text-zinc-100">
+                          <p className="text-lg font-bold app-text-strong">
                             {hours}h {minutes}m
                           </p>
-                          <p className="text-xs text-zinc-500 dark:text-zinc-500">
+                          <p className="text-xs app-text-muted">
                             {task.timeEntries.length} session
                             {task.timeEntries.length !== 1 ? 's' : ''}
                           </p>
@@ -762,7 +746,7 @@ function Dashboard() {
                 })}
               {entries.filter((entry) => entry.tasks && entry.tasks.length > 0)
                 .length === 0 && (
-                <p className="text-center text-zinc-500 dark:text-zinc-500 py-8">
+                <p className="text-center app-text-muted py-8">
                   No tasks tracked yet. Start tracking tasks in your daily logs!
                 </p>
               )}
