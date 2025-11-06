@@ -1,5 +1,13 @@
 # Self App
 
+Things that matter the most  
+Priority décisions
+
+ACT or be acted upon
+Motives?
+What motives did I have ?
+Took me years to know this mknwo myself rad my own feelings. Almost scary — how cu intense effort.
+
 A React application for personal self-improvement and tracking, originally built on CREAO.ai platform.
 
 ## Description

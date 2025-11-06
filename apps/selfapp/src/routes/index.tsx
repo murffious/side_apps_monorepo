@@ -27,11 +27,13 @@ import {
   Database,
   Download,
   LogOut,
+  BookOpen,
   TrendingDown,
   TrendingUp,
   User,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import SpiritualProgressTracker from '@/components/BecomeTool';
 
 interface ExtendedDailyLogEntryModel extends DailyLogEntryModel {
   tasks?: Task[] | null;
@@ -144,6 +146,14 @@ function App() {
                     <Database className="mr-2 h-4 w-4" />
                     Remove Mock
                   </Button>
+                  <Button
+                    onClick={() => navigate({ to: '/become' })}
+                    variant="outline"
+                    size="sm"
+                  >
+                    <BookOpen className="mr-2 h-4 w-4" />
+                    Become
+                  </Button>
                   <Button onClick={handleLogout} variant="outline" size="sm">
                     <LogOut className="mr-2 h-4 w-4" />
                     Logout
@@ -170,6 +180,10 @@ function App() {
                 <BarChart3 className="mr-2" />
                 Dashboard
               </TabsTrigger>
+              <TabsTrigger value="become">
+                <BookOpen className="mr-2" />
+                Become
+              </TabsTrigger>
               <TabsTrigger value="insights">
                 <Brain className="mr-2" />
                 Insights
@@ -182,6 +196,10 @@ function App() {
 
             <TabsContent value="dashboard">
               <Dashboard />
+            </TabsContent>
+
+            <TabsContent value="become">
+              <SpiritualProgressTracker />
             </TabsContent>
 
             <TabsContent value="insights">

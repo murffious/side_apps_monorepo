@@ -11,6 +11,7 @@
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as JwtDebugRouteImport } from './routes/jwt-debug'
+import { Route as BecomeRouteImport } from './routes/become'
 import { Route as IndexRouteImport } from './routes/index'
 
 const LoginRoute = LoginRouteImport.update({
@@ -23,6 +24,11 @@ const JwtDebugRoute = JwtDebugRouteImport.update({
   path: '/jwt-debug',
   getParentRoute: () => rootRouteImport,
 } as any)
+const BecomeRoute = BecomeRouteImport.update({
+  id: '/become',
+  path: '/become',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
@@ -31,30 +37,34 @@ const IndexRoute = IndexRouteImport.update({
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
+  '/become': typeof BecomeRoute
   '/jwt-debug': typeof JwtDebugRoute
   '/login': typeof LoginRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
+  '/become': typeof BecomeRoute
   '/jwt-debug': typeof JwtDebugRoute
   '/login': typeof LoginRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
+  '/become': typeof BecomeRoute
   '/jwt-debug': typeof JwtDebugRoute
   '/login': typeof LoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/jwt-debug' | '/login'
+  fullPaths: '/' | '/become' | '/jwt-debug' | '/login'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/jwt-debug' | '/login'
-  id: '__root__' | '/' | '/jwt-debug' | '/login'
+  to: '/' | '/become' | '/jwt-debug' | '/login'
+  id: '__root__' | '/' | '/become' | '/jwt-debug' | '/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
+  BecomeRoute: typeof BecomeRoute
   JwtDebugRoute: typeof JwtDebugRoute
   LoginRoute: typeof LoginRoute
 }
@@ -75,6 +85,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof JwtDebugRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/become': {
+      id: '/become'
+      path: '/become'
+      fullPath: '/become'
+      preLoaderRoute: typeof BecomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/': {
       id: '/'
       path: '/'
@@ -87,6 +104,7 @@ declare module '@tanstack/react-router' {
 
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
+  BecomeRoute: BecomeRoute,
   JwtDebugRoute: JwtDebugRoute,
   LoginRoute: LoginRoute,
 }
