@@ -10,8 +10,10 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as WelcomeRouteImport } from './routes/welcome'
+import { Route as SuccessRouteImport } from './routes/success'
 import { Route as SelfregRouteImport } from './routes/selfreg'
 import { Route as LoginRouteImport } from './routes/login'
+import { Route as LetgodRouteImport } from './routes/letgod'
 import { Route as JwtDebugRouteImport } from './routes/jwt-debug'
 import { Route as BecomeRouteImport } from './routes/become'
 import { Route as IndexRouteImport } from './routes/index'
@@ -19,6 +21,11 @@ import { Route as IndexRouteImport } from './routes/index'
 const WelcomeRoute = WelcomeRouteImport.update({
   id: '/welcome',
   path: '/welcome',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SuccessRoute = SuccessRouteImport.update({
+  id: '/success',
+  path: '/success',
   getParentRoute: () => rootRouteImport,
 } as any)
 const SelfregRoute = SelfregRouteImport.update({
@@ -29,6 +36,11 @@ const SelfregRoute = SelfregRouteImport.update({
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
   path: '/login',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const LetgodRoute = LetgodRouteImport.update({
+  id: '/letgod',
+  path: '/letgod',
   getParentRoute: () => rootRouteImport,
 } as any)
 const JwtDebugRoute = JwtDebugRouteImport.update({
@@ -51,16 +63,20 @@ export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/become': typeof BecomeRoute
   '/jwt-debug': typeof JwtDebugRoute
+  '/letgod': typeof LetgodRoute
   '/login': typeof LoginRoute
   '/selfreg': typeof SelfregRoute
+  '/success': typeof SuccessRoute
   '/welcome': typeof WelcomeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/become': typeof BecomeRoute
   '/jwt-debug': typeof JwtDebugRoute
+  '/letgod': typeof LetgodRoute
   '/login': typeof LoginRoute
   '/selfreg': typeof SelfregRoute
+  '/success': typeof SuccessRoute
   '/welcome': typeof WelcomeRoute
 }
 export interface FileRoutesById {
@@ -68,22 +84,42 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/become': typeof BecomeRoute
   '/jwt-debug': typeof JwtDebugRoute
+  '/letgod': typeof LetgodRoute
   '/login': typeof LoginRoute
   '/selfreg': typeof SelfregRoute
+  '/success': typeof SuccessRoute
   '/welcome': typeof WelcomeRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths: '/' | '/become' | '/jwt-debug' | '/login' | '/selfreg' | '/welcome'
+  fullPaths:
+    | '/'
+    | '/become'
+    | '/jwt-debug'
+    | '/letgod'
+    | '/login'
+    | '/selfreg'
+    | '/success'
+    | '/welcome'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/become' | '/jwt-debug' | '/login' | '/selfreg' | '/welcome'
+  to:
+    | '/'
+    | '/become'
+    | '/jwt-debug'
+    | '/letgod'
+    | '/login'
+    | '/selfreg'
+    | '/success'
+    | '/welcome'
   id:
     | '__root__'
     | '/'
     | '/become'
     | '/jwt-debug'
+    | '/letgod'
     | '/login'
     | '/selfreg'
+    | '/success'
     | '/welcome'
   fileRoutesById: FileRoutesById
 }
@@ -91,8 +127,10 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   BecomeRoute: typeof BecomeRoute
   JwtDebugRoute: typeof JwtDebugRoute
+  LetgodRoute: typeof LetgodRoute
   LoginRoute: typeof LoginRoute
   SelfregRoute: typeof SelfregRoute
+  SuccessRoute: typeof SuccessRoute
   WelcomeRoute: typeof WelcomeRoute
 }
 
@@ -103,6 +141,13 @@ declare module '@tanstack/react-router' {
       path: '/welcome'
       fullPath: '/welcome'
       preLoaderRoute: typeof WelcomeRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/success': {
+      id: '/success'
+      path: '/success'
+      fullPath: '/success'
+      preLoaderRoute: typeof SuccessRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/selfreg': {
@@ -117,6 +162,13 @@ declare module '@tanstack/react-router' {
       path: '/login'
       fullPath: '/login'
       preLoaderRoute: typeof LoginRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/letgod': {
+      id: '/letgod'
+      path: '/letgod'
+      fullPath: '/letgod'
+      preLoaderRoute: typeof LetgodRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/jwt-debug': {
@@ -147,8 +199,10 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   BecomeRoute: BecomeRoute,
   JwtDebugRoute: JwtDebugRoute,
+  LetgodRoute: LetgodRoute,
   LoginRoute: LoginRoute,
   SelfregRoute: SelfregRoute,
+  SuccessRoute: SuccessRoute,
   WelcomeRoute: WelcomeRoute,
 }
 export const routeTree = rootRouteImport

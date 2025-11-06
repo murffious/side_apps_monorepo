@@ -27,15 +27,15 @@ export function MainLayout() {
         <div className="max-w-6xl mx-auto">
           <header className="flex justify-between items-center py-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
                 Performance Tracker
               </h1>
-              <p className="text-sm text-zinc-500 dark:text-zinc-400">
+              <p className="text-sm text-zinc-600 dark:text-zinc-300">
                 Track daily goals, analyze patterns, and improve consistently
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <span className="text-sm text-zinc-600 dark:text-zinc-400">
+              <span className="text-sm text-zinc-700 dark:text-zinc-200">
                 {user?.name}
               </span>
               <Button variant="outline" size="sm" onClick={handleLoadMockData}>

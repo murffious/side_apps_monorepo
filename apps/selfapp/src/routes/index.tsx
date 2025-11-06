@@ -18,7 +18,11 @@ import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
 import { mockLogs } from '@/data/mockLogs';
 import type { Task } from '@/types/task-tracking';
-import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import {
+  createFileRoute,
+  useNavigate,
+  useRouteContext,
+} from '@tanstack/react-router';
 import JSZip from 'jszip';
 import {
   BarChart3,
@@ -45,24 +49,45 @@ export const Route = createFileRoute('/')({
 function Index() {
   const [activeTab, setActiveTab] = useState('log');
 
-  return (
-    <Tabs value={activeTab} onValueChange={setActiveTab} className="w-full">
-      <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="log">Daily Log</TabsTrigger>
-        <TabsTrigger value="dashboard">Dashboard</TabsTrigger>
-        <TabsTrigger value="insights">Insights</TabsTrigger>
-      </TabsList>
-      <TabsContent value="log">
-        <DailyLogForm />
-      </TabsContent>
-      <TabsContent value="dashboard">
-        <Dashboard />
-      </TabsContent>
-      <TabsContent value="insights">
-        <Insights />
-      </TabsContent>
-    </Tabs>
-  );
+  // Listen to URL hash or query params to sync with SideNav
+  useEffect(() => {
+    const urlParams = new URLSearchParams(window.location.search);
+    const tabParam = urlParams.get('tab');
+    if (tabParam && ['log', 'dashboard', 'insights'].includes(tabParam)) {
+      setActiveTab(tabParam);
+    }
+  }, []);
+
+  // Update URL when tab changes
+  const handleTabChange = (tab: string) => {
+    setActiveTab(tab);
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', tab);
+    window.history.replaceState({}, '', url.toString());
+  };
+
+  // Make handleTabChange available globally for SideNav
+  useEffect(() => {
+    (window as any).__setMainTab = handleTabChange;
+    return () => {
+      delete (window as any).__setMainTab;
+    };
+  }, []);
+
+  // Content mapping based on active tab
+  const renderContent = () => {
+    switch (activeTab) {
+      case 'dashboard':
+        return <Dashboard />;
+      case 'insights':
+        return <Insights />;
+      case 'log':
+      default:
+        return <DailyLogForm />;
+    }
+  };
+
+  return <div className="w-full">{renderContent()}</div>;
 }
 
 function DailyLogForm() {

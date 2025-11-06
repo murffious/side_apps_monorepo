@@ -7,6 +7,7 @@ import {
   Brain,
   User,
   Sparkles,
+  Target,
 } from 'lucide-react';
 
 type Props = {
@@ -39,10 +40,16 @@ const items: {
     path: '/become',
   },
   {
+    id: 'success',
+    label: 'Define Success',
+    icon: <Target className="h-4 w-4" />,
+    path: '/success',
+  },
+  {
     id: 'letgod',
     label: 'Let God Prevail',
     icon: <Sparkles className="h-4 w-4" />,
-    path: '/selfreg',
+    path: '/letgod',
   },
   {
     id: 'selfreg',
@@ -64,8 +71,15 @@ export default function SideNav({ active, onChange }: Props) {
 
   const getActive = () => {
     if (location.pathname === '/become') return 'become';
+    if (location.pathname === '/success') return 'success';
     if (location.pathname === '/selfreg') return 'selfreg';
-    if (location.pathname === '/') return active || 'log';
+    if (location.pathname === '/letgod') return 'letgod';
+    if (location.pathname === '/') {
+      // Check URL params for tab state
+      const urlParams = new URLSearchParams(window.location.search);
+      const tabParam = urlParams.get('tab');
+      return tabParam || active || 'log';
+    }
     return '';
   };
 
@@ -73,11 +87,21 @@ export default function SideNav({ active, onChange }: Props) {
 
   const handleClick = (item: (typeof items)[0]) => {
     if (item.path === '/') {
+      // For main page tabs (log, dashboard, insights)
       if (onChange) {
         onChange(item.id);
       }
+      // Also call the global tab handler if available
+      if ((window as any).__setMainTab) {
+        (window as any).__setMainTab(item.id);
+      }
       if (location.pathname !== '/') {
-        navigate({ to: '/' });
+        navigate({ to: `/?tab=${item.id}` });
+      } else {
+        // Update URL with tab parameter
+        const url = new URL(window.location.href);
+        url.searchParams.set('tab', item.id);
+        window.history.replaceState({}, '', url.toString());
       }
     } else {
       navigate({ to: item.path as any });
@@ -88,10 +112,10 @@ export default function SideNav({ active, onChange }: Props) {
     <nav className="hidden md:block pr-6">
       <div className="sticky top-6">
         <div className="mb-6 px-3">
-          <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-100">
+          <h2 className="text-xl font-semibold text-zinc-900 dark:text-zinc-50">
             Journal
           </h2>
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">
+          <p className="text-xs text-zinc-600 dark:text-zinc-300">
             Moments that shape who you are
           </p>
         </div>
@@ -103,10 +127,10 @@ export default function SideNav({ active, onChange }: Props) {
               <li key={it.id}>
                 <button
                   onClick={() => handleClick(it)}
-                  className={`flex items-center w-full gap-3 px-3 py-2 rounded-md text-left transition-colors text-sm ${
+                  className={`flex items-center w-full gap-3 px-3 py-2 rounded-md text-left transition-colors text-sm font-medium ${
                     isActive
                       ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow'
-                      : 'text-zinc-700 dark:text-zinc-300 hover:bg-zinc-100 dark:hover:bg-zinc-800'
+                      : 'text-zinc-800 dark:text-zinc-100 hover:bg-zinc-100 dark:hover:bg-zinc-700'
                   }`}
                 >
                   <span className="opacity-90">{it.icon}</span>
@@ -118,8 +142,10 @@ export default function SideNav({ active, onChange }: Props) {
         </ul>
 
         <div className="mt-6 px-3">
-          <p className="text-xs text-zinc-500 dark:text-zinc-400">Quick tip</p>
-          <p className="text-xs text-zinc-600 dark:text-zinc-300 mt-1">
+          <p className="text-xs text-zinc-600 dark:text-zinc-300 font-medium">
+            Quick tip
+          </p>
+          <p className="text-xs text-zinc-700 dark:text-zinc-200 mt-1">
             Log a moment in under 15s — review weekly patterns.
           </p>
         </div>
