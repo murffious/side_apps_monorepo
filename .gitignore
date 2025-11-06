@@ -71,6 +71,7 @@ Thumbs.db
 out/
 .next/
 .nuxt/
+.build/
 
 # CREAO.ai backups
 *.creao.bak

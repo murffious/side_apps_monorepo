@@ -150,6 +150,11 @@ jobs:
           pnpm install --filter selfapp
           pnpm --filter selfapp build
 
+      - name: Build Lambda functions
+        run: |
+          chmod +x ./scripts/build-lambda.sh
+          ./scripts/build-lambda.sh
+
       - name: Terraform Init
         run: terraform init
         working-directory: ./terraform
