@@ -1,20 +1,27 @@
-import { ErrorBoundary } from '@/components/ErrorBoundary';
-import { FloatingBanner } from '@/components/FloatingBanner';
-import { Outlet, createRootRoute } from '@tanstack/react-router';
+import { Outlet, createRootRoute, useNavigate } from '@tanstack/react-router';
 import { TanStackRouterDevtools } from '@tanstack/react-router-devtools';
+import { MainLayout } from '@/components/MainLayout';
+import { useAuth } from '@/contexts/AuthContext';
+import { useEffect } from 'react';
 
 export const Route = createRootRoute({
   component: Root,
 });
 
 function Root() {
+  const { isAuthenticated } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      navigate({ to: '/welcome' });
+    }
+  }, [isAuthenticated, navigate]);
+
   return (
-    <div className="flex flex-col min-h-screen dark">
-      <ErrorBoundary tagName="main" className="flex-1">
-        <Outlet />
-      </ErrorBoundary>
+    <>
+      <MainLayout />
       <TanStackRouterDevtools position="bottom-right" />
-      <FloatingBanner position="bottom-left" />
-    </div>
+    </>
   );
 }

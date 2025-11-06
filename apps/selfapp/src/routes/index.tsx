@@ -1,7 +1,7 @@
 import { TimeTracker } from '@/components/TimeTracker';
 import DailyLogEntryORM, {
   type DailyLogEntryModel,
-} from '@/components/data/orm/orm_daily_log_entry';
+} from '@/data/orm/DailyLogEntryORM';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -40,9 +40,48 @@ interface ExtendedDailyLogEntryModel extends DailyLogEntryModel {
   tasks?: Task[] | null;
 }
 
+// ... existing code ...
+import { createFileRoute, useNavigate } from '@tanstack/react-router';
+import { useEffect, useState } from 'react';
+import JSZip from 'jszip';
+
+// ... existing code ...
 export const Route = createFileRoute('/')({
-  component: App,
+  component: Index,
 });
+
+function Index() {
+  const [activeTab, setActiveTab] = useState('log');
+  const navigate = useNavigate();
+  const { user, logout } = useAuth();
+
+  const handleTabChange = (value: string) => {
+    if (value === 'become') {
+      navigate({ to: '/become' });
+    } else if (value === 'selfreg' || value === 'letgod') {
+      navigate({ to: '/selfreg' });
+    } else {
+      setActiveTab(value);
+    }
+  };
+
+  return (
+    <Tabs value={activeTab} onValueChange={handleTabChange}>
+      <TabsContent value="log">
+        <DailyLogForm />
+      </TabsContent>
+      <TabsContent value="dashboard">
+        <Dashboard />
+      </TabsContent>
+      <TabsContent value="insights">
+        <Insights />
+      </TabsContent>
+    </Tabs>
+  );
+}
+
+function DailyLogForm() {
+// ... existing code ...
 
 function App() {
   const { user, logout, isAuthenticated } = useAuth();

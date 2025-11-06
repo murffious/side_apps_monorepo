@@ -1,4 +1,4 @@
-import type { DailyLogEntryModel } from '@/components/data/orm/orm_daily_log_entry';
+import type { DailyLogEntryModel } from '@/data/orm/DailyLogEntryORM';
 import type { Task } from '@/types/task-tracking';
 
 interface ExtendedDailyLogEntryModel extends DailyLogEntryModel {

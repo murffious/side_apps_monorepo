@@ -14,21 +14,48 @@ type Props = {
   onChange?: (v: string) => void;
 };
 
-const items: { id: string; label: string; icon: React.ReactNode }[] = [
-  { id: 'log', label: 'Daily Log', icon: <Calendar className="h-4 w-4" /> },
+const items: {
+  id: string;
+  label: string;
+  icon: React.ReactNode;
+  path: string;
+}[] = [
+  {
+    id: 'log',
+    label: 'Daily Log',
+    icon: <Calendar className="h-4 w-4" />,
+    path: '/',
+  },
   {
     id: 'dashboard',
     label: 'Dashboard',
     icon: <BarChart3 className="h-4 w-4" />,
+    path: '/',
   },
-  { id: 'become', label: 'Become', icon: <BookOpen className="h-4 w-4" /> },
+  {
+    id: 'become',
+    label: 'Become',
+    icon: <BookOpen className="h-4 w-4" />,
+    path: '/become',
+  },
   {
     id: 'letgod',
     label: 'Let God Prevail',
     icon: <Sparkles className="h-4 w-4" />,
+    path: '/selfreg',
   },
-  { id: 'selfreg', label: 'Self-Reg', icon: <User className="h-4 w-4" /> },
-  { id: 'insights', label: 'Insights', icon: <Brain className="h-4 w-4" /> },
+  {
+    id: 'selfreg',
+    label: 'Self-Reg',
+    icon: <User className="h-4 w-4" />,
+    path: '/selfreg',
+  },
+  {
+    id: 'insights',
+    label: 'Insights',
+    icon: <Brain className="h-4 w-4" />,
+    path: '/',
+  },
 ];
 
 export default function SideNav({ active, onChange }: Props) {
@@ -38,21 +65,22 @@ export default function SideNav({ active, onChange }: Props) {
   const getActive = () => {
     if (location.pathname === '/become') return 'become';
     if (location.pathname === '/selfreg') return 'selfreg';
-    if (location.pathname === '/') return active || '';
+    if (location.pathname === '/') return active || 'log';
     return '';
   };
 
   const currentActive = getActive();
 
-  const handleClick = (id: string) => {
-    if (id === 'become') {
-      navigate({ to: '/become' });
-    } else if (id === 'selfreg' || id === 'letgod') {
-      navigate({ to: '/selfreg' });
-    } else if (onChange) {
-      onChange(id);
+  const handleClick = (item: (typeof items)[0]) => {
+    if (item.path === '/') {
+      if (onChange) {
+        onChange(item.id);
+      }
+      if (location.pathname !== '/') {
+        navigate({ to: '/' });
+      }
     } else {
-      navigate({ to: '/' });
+      navigate({ to: item.path as any });
     }
   };
 
@@ -74,7 +102,7 @@ export default function SideNav({ active, onChange }: Props) {
             return (
               <li key={it.id}>
                 <button
-                  onClick={() => handleClick(it.id)}
+                  onClick={() => handleClick(it)}
                   className={`flex items-center w-full gap-3 px-3 py-2 rounded-md text-left transition-colors text-sm ${
                     isActive
                       ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow'

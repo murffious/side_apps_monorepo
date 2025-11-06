@@ -22,7 +22,7 @@ trigger dictionary
 impulse dictionary
 
 {
-"self_regulation_log_entry": {
+"self*regulation_log_entry": {
 "id": "uuid",
 "timestamp": "ISO8601",
 "trigger_id": "string",  
@@ -41,7 +41,7 @@ impulse dictionary
 | emotion_family | one of the 8 (Fear / Anger / Joy etc) |
 | emotion_term | medium resolution (frustration, panic, melancholy, etc) |
 | impulse_id | optional — what I WANTED to do (scroll, sugar, etc) |
-| chosen_action_note | 1 sentence — what I _actually_ chose |
+| chosen_action_note | 1 sentence — what I \_actually* chose |
 | identity_alignment_tag | inward vs outward |
 
 **core concept:**
@@ -85,7 +85,14 @@ that is where an app gets leverage
 | **SURPRISE**       | startle, astonishment, confusion/uncertainty                           |
 
 you can turn this into a DB seed file easily:
+…the next logical step is a UI dictionary for the 5 micro-questions, so your React-Native developer can literally map:
 
+• SELECT trigger
+• SELECT emotion family
+• SELECT emotion term
+• SELECT impulse
+• TEXT chosen action
+• SELECT inward/outward
 **8 families → sub-terms → synonyms**
 
 that becomes your “emotion picker” for self-regulation logging.
