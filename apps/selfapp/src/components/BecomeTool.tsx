@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from 'react';
 import {
   Card,
   CardContent,
@@ -7,7 +6,8 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Check, Heart, BookOpen, Target, TrendingUp } from 'lucide-react';
+import { BookOpen, Check, Heart, Target, TrendingUp } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
 
 const SpiritualProgressTracker = () => {
   const [entries, setEntries] = useState([]);

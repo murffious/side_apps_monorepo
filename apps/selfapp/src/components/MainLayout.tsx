@@ -1,10 +1,10 @@
-import React from 'react';
-import { Outlet } from '@tanstack/react-router';
 import SideNav from '@/components/SideNav';
 import { useAuth } from '@/contexts/AuthContext';
-import { Button } from './ui/button';
-import { DailyLogEntryORM } from '@/data/orm/DailyLogEntryORM';
 import { mockLogs } from '@/data/mockLogs';
+import { DailyLogEntryORM } from '@/data/orm/DailyLogEntryORM';
+import { Outlet } from '@tanstack/react-router';
+import React from 'react';
+import { Button } from './ui/button';
 
 export function MainLayout() {
   const { user, logout } = useAuth();

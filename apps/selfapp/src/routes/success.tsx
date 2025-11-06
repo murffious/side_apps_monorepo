@@ -1,4 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -6,27 +7,26 @@ import {
   CardHeader,
   CardTitle,
 } from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Input } from '@/components/ui/input';
-import { useState, useEffect } from 'react';
+import { createFileRoute } from '@tanstack/react-router';
 import {
-  Target,
-  Star,
-  Shield,
-  Crown,
   BookOpen,
-  Heart,
-  Compass,
-  TrendingUp,
-  CheckCircle,
-  Plus,
-  X,
   Brain,
+  CheckCircle,
+  Compass,
+  Crown,
+  Heart,
+  Plus,
+  Shield,
   Sparkles,
+  Star,
+  Target,
+  TrendingUp,
+  X,
 } from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 export const Route = createFileRoute('/success')({
   component: RouteComponent,

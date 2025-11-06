@@ -1,7 +1,4 @@
 import { TimeTracker } from '@/components/TimeTracker';
-import DailyLogEntryORM, {
-  type DailyLogEntryModel,
-} from '@/data/orm/DailyLogEntryORM';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -17,6 +14,9 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Textarea } from '@/components/ui/textarea';
 import { useAuth } from '@/contexts/AuthContext';
 import { mockLogs } from '@/data/mockLogs';
+import DailyLogEntryORM, {
+  type DailyLogEntryModel,
+} from '@/data/orm/DailyLogEntryORM';
 import type { Task } from '@/types/task-tracking';
 import {
   createFileRoute,
@@ -26,12 +26,12 @@ import {
 import JSZip from 'jszip';
 import {
   BarChart3,
+  BookOpen,
   Brain,
   Calendar,
   Database,
   Download,
   LogOut,
-  BookOpen,
   TrendingDown,
   TrendingUp,
   User,
@@ -81,7 +81,6 @@ function Index() {
         return <Dashboard />;
       case 'insights':
         return <Insights />;
-      case 'log':
       default:
         return <DailyLogForm />;
     }

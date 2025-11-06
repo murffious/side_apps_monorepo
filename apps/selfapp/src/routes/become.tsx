@@ -1,5 +1,3 @@
-import React, { useState, useEffect } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
 import {
   Card,
   CardContent,
@@ -8,7 +6,10 @@ import {
   CardTitle,
 } from '@/components/ui/card';
 import { Progress } from '@/components/ui/progress';
-import { Check, Heart, BookOpen, Target, TrendingUp } from 'lucide-react';
+import { createFileRoute } from '@tanstack/react-router';
+import { BookOpen, Check, Heart, Target, TrendingUp } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 export const Route = createFileRoute('/become')({
   component: RouteComponent,

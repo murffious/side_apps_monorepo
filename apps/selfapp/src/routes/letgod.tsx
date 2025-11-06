@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react';
-import { createFileRoute } from '@tanstack/react-router';
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import {
   Card,
   CardContent,
@@ -10,9 +10,10 @@ import {
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
-import { Button } from '@/components/ui/button';
-import { Badge } from '@/components/ui/badge';
-import { Heart, Sparkles, Target, CheckCircle, Circle } from 'lucide-react';
+import { createFileRoute } from '@tanstack/react-router';
+import { CheckCircle, Circle, Heart, Sparkles, Target } from 'lucide-react';
+import type React from 'react';
+import { useEffect, useState } from 'react';
 
 export const Route = createFileRoute('/letgod')({
   component: RouteComponent,
