@@ -26,7 +26,7 @@ interface TokenInfo {
 	exp?: number;
 	iat?: number;
 	iss?: string;
-	[key: string]: any;
+	[key: string]: unknown;
 }
 
 function ProfilePage() {
