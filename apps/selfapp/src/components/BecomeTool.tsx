@@ -79,13 +79,13 @@ const SpiritualProgressTracker = () => {
     <div className="w-full max-w-4xl mx-auto p-6 space-y-6">
       {/* Header */}
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-3xl font-bold app-text-strong">
           Spiritual Progress Tracker
         </h1>
-        <p className="text-gray-600 italic">
+        <p className="text-sm app-text-subtle italic">
           "To obtain the measure and stature of Christ" - Paul (Ephesians 4:13)
         </p>
-        <p className="text-sm text-gray-500">
+        <p className="text-xs app-text-muted">
           Focus: What have we BECOME, not just what we've DONE
         </p>
       </div>
@@ -236,8 +236,8 @@ const SpiritualProgressTracker = () => {
             </div>
 
             {/* Conversion Indicators */}
-            <div className="space-y-3 bg-gray-50 p-4 rounded-lg">
-              <p className="font-medium text-sm">
+            <div className="space-y-3 app-bg-surface-alt p-4 rounded-lg border app-border-default">
+              <p className="font-medium text-sm app-text-strong">
                 Signs of Conversion & Becoming:
               </p>
 
@@ -253,7 +253,7 @@ const SpiritualProgressTracker = () => {
                   }
                   className="w-4 h-4"
                 />
-                <span className="text-sm">
+                <span className="text-sm app-text-subtle">
                   Clear conscience - Did I act with integrity?
                 </span>
               </label>
@@ -270,7 +270,7 @@ const SpiritualProgressTracker = () => {
                   }
                   className="w-4 h-4"
                 />
-                <span className="text-sm">
+                <span className="text-sm app-text-subtle">
                   Hearing HIS voice (not the world's voice)
                 </span>
               </label>
@@ -287,7 +287,7 @@ const SpiritualProgressTracker = () => {
                   }
                   className="w-4 h-4"
                 />
-                <span className="text-sm">
+                <span className="text-sm app-text-subtle">
                   Losing desires to do evil - No desire for sin today
                 </span>
               </label>
@@ -295,16 +295,16 @@ const SpiritualProgressTracker = () => {
               <label className="flex items-center gap-2 cursor-pointer">
                 <input
                   type="checkbox"
-                  checked={currentEntry.servingOthers}
+                  checked={currentEntry.serviceBlessedOthers}
                   onChange={(e) =>
                     setCurrentEntry({
                       ...currentEntry,
-                      servingOthers: e.target.checked,
+                      serviceBlessedOthers: e.target.checked,
                     })
                   }
                   className="w-4 h-4"
                 />
-                <span className="text-sm">
+                <span className="text-sm app-text-subtle">
                   Service blessed others & God's kingdom
                 </span>
               </label>

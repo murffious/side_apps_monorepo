@@ -27,10 +27,10 @@ export function MainLayout() {
         <div className="max-w-6xl mx-auto">
           <header className="flex justify-between items-center py-4 mb-6">
             <div>
-              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-50">
+              <h1 className="text-2xl font-bold app-text-strong">
                 Performance Tracker
               </h1>
-              <p className="text-sm text-zinc-600 dark:text-zinc-300">
+              <p className="text-sm app-text-muted">
                 Track daily goals, analyze patterns, and improve consistently
               </p>
             </div>
