@@ -3,7 +3,8 @@
  * Handles authentication and authorization for API requests
  */
 
-const shared = require('./shared');
+// Shared utilities will be copied during build
+// const shared = require('./shared');
 
 exports.handler = async (event) => {
   console.log('Auth Handler invoked:', JSON.stringify(event, null, 2));

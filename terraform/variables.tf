@@ -19,4 +19,5 @@ variable "app_name" {
 variable "aws_application_tag" {
   description = "AWS Application tag for resource grouping"
   type        = string
+  default     = ""
 }
