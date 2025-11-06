@@ -19,6 +19,8 @@ resource "aws_cognito_user_pool_domain" "main" {
 
 Domain format: `become-log-test.auth.us-east-1.amazoncognito.com`
 
+**Note:** The domain uses `${app_name}-${environment}` which should be unique within your AWS account. If you need to deploy multiple instances, consider using different app names or environments.
+
 ### 2. Missing OAuth Configuration ❌ → ✅
 
 **Problem:** Cognito User Pool Client didn't have OAuth flows configured for Hosted UI.
@@ -194,6 +196,23 @@ After deployment, verify:
 ### Documentation
 - `docs/COGNITO_SETUP.md`: Complete authentication setup guide
 - `docs/DEPLOYMENT_FIXES.md`: This file
+- `terraform/README.md`: Infrastructure documentation
+
+## Technical Notes
+
+### Workflow Heredoc Syntax
+
+The workflow uses single-quoted heredoc (`<< 'EOF'`) for the frontend config generation. This is intentional to prevent bash variable expansion and preserve the `${{ }}` syntax for GitHub Actions interpolation:
+
+```bash
+cat > ./apps/selfapp/dist/config.js << 'EOF'
+window.AWS_CONFIG = {
+  apiUrl: '${{ steps.tf_outputs.outputs.api_url }}'  # Interpolated by GitHub Actions
+};
+EOF
+```
+
+Without the quotes, bash would try to expand `${{` as a variable, which would fail.
 
 ## Impact
 
