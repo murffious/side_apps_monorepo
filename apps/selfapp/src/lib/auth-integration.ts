@@ -235,18 +235,133 @@ export function createAuthenticatedFetch(): typeof fetch {
 }
 
 /**
- * Async-friendly getter for token (compat with callers expecting async API).
+ * Cognito integration helpers
+ * - configureCognito({ domain, clientId, redirectUri }) to enable hosted UI flows
+ * - loginWithCognito() redirects to the hosted UI
+ * - handleCognitoCallback() parses tokens from URL (if present) and persists them
+ */
+export function configureCognito(config: {
+  domain?: string;
+  clientId?: string;
+  redirectUri?: string;
+}) {
+  try {
+    (window as any).__SELFAPP_COGNITO__ = {
+      ...(window as any).__SELFAPP_COGNITO__,
+      ...config,
+    };
+  } catch (e) {
+    // ignore
+  }
+}
+
+export function isCognitoConfigured(): boolean {
+  try {
+    const c = (window as any).__SELFAPP_COGNITO__ || (window as any).AWS_CONFIG;
+    return Boolean(
+      c &&
+        (c.domain ||
+          c.cognitoDomain ||
+          c.cognito_domain ||
+          c.cognitoClientId ||
+          c.cognito_client_id ||
+          c.cognitoClientId)
+    );
+  } catch (e) {
+    return false;
+  }
+}
+
+export function buildCognitoAuthorizeUrl(opts?: {
+  scope?: string;
+  responseType?: string;
+}) {
+  const cfg =
+    (window as any).__SELFAPP_COGNITO__ || (window as any).AWS_CONFIG || {};
+  const clientId = cfg.cognitoClientId || cfg.cognito_client_id || cfg.clientId;
+  const domain = cfg.cognitoDomain || cfg.cognito_domain || cfg.domain;
+  const redirectUri =
+    cfg.redirectUri ||
+    cfg.redirect_uri ||
+    window.location.origin + window.location.pathname;
+  if (!domain || !clientId) return null;
+  const scope = opts?.scope || 'openid profile email';
+  const responseType = opts?.responseType || 'token'; // implicit flow
+  const state = Math.random().toString(36).slice(2);
+  const url = new URL(`https://${domain}/login`);
+  url.searchParams.set('client_id', clientId);
+  url.searchParams.set('response_type', responseType);
+  url.searchParams.set('scope', scope);
+  url.searchParams.set('redirect_uri', redirectUri);
+  url.searchParams.set('state', state);
+  return url.toString();
+}
+
+export function loginWithCognito() {
+  const url = buildCognitoAuthorizeUrl();
+  if (url) {
+    window.location.href = url;
+  } else {
+    throw new Error('Cognito not configured (missing domain/clientId)');
+  }
+}
+
+function parseHashTokens(hash: string) {
+  // hash like #id_token=...&access_token=...&expires_in=3600
+  const q = new URLSearchParams(hash.replace(/^#/, ''));
+  const id_token = q.get('id_token');
+  const access_token = q.get('access_token');
+  const expires_in = q.get('expires_in');
+  return { id_token, access_token, expires_in };
+}
+
+export function handleCognitoCallback(): Promise<boolean> {
+  return new Promise((resolve) => {
+    try {
+      if (typeof window === 'undefined') return resolve(false);
+      const hash = window.location.hash || window.location.search;
+      if (!hash) return resolve(false);
+      const tokens = parseHashTokens(hash);
+      if (tokens.id_token || tokens.access_token) {
+        // prefer id_token
+        const token = tokens.id_token || tokens.access_token;
+        authIntegration.setAuthTokenAsync(token as string).then(() => {
+          // remove hash from URL to clean up
+          try {
+            history.replaceState(
+              null,
+              '',
+              window.location.pathname + window.location.search
+            );
+          } catch (e) {}
+          resolve(true);
+        });
+        return;
+      }
+    } catch (e) {
+      // ignore
+    }
+    resolve(false);
+  });
+}
+
+/**
+ * Async getter for token (keeps previous API)
  */
 export async function getAuthTokenAsync(): Promise<string | null> {
   return Promise.resolve(authIntegration.getAuthToken());
 }
 
 /**
- * Async-friendly setter for token. Persists to localStorage.
+ * Async setter for token (keeps previous API)
  */
 export async function setAuthTokenAsync(token: string | null): Promise<void> {
   return authIntegration.setAuthTokenAsync(token);
 }
+/**
+ * Async-friendly getter for token (compat with callers expecting async API).
+ */
+// NOTE: getAuthTokenAsync/setAuthTokenAsync are exported above; no duplicate definitions.
 
 // Export default for convenience
 export default authIntegration;
