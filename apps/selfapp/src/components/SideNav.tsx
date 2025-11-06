@@ -135,7 +135,7 @@ export default function SideNav({ active, onChange }: Props) {
                   className={`flex items-center w-full gap-3 px-3 py-2 rounded-md text-left transition-colors text-sm font-medium ${
                     isActive
                       ? 'bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow'
-                      : 'app-text-strong hover:bg-zinc-100 dark:hover:bg-zinc-700'
+                      : 'app-text-strong hover:app-bg-surface-alt'
                   }`}
                 >
                   <span className="opacity-90">{it.icon}</span>

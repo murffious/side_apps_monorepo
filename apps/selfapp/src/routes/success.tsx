@@ -384,7 +384,7 @@ function RouteComponent() {
             <div>
               <Label
                 htmlFor="newPrinciple"
-                className="text-zinc-800 dark:text-zinc-200 font-medium"
+                className="app-text-strong font-medium"
               >
                 Principle Statement
               </Label>
@@ -398,7 +398,7 @@ function RouteComponent() {
             <div>
               <Label
                 htmlFor="newScripture"
-                className="text-zinc-800 dark:text-zinc-200 font-medium"
+                className="app-text-strong font-medium"
               >
                 Supporting Scripture (optional)
               </Label>
@@ -412,7 +412,7 @@ function RouteComponent() {
             <div>
               <Label
                 htmlFor="newCommitment"
-                className="text-zinc-800 dark:text-zinc-200 font-medium"
+                className="app-text-strong font-medium"
               >
                 Your Commitment (optional)
               </Label>
@@ -528,12 +528,12 @@ function RouteComponent() {
               Save Your Success Definition
             </Button>
             {saveMessage && (
-              <p className="text-sm text-center text-green-600 dark:text-green-400">
+              <p className="text-sm text-center app-text-strong">
                 {saveMessage}
               </p>
             )}
             {definition && (
-              <p className="text-xs text-center text-zinc-500 dark:text-zinc-500">
+              <p className="text-xs text-center app-text-muted">
                 Last updated:{' '}
                 {new Date(definition.lastUpdated).toLocaleDateString()}
               </p>
