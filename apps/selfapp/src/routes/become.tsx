@@ -108,12 +108,11 @@ function RouteComponent() {
 			});
 		} catch (err) {
 			console.error("Error creating entry:", err);
-			const errorMessage = err instanceof Error ? err.message : "Failed to save entry";
-			if (errorMessage.includes("Invalid or expired token")) {
-				setError("⚠ Session expired. Please refresh the page and log in again.");
-			} else if (errorMessage.includes("authentication token")) {
-				setError("⚠ Authentication required. Please log in.");
+			const authError = getAuthErrorMessage(err);
+			if (authError) {
+				setError(authError);
 			} else {
+				const errorMessage = err instanceof Error ? err.message : "Failed to save entry";
 				setError(errorMessage);
 			}
 		} finally {
