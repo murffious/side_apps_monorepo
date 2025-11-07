@@ -1,0 +1,122 @@
+# Documentation Index
+
+This directory contains comprehensive documentation for the Side Apps Monorepo project.
+
+## Certificate & Domain Setup
+
+### 🔐 [Certificate Verification Guide](./CERTIFICATE_VERIFICATION.md)
+**Start here if you have a certificate pending validation**
+
+Complete guide for verifying AWS ACM certificates, including:
+- How to get validation records from AWS
+- Step-by-step DNS setup instructions
+- Troubleshooting common validation issues
+- Monitoring certificate health
+
+**Use Case**: Your ACM certificate is stuck in "Pending validation" status
+
+---
+
+### 📋 [Namecheap DNS Setup](./NAMECHEAP_DNS_SETUP.md)
+**Quick reference for Namecheap DNS configuration**
+
+Concise guide focused on:
+- Adding CNAME records to Namecheap
+- Common mistakes to avoid
+- DNS propagation verification
+- Quick command reference
+
+**Use Case**: You need a quick, step-by-step guide for adding DNS records
+
+---
+
+### 🌐 [Custom Domain Setup Guide](./CUSTOM_DOMAIN_SETUP.md)
+**Complete domain configuration for trueorient.life**
+
+Comprehensive guide covering:
+- Full domain setup workflow
+- CloudFront configuration
+- CORS and Cognito URL updates
+- End-to-end testing
+
+**Use Case**: Setting up a custom domain from scratch
+
+---
+
+## Authentication & Deployment
+
+### 🔑 [Cognito Setup Guide](./COGNITO_SETUP.md)
+AWS Cognito authentication configuration, including:
+- User pool configuration
+- OAuth 2.0 setup with PKCE
+- Hosted UI customization
+- Testing authentication flow
+
+---
+
+### 🚀 [Deployment Fixes](./DEPLOYMENT_FIXES.md)
+Recent infrastructure fixes and deployment notes:
+- Terraform state management
+- Common deployment issues
+- CI/CD pipeline fixes
+
+---
+
+## Data Architecture
+
+### 📊 [Single Table Design](./SINGLE_TABLE_DESIGN.md)
+DynamoDB single-table design documentation:
+- Table structure
+- Access patterns
+- Query examples
+
+---
+
+### ✅ [Checklist](./CHECKLIST.md)
+Project task tracking and completion checklist
+
+---
+
+## Quick Links by Task
+
+### I need to verify an ACM certificate
+→ **[Certificate Verification Guide](./CERTIFICATE_VERIFICATION.md)**
+
+### I need to add DNS records to Namecheap
+→ **[Namecheap DNS Setup](./NAMECHEAP_DNS_SETUP.md)**
+
+### I'm setting up a custom domain
+→ **[Custom Domain Setup Guide](./CUSTOM_DOMAIN_SETUP.md)**
+
+### I'm configuring authentication
+→ **[Cognito Setup Guide](./COGNITO_SETUP.md)**
+
+### I'm troubleshooting deployment
+→ **[Deployment Fixes](./DEPLOYMENT_FIXES.md)**
+
+---
+
+## External Resources
+
+- [Main Project README](../README.md)
+- [Terraform README](../terraform/README.md)
+- [AWS ACM Documentation](https://docs.aws.amazon.com/acm/)
+- [Namecheap DNS Management](https://www.namecheap.com/support/knowledgebase/category/10196/dns-management/)
+- [CloudFront Documentation](https://docs.aws.amazon.com/cloudfront/)
+- [Cognito Documentation](https://docs.aws.amazon.com/cognito/)
+
+---
+
+## Contributing
+
+When adding new documentation:
+1. Place files in this `docs/` directory
+2. Use clear, descriptive filenames
+3. Add entry to this README index
+4. Link to related documentation
+5. Include troubleshooting section
+6. Provide command examples
+
+---
+
+**Last Updated**: Check git history for latest changes to documentation
