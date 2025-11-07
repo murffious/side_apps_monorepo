@@ -13,10 +13,12 @@ import { Slider } from "@/components/ui/slider";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { useAuth } from "@/contexts/AuthContext";
-import { mockLogs } from "@/data/mockLogs";
-import DailyLogEntryORM, {
-	type DailyLogEntryModel,
-} from "@/data/orm/DailyLogEntryORM";
+import {
+	createDailyLog,
+	listDailyLogs,
+	updateDailyLog,
+	type DailyLogEntry,
+} from "@/lib/api-client-entities";
 import type { Task } from "@/types/task-tracking";
 import {
 	createFileRoute,
@@ -31,16 +33,13 @@ import {
 	Calendar,
 	Database,
 	Download,
+	Loader2,
 	LogOut,
 	TrendingDown,
 	TrendingUp,
 	User,
 } from "lucide-react";
 import { useEffect, useState } from "react";
-
-interface ExtendedDailyLogEntryModel extends DailyLogEntryModel {
-	tasks?: Task[] | null;
-}
 
 export const Route = createFileRoute("/")({
 	component: Index,
@@ -126,10 +125,7 @@ function DailyLogForm() {
 		setSaveMessage("");
 
 		try {
-			const orm = DailyLogEntryORM.getInstance();
-
-			const existingEntries = await orm.getDailyLogEntryByDate(date);
-
+			// Detect skills from text
 			const allText =
 				`${executionNotes} ${reasoning} ${improvementNotes} ${goals.join(" ")}`.toLowerCase();
 			const skillKeywords = [
@@ -161,43 +157,41 @@ function DailyLogForm() {
 				allText.includes(skill),
 			);
 
-			const logEntry: Partial<ExtendedDailyLogEntryModel> = {
+			const logEntry = {
 				date,
 				goals,
-				execution_notes: executionNotes || null,
-				tasks: tasks.length > 0 ? tasks : null,
+				execution_notes: executionNotes || undefined,
+				tasks: tasks.length > 0 ? tasks : undefined,
 				focus_rating: focusRating[0],
 				energy_rating: energyRating[0],
 				motivation: motivation[0],
 				anxiety: anxiety[0],
 				confidence: confidence[0],
-				difficulties: difficulties || null,
+				difficulties: difficulties || undefined,
 				performance_score: performanceScore[0],
 				win_lose: winLose,
-				reasoning: reasoning || null,
-				improvement_notes: improvementNotes || null,
-				skills: detectedSkills.length > 0 ? detectedSkills : null,
+				reasoning: reasoning || undefined,
+				improvement_notes: improvementNotes || undefined,
+				skills: detectedSkills.length > 0 ? detectedSkills : undefined,
 				strengths:
 					strengths.filter(Boolean).length > 0
 						? strengths.filter(Boolean)
-						: null,
+						: undefined,
 				scorecard: {
 					wins: strengths,
 					needs_improvement: needsImprovement,
 				},
 			};
 
-			if (existingEntries.length > 0) {
-				const existing = existingEntries[0];
-				await orm.setDailyLogEntryByDate(date, {
-					...existing,
-					...logEntry,
-				} as ExtendedDailyLogEntryModel as DailyLogEntryModel);
+			// Check if entry for this date already exists
+			const existingEntries = await listDailyLogs();
+			const existingForDate = existingEntries.find((e) => e.date === date);
+
+			if (existingForDate?.entryId) {
+				await updateDailyLog(existingForDate.entryId, logEntry);
 				setSaveMessage("Entry updated successfully!");
 			} else {
-				await orm.insertDailyLogEntry([
-					logEntry as ExtendedDailyLogEntryModel as DailyLogEntryModel,
-				]);
+				await createDailyLog(logEntry);
 				setSaveMessage("Entry saved successfully!");
 			}
 
@@ -414,7 +408,14 @@ function DailyLogForm() {
 						size="lg"
 						className="w-full"
 					>
-						{loading ? "Saving..." : "Save Entry"}
+						{loading ? (
+							<>
+								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
+								Saving...
+							</>
+						) : (
+							"Save Entry"
+						)}
 					</Button>
 					{saveMessage && (
 						<p
@@ -430,20 +431,15 @@ function DailyLogForm() {
 }
 
 function Dashboard() {
-	const [entries, setEntries] = useState<ExtendedDailyLogEntryModel[]>([]);
+	const [entries, setEntries] = useState<DailyLogEntry[]>([]);
 	const [loading, setLoading] = useState(true);
 	const [recentView, setRecentView] = useState<"entries" | "tasks">("entries");
 
 	useEffect(() => {
 		const loadEntries = async () => {
 			try {
-				const orm = DailyLogEntryORM.getInstance();
-				const allEntries = await orm.getAllDailyLogEntry();
-				setEntries(
-					allEntries.sort((a, b) =>
-						b.date.localeCompare(a.date),
-					) as ExtendedDailyLogEntryModel[],
-				);
+				const allEntries = await listDailyLogs();
+				setEntries(allEntries.sort((a, b) => b.date.localeCompare(a.date)));
 			} catch (error) {
 				console.error("Error loading entries:", error);
 			} finally {
@@ -457,6 +453,7 @@ function Dashboard() {
 		return (
 			<Card>
 				<CardContent className="p-12 text-center">
+					<Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
 					<p className="app-text-subtle">Loading dashboard...</p>
 				</CardContent>
 			</Card>
@@ -760,15 +757,14 @@ function Dashboard() {
 }
 
 function Insights() {
-	const [entries, setEntries] = useState<ExtendedDailyLogEntryModel[]>([]);
+	const [entries, setEntries] = useState<DailyLogEntry[]>([]);
 	const [loading, setLoading] = useState(true);
 
 	useEffect(() => {
 		const loadEntries = async () => {
 			try {
-				const orm = DailyLogEntryORM.getInstance();
-				const allEntries = await orm.getAllDailyLogEntry();
-				setEntries(allEntries as ExtendedDailyLogEntryModel[]);
+				const allEntries = await listDailyLogs();
+				setEntries(allEntries);
 			} catch (error) {
 				console.error("Error loading entries:", error);
 			} finally {
@@ -782,6 +778,7 @@ function Insights() {
 		return (
 			<Card>
 				<CardContent className="p-12 text-center">
+					<Loader2 className="w-8 h-8 animate-spin mx-auto mb-4" />
 					<p className="app-text-subtle">Loading insights...</p>
 				</CardContent>
 			</Card>
