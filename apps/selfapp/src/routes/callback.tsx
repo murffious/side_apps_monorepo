@@ -6,6 +6,10 @@ export const Route = createFileRoute('/callback')({
   component: CallbackPage,
 });
 
+// Constants for authentication polling
+const MAX_AUTH_CHECK_ATTEMPTS = 20; // Maximum polling attempts
+const AUTH_CHECK_INTERVAL_MS = 500; // Poll every 500ms (total: 10 seconds)
+
 function CallbackPage() {
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth();
@@ -26,11 +30,11 @@ function CallbackPage() {
     }
 
     // Give the auth context time to process the callback
-    // Check every 500ms for up to 10 seconds (20 attempts)
-    if (checkAttempts < 20) {
+    // Check every AUTH_CHECK_INTERVAL_MS for up to 10 seconds (MAX_AUTH_CHECK_ATTEMPTS)
+    if (checkAttempts < MAX_AUTH_CHECK_ATTEMPTS) {
       const timer = setTimeout(() => {
         setCheckAttempts((prev) => prev + 1);
-      }, 500);
+      }, AUTH_CHECK_INTERVAL_MS);
       return () => clearTimeout(timer);
     } else {
       // After 10 seconds, if still not authenticated, show error

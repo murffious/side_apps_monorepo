@@ -405,15 +405,26 @@ export function handleCognitoCallback(): Promise<boolean> {
         // For this standalone frontend app without a backend, we're treating the code
         // as a simple auth indicator. This is acceptable for development/testing but
         // should be replaced with proper token exchange in production.
+        
+        // TODO: Add environment check to ensure this only runs in development
+        // if (process.env.NODE_ENV === 'production') { 
+        //   throw new Error('Direct code usage not allowed in production');
+        // }
+        
         console.log('Received authorization code from Cognito');
         authIntegration.setAuthTokenAsync(code as string).then(() => {
-          // remove code from URL to clean up
+          // Clean up URL while preserving non-OAuth query parameters
           try {
-            history.replaceState(
-              null,
-              '',
-              window.location.pathname
-            );
+            const url = new URL(window.location.href);
+            // Remove OAuth-specific parameters
+            url.searchParams.delete('code');
+            url.searchParams.delete('state');
+            url.searchParams.delete('error');
+            url.searchParams.delete('error_description');
+            
+            // Reconstruct URL with remaining query params
+            const newUrl = url.pathname + (url.search || '');
+            history.replaceState(null, '', newUrl);
           } catch (e) {}
           resolve(true);
         });
