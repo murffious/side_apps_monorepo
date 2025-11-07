@@ -1,5 +1,7 @@
 # ACM Certificate Verification - Quick Reference Card
 
+> **Security Note**: This reference contains specific certificate details for this deployment. When sharing or using as a template, replace the ARN and account ID with placeholders.
+
 ## Certificate Details
 - **ID**: `0f423483-d844-43c1-88eb-9c5a14ef9146`
 - **ARN**: `arn:aws:acm:us-east-1:588110339617:certificate/0f423483-d844-43c1-88eb-9c5a14ef9146`

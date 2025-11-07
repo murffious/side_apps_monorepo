@@ -1,5 +1,7 @@
 # ACM Certificate Verification Guide
 
+> **Note**: This guide contains specific certificate details for the trueorient.life domain. The AWS account ID and certificate ARN shown are specific to this deployment. When using this guide as a reference for other certificates, replace these values with your own.
+
 This guide helps you verify AWS ACM certificates that are stuck in "Pending validation" status.
 
 ## Current Certificate Status

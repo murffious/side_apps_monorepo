@@ -1,5 +1,7 @@
 # Namecheap DNS Setup for AWS ACM Certificate Validation
 
+> **Note**: This guide includes specific certificate details for trueorient.life. The ARN and account ID are specific to this deployment and should be replaced with your own values when using this as a reference.
+
 Quick guide for adding DNS records to Namecheap to verify your ACM certificate.
 
 ## Prerequisites

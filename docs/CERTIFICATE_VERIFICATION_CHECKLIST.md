@@ -1,5 +1,7 @@
 # Certificate Verification Checklist
 
+> **Note**: This checklist contains deployment-specific information including the AWS account ID and certificate ARN. These are specific to the trueorient.life certificate and should be replaced with your own values when using this as a template.
+
 Use this checklist while verifying your ACM certificate.
 
 ## Certificate Information
