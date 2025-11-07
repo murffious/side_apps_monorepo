@@ -66,7 +66,12 @@ function RouteComponent() {
 				setEntries(sorted);
 			} catch (error) {
 				console.error("Failed to load Let God Prevail entries:", error);
-				setSaveMessage("Failed to load entries. Please refresh.");
+				const errorMessage = error instanceof Error ? error.message : "Unknown error";
+				if (errorMessage.includes("Invalid or expired token")) {
+					setSaveMessage("⚠ Session expired. Please refresh the page and log in again.");
+				} else {
+					setSaveMessage(`Failed to load entries: ${errorMessage}`);
+				}
 			} finally {
 				setLoading(false);
 			}
@@ -113,8 +118,15 @@ function RouteComponent() {
 			resetForm();
 		} catch (error) {
 			console.error("Failed to save entry:", error);
-			setSaveMessage("Failed to save. Please try again.");
-			setTimeout(() => setSaveMessage(""), 3000);
+			const errorMessage = error instanceof Error ? error.message : "Unknown error";
+			if (errorMessage.includes("Invalid or expired token")) {
+				setSaveMessage("⚠ Session expired. Please refresh the page and log in again.");
+			} else if (errorMessage.includes("authentication token")) {
+				setSaveMessage("⚠ Authentication required. Please log in.");
+			} else {
+				setSaveMessage(`Failed to save: ${errorMessage}`);
+			}
+			setTimeout(() => setSaveMessage(""), 5000);
 		} finally {
 			setSubmitting(false);
 		}
@@ -131,8 +143,13 @@ function RouteComponent() {
 			setTimeout(() => setSaveMessage(""), 2000);
 		} catch (error) {
 			console.error("Failed to delete entry:", error);
-			setSaveMessage("Failed to delete. Please try again.");
-			setTimeout(() => setSaveMessage(""), 3000);
+			const errorMessage = error instanceof Error ? error.message : "Unknown error";
+			if (errorMessage.includes("Invalid or expired token")) {
+				setSaveMessage("⚠ Session expired. Please refresh the page and log in again.");
+			} else {
+				setSaveMessage(`Failed to delete: ${errorMessage}`);
+			}
+			setTimeout(() => setSaveMessage(""), 5000);
 		}
 	};
 

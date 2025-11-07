@@ -61,7 +61,12 @@ function RouteComponent() {
 				setEntries(fetchedEntries);
 			} catch (err) {
 				console.error("Error loading entries:", err);
-				setError(err instanceof Error ? err.message : "Failed to load entries");
+				const errorMessage = err instanceof Error ? err.message : "Failed to load entries";
+				if (errorMessage.includes("Invalid or expired token")) {
+					setError("⚠ Session expired. Please refresh the page and log in again.");
+				} else {
+					setError(errorMessage);
+				}
 			} finally {
 				setLoading(false);
 			}
@@ -101,7 +106,14 @@ function RouteComponent() {
 			});
 		} catch (err) {
 			console.error("Error creating entry:", err);
-			setError(err instanceof Error ? err.message : "Failed to save entry");
+			const errorMessage = err instanceof Error ? err.message : "Failed to save entry";
+			if (errorMessage.includes("Invalid or expired token")) {
+				setError("⚠ Session expired. Please refresh the page and log in again.");
+			} else if (errorMessage.includes("authentication token")) {
+				setError("⚠ Authentication required. Please log in.");
+			} else {
+				setError(errorMessage);
+			}
 		} finally {
 			setSubmitting(false);
 		}

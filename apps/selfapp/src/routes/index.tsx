@@ -197,8 +197,16 @@ function DailyLogForm() {
 
 			setTimeout(() => setSaveMessage(""), 3000);
 		} catch (error) {
-			setSaveMessage("Error saving entry. Please try again.");
 			console.error("Error saving log entry:", error);
+			const errorMessage = error instanceof Error ? error.message : "Unknown error";
+			if (errorMessage.includes("Invalid or expired token")) {
+				setSaveMessage("⚠ Session expired. Please refresh the page and log in again.");
+			} else if (errorMessage.includes("authentication token")) {
+				setSaveMessage("⚠ Authentication required. Please log in.");
+			} else {
+				setSaveMessage(`Error saving entry: ${errorMessage}`);
+			}
+			setTimeout(() => setSaveMessage(""), 5000);
 		} finally {
 			setLoading(false);
 		}
