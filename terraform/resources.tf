@@ -59,21 +59,6 @@ resource "aws_s3_bucket_policy" "frontend" {
   })
 }
 
-# ACM Certificate for Custom Domain
-resource "aws_acm_certificate" "domain" {
-  domain_name               = var.domain_name
-  subject_alternative_names = ["www.${var.domain_name}"]
-  validation_method         = "DNS"
-
-  lifecycle {
-    create_before_destroy = true
-  }
-
-  tags = {
-    Name = "${var.app_name}-certificate"
-  }
-}
-
 # CloudFront Distribution
 resource "aws_cloudfront_distribution" "frontend" {
   enabled             = true
