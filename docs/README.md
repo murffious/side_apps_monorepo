@@ -4,6 +4,19 @@ This directory contains comprehensive documentation for the Side Apps Monorepo p
 
 ## Certificate & Domain Setup
 
+### ✅ [Certificate Verification Checklist](./CERTIFICATE_VERIFICATION_CHECKLIST.md)
+**Step-by-step checklist to follow while verifying**
+
+Interactive checklist with:
+- Complete verification workflow
+- Checkboxes for each step
+- Troubleshooting section
+- Space for notes and timestamps
+
+**Use Case**: You want to follow along step-by-step with checkboxes
+
+---
+
 ### 🚀 [Certificate Quick Reference](./CERTIFICATE_QUICK_REFERENCE.md)
 **One-page guide for immediate action**
 
