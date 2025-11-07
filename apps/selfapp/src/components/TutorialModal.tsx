@@ -88,6 +88,37 @@ export function TutorialModal() {
 							</li>
 						</ul>
 					</div>
+
+					<div className="pt-4 border-t">
+						<h3 className="font-semibold mb-2">The Power of Character</h3>
+						<div className="space-y-3">
+							<blockquote className="pl-4 border-l-2 border-blue-500">
+								<p className="text-sm text-muted-foreground italic mb-2">
+									"Day by day, hour by hour, man builds the character that will
+									determine his place and standing among his associates
+									throughout the ages. More important than riches, more enduring
+									than fame, more precious than happiness is the possession of a
+									noble character. Truly it has been said that the grand aim of
+									man's creation is the development of a grand character, and
+									grand character is by its very nature the product of a
+									probationary discipline."
+								</p>
+							</blockquote>
+							<blockquote className="pl-4 border-l-2 border-purple-500">
+								<p className="text-sm text-muted-foreground italic">
+									"What is the crowning glory of man in this earth so far as his
+									individual achievement is concerned? It is character—character
+									developed through obedience to the laws of life as revealed
+									through the Gospel of Jesus Christ, who came that we might
+									have life and have it more abundantly. Man's chief concern in
+									life should not be the acquiring of gold nor fame nor material
+									possessions. It should not be the development of physical
+									prowess nor of intellectual strength, but his aim, the highest
+									in life, should be the development of a Christlike character."
+								</p>
+							</blockquote>
+						</div>
+					</div>
 				</div>
 			</DialogContent>
 		</Dialog>
