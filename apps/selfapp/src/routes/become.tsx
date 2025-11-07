@@ -21,7 +21,7 @@ import {
 	TrendingUp,
 } from "lucide-react";
 import type React from "react";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 export const Route = createFileRoute("/become")({
 	component: RouteComponent,
@@ -48,6 +48,9 @@ function RouteComponent() {
 		serviceBlessedOthers: false,
 		reflection: "",
 	});
+
+	// Memoize today's date to avoid recreating on every render
+	const today = useMemo(() => new Date().toISOString().split("T")[0], []);
 
 	// Check if entry exists for the current date
 	useEffect(() => {
@@ -88,7 +91,6 @@ function RouteComponent() {
 
 	const handleDateChange = (newDate: string) => {
 		// Prevent future dates
-		const today = new Date().toISOString().split("T")[0];
 		if (newDate > today) {
 			setError("Cannot select future dates");
 			setTimeout(() => setError(null), 3000);
@@ -349,7 +351,7 @@ function RouteComponent() {
 								<input
 									type="date"
 									value={currentEntry.date}
-									max={new Date().toISOString().split("T")[0]}
+									max={today}
 									onChange={(e) => handleDateChange(e.target.value)}
 									className="w-full p-2 border rounded"
 									required

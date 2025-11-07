@@ -40,7 +40,7 @@ import {
 	TrendingUp,
 	User,
 } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 
 export const Route = createFileRoute("/")({
 	component: Index,
@@ -59,12 +59,12 @@ function Index() {
 	}, []);
 
 	// Update URL when tab changes
-	const handleTabChange = (tab: string) => {
+	const handleTabChange = useCallback((tab: string) => {
 		setActiveTab(tab);
 		const url = new URL(window.location.href);
 		url.searchParams.set("tab", tab);
 		window.history.replaceState({}, "", url.toString());
-	};
+	}, []);
 
 	// Make handleTabChange available globally for SideNav
 	useEffect(() => {
@@ -110,6 +110,9 @@ function DailyLogForm() {
 	const [saveMessage, setSaveMessage] = useState("");
 	const [existingEntryId, setExistingEntryId] = useState<string | null>(null);
 
+	// Memoize today's date to avoid recreating on every render
+	const today = useMemo(() => new Date().toISOString().split("T")[0], []);
+
 	// Check if entry exists for the current date
 	useEffect(() => {
 		const checkExistingEntry = async () => {
@@ -138,7 +141,6 @@ function DailyLogForm() {
 
 	const handleDateChange = (newDate: string) => {
 		// Prevent future dates
-		const today = new Date().toISOString().split("T")[0];
 		if (newDate > today) {
 			setSaveMessage("Cannot select future dates");
 			setTimeout(() => setSaveMessage(""), 3000);
@@ -254,7 +256,7 @@ function DailyLogForm() {
 						id="date"
 						type="date"
 						value={date}
-						max={new Date().toISOString().split("T")[0]}
+						max={today}
 						onChange={(e) => handleDateChange(e.target.value)}
 					/>
 				</div>
