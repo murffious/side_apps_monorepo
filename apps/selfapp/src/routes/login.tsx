@@ -45,48 +45,34 @@ function LoginPage() {
     setError('');
     setLoading(true);
 
-    if (cognitoConfigured) {
-      // For Cognito, redirect immediately - authentication happens via callback
-      await login(loginEmail, loginPassword);
-      // This won't return for Cognito (redirects happen)
-      return;
-    }
-
-    const success = await login(loginEmail, loginPassword);
-    if (success) {
-      navigate({ to: '/' });
-    } else {
-      setError('Invalid email or password');
-    }
-    setLoading(false);
-  };
+		const success = await login(loginEmail, loginPassword);
+		if (success) {
+			navigate({ to: "/" });
+		} else {
+			setError("Invalid email or password");
+		}
+		setLoading(false);
+	};
 
   const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
     setLoading(true);
 
-    if (signupPassword.length < 6) {
-      setError('Password must be at least 6 characters');
-      setLoading(false);
-      return;
-    }
+		if (signupPassword.length < 8) {
+			setError("Password must be at least 8 characters");
+			setLoading(false);
+			return;
+		}
 
-    if (cognitoConfigured) {
-      // For Cognito, redirect immediately - authentication happens via callback
-      await signup(signupEmail, signupPassword, signupName);
-      // This won't return for Cognito (redirects happen)
-      return;
-    }
-
-    const success = await signup(signupEmail, signupPassword, signupName);
-    if (success) {
-      navigate({ to: '/' });
-    } else {
-      setError('Email already exists');
-    }
-    setLoading(false);
-  };
+		const success = await signup(signupEmail, signupPassword, signupName);
+		if (success) {
+			navigate({ to: "/" });
+		} else {
+			setError("Email already exists or signup failed");
+		}
+		setLoading(false);
+	};
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-zinc-100 to-zinc-200 dark:from-zinc-950 dark:to-zinc-900 flex items-center justify-center p-4">
@@ -152,62 +138,62 @@ function LoginPage() {
             </Card>
           </TabsContent>
 
-          <TabsContent value="signup">
-            <Card>
-              <CardHeader>
-                <CardTitle>Create Account</CardTitle>
-                <CardDescription>
-                  Sign up to start tracking your performance
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <form onSubmit={handleSignup} className="space-y-4">
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-name">Name</Label>
-                    <Input
-                      id="signup-name"
-                      type="text"
-                      placeholder="John Doe"
-                      value={signupName}
-                      onChange={(e) => setSignupName(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-email">Email</Label>
-                    <Input
-                      id="signup-email"
-                      type="email"
-                      placeholder="you@example.com"
-                      value={signupEmail}
-                      onChange={(e) => setSignupEmail(e.target.value)}
-                      required
-                    />
-                  </div>
-                  <div className="space-y-2">
-                    <Label htmlFor="signup-password">Password</Label>
-                    <Input
-                      id="signup-password"
-                      type="password"
-                      placeholder="••••••••"
-                      value={signupPassword}
-                      onChange={(e) => setSignupPassword(e.target.value)}
-                      required
-                    />
-                    <p className="text-xs app-text-muted">
-                      Must be at least 6 characters
-                    </p>
-                  </div>
-                  {error && <p className="text-sm app-text-muted">{error}</p>}
-                  <Button type="submit" className="w-full" disabled={loading}>
-                    {loading ? 'Creating account...' : 'Sign Up'}
-                  </Button>
-                </form>
-              </CardContent>
-            </Card>
-          </TabsContent>
-        </Tabs>
-      </div>
-    </div>
-  );
+					<TabsContent value="signup">
+						<Card>
+							<CardHeader>
+								<CardTitle>Create Account</CardTitle>
+								<CardDescription>
+									Sign up to start tracking your performance
+								</CardDescription>
+							</CardHeader>
+							<CardContent>
+								<form onSubmit={handleSignup} className="space-y-4">
+									<div className="space-y-2">
+										<Label htmlFor="signup-name">Name</Label>
+										<Input
+											id="signup-name"
+											type="text"
+											placeholder="John Doe"
+											value={signupName}
+											onChange={(e) => setSignupName(e.target.value)}
+											required
+										/>
+									</div>
+									<div className="space-y-2">
+										<Label htmlFor="signup-email">Email</Label>
+										<Input
+											id="signup-email"
+											type="email"
+											placeholder="you@example.com"
+											value={signupEmail}
+											onChange={(e) => setSignupEmail(e.target.value)}
+											required
+										/>
+									</div>
+									<div className="space-y-2">
+										<Label htmlFor="signup-password">Password</Label>
+										<Input
+											id="signup-password"
+											type="password"
+											placeholder="••••••••"
+											value={signupPassword}
+											onChange={(e) => setSignupPassword(e.target.value)}
+											required
+										/>
+										<p className="text-xs app-text-muted">
+											Must be at least 8 characters with uppercase, lowercase, numbers, and symbols
+										</p>
+									</div>
+									{error && <p className="text-sm app-text-muted">{error}</p>}
+									<Button type="submit" className="w-full" disabled={loading}>
+										{loading ? "Creating account..." : "Sign Up"}
+									</Button>
+								</form>
+							</CardContent>
+						</Card>
+					</TabsContent>
+				</Tabs>
+			</div>
+		</div>
+	);
 }

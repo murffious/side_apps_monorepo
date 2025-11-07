@@ -1,10 +1,12 @@
 import {
+	authenticateWithPassword,
 	getAuthTokenAsync,
 	handleCognitoCallback,
 	initializeAuthIntegration,
 	isCognitoConfigured,
 	loginWithCognito,
 	setAuthTokenAsync,
+	signUpWithPassword,
 } from "@/lib/auth-integration";
 import { decodeJWT } from "@/lib/jwt-utils";
 import {
@@ -47,16 +49,24 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 			if (cognito) {
 				// If tokens present in URL from hosted UI, parse and persist them
-				await handleCognitoCallback();
+				const success = await handleCognitoCallback();
+				console.log("Cognito callback handled:", success);
 				const token = await getAuthTokenAsync();
 				if (token) {
 					try {
 						const payload = decodeJWT(token);
+						console.log("Decoded JWT payload:", payload);
 						if (payload) {
 							const newUser: User = {
-								id: payload.sub || payload.username || "",
-								email: payload.email || payload.username || "",
-								name: payload.name || payload.email || "",
+								id: payload.sub || payload.username || payload.user_id || "",
+								email:
+									payload.email || payload.username || payload["cognito:username"] || "",
+								name:
+									payload.name ||
+									payload.given_name ||
+									payload.email ||
+									payload["cognito:username"] ||
+									"",
 							};
 							setUser(newUser);
 							localStorage.setItem("user", JSON.stringify(newUser));
@@ -71,10 +81,44 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	}, []);
 
 	const login = async (email: string, password: string): Promise<boolean> => {
-		// If Cognito is configured, redirect to hosted UI (signup/signin handled there)
+		// If Cognito is configured, use password authentication API
 		if (cognitoEnabled) {
-			loginWithCognito();
-			return true; // This won't be used since we redirect
+			const tokens = await authenticateWithPassword(email, password);
+			if (tokens && (tokens.idToken || tokens.accessToken)) {
+				const token = tokens.idToken || tokens.accessToken;
+				await setAuthTokenAsync(token as string);
+
+				// Decode token and set user
+				// Security Note: User profile data (id, email, name) is stored in localStorage
+				// for session persistence. The actual JWT tokens are stored separately.
+				// For higher security requirements, consider using httpOnly cookies with a backend.
+				try {
+					const payload = decodeJWT(token as string);
+					if (payload) {
+						const newUser: User = {
+							id: payload.sub || payload.username || payload.user_id || "",
+							email:
+								payload.email ||
+								payload.username ||
+								payload["cognito:username"] ||
+								"",
+							name:
+								payload.name ||
+								payload.given_name ||
+								payload.email ||
+								payload["cognito:username"] ||
+								"",
+						};
+						setUser(newUser);
+						localStorage.setItem("user", JSON.stringify(newUser));
+					}
+				} catch (e) {
+					console.error("Failed to parse JWT payload", e);
+				}
+
+				return true;
+			}
+			return false;
 		}
 
 		// Local fallback (existing behavior)
@@ -102,9 +146,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		name: string,
 	): Promise<boolean> => {
 		if (cognitoEnabled) {
-			// Use hosted UI for signup as well
-			loginWithCognito();
-			return true;
+			// Use Cognito signup API
+			const success = await signUpWithPassword(email, password, name);
+			if (success) {
+				// Note: After signup, the user may need to confirm their email
+				// If auto-verification is disabled, login will fail until confirmed
+				// For better UX, you should check the signup response and show
+				// a confirmation screen instead of auto-login
+				// For now, we'll attempt login which will work if auto-verification is enabled
+				const loginSuccess = await login(email, password);
+				if (!loginSuccess) {
+					// Signup succeeded but login failed - likely needs email confirmation
+					console.log(
+						"Signup successful but login failed - email confirmation may be required",
+					);
+					// In a production app, show a "Please check your email" message
+				}
+				return true;
+			}
+			return false;
 		}
 
 		const users = JSON.parse(localStorage.getItem("users") || "[]");
