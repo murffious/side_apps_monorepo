@@ -19,7 +19,11 @@ async function generateCodeVerifier(): Promise<string> {
 }
 
 function base64UrlEncode(buffer: Uint8Array): string {
-	const base64 = btoa(String.fromCharCode(...buffer));
+	let binary = '';
+	for (let i = 0; i < buffer.length; i++) {
+		binary += String.fromCharCode(buffer[i]);
+	}
+	const base64 = btoa(binary);
 	return base64.replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 }
 
