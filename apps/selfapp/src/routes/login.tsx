@@ -60,7 +60,7 @@ function LoginPage() {
 		setLoading(true);
 
 		if (signupPassword.length < 8) {
-			setError("Password must be at least 8 characters with uppercase, lowercase, numbers, and symbols");
+			setError("Password must be at least 8 characters");
 			setLoading(false);
 			return;
 		}
