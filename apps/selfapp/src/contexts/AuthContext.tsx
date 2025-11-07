@@ -147,10 +147,20 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 			// Use Cognito signup API
 			const success = await signUpWithPassword(email, password, name);
 			if (success) {
-				// After signup, the user may need to confirm their email
-				// For now, we'll try to log them in immediately
-				// In production, you'd want to show a confirmation screen
-				return await login(email, password);
+				// Note: After signup, the user may need to confirm their email
+				// If auto-verification is disabled, login will fail until confirmed
+				// For better UX, you should check the signup response and show
+				// a confirmation screen instead of auto-login
+				// For now, we'll attempt login which will work if auto-verification is enabled
+				const loginSuccess = await login(email, password);
+				if (!loginSuccess) {
+					// Signup succeeded but login failed - likely needs email confirmation
+					console.log(
+						"Signup successful but login failed - email confirmation may be required",
+					);
+					// In a production app, show a "Please check your email" message
+				}
+				return loginSuccess;
 			}
 			return false;
 		}

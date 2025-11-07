@@ -319,6 +319,8 @@ async function authenticateWithPassword(
 		}
 
 		// Use Cognito's InitiateAuth API with USER_PASSWORD_AUTH flow
+		// Note: This requires the Cognito User Pool Client to have USER_PASSWORD_AUTH
+		// enabled in explicit_auth_flows (configured in Terraform)
 		const endpoint = `https://cognito-idp.${region}.amazonaws.com/`;
 
 		const requestBody = {
@@ -432,7 +434,7 @@ async function signUpWithPassword(
 
 		const requestBody = {
 			ClientId: clientId,
-			Username: email, // Use email as username since we configured username_attributes = ["email"]
+			Username: email, // Using email as username (requires Cognito User Pool configured with username_attributes = ["email"] in Terraform)
 			Password: password,
 			UserAttributes: [
 				{
