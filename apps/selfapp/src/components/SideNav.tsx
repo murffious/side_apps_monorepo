@@ -13,6 +13,8 @@ import type React from "react";
 type Props = {
 	active?: string;
 	onChange?: (v: string) => void;
+	mobileMenuOpen?: boolean;
+	onMobileMenuClose?: () => void;
 };
 
 const items: {
@@ -71,7 +73,12 @@ const items: {
 	},
 ];
 
-export default function SideNav({ active, onChange }: Props) {
+export default function SideNav({
+	active,
+	onChange,
+	mobileMenuOpen,
+	onMobileMenuClose,
+}: Props) {
 	const location = useLocation();
 	const navigate = useNavigate();
 
@@ -93,6 +100,11 @@ export default function SideNav({ active, onChange }: Props) {
 	const currentActive = getActive();
 
 	const handleClick = (item: (typeof items)[0]) => {
+		// Close mobile menu when navigating
+		if (onMobileMenuClose) {
+			onMobileMenuClose();
+		}
+
 		if (item.path === "/") {
 			// For main page tabs (log, dashboard, insights)
 			if (onChange) {
@@ -116,43 +128,75 @@ export default function SideNav({ active, onChange }: Props) {
 	};
 
 	return (
-		<nav className="hidden md:block pr-6">
-			<div className="sticky top-6">
-				<div className="mb-6 px-3">
-					<h2 className="text-xl font-semibold app-text-strong">Journal</h2>
-					<p className="text-xs app-text-subtle">
-						Moments that shape who you are
-					</p>
-				</div>
+		<>
+			{/* Mobile Overlay */}
+			{mobileMenuOpen && (
+				<div
+					className="fixed inset-0 bg-black/50 z-40 md:hidden"
+					onClick={onMobileMenuClose}
+					onKeyDown={(e) => {
+						if (e.key === "Escape" && onMobileMenuClose) {
+							onMobileMenuClose();
+						}
+					}}
+					role="button"
+					tabIndex={0}
+					aria-label="Close menu"
+				/>
+			)}
 
-				<ul className="space-y-2">
-					{items.map((it) => {
-						const isActive = currentActive === it.id;
-						return (
-							<li key={it.id}>
-								<button
-									onClick={() => handleClick(it)}
-									className={`flex items-center w-full gap-3 px-3 py-2 rounded-md text-left transition-colors text-sm font-medium ${
-										isActive
-											? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow"
-											: "app-text-strong hover:app-bg-surface-alt"
-									}`}
-								>
-									<span className="opacity-90">{it.icon}</span>
-									<span className="flex-1">{it.label}</span>
-								</button>
-							</li>
-						);
-					})}
-				</ul>
+			{/* Navigation Menu */}
+			<nav
+				className={`
+					fixed md:static inset-y-0 left-0 z-50 
+					transform transition-transform duration-300 ease-in-out
+					md:transform-none
+					${mobileMenuOpen ? "translate-x-0" : "-translate-x-full md:translate-x-0"}
+					w-64 md:w-auto
+					bg-[var(--bg-app)] md:bg-transparent
+					shadow-xl md:shadow-none
+					p-6 md:p-0 md:pr-6
+					overflow-y-auto
+				`}
+			>
+				<div className="md:sticky md:top-6">
+					<div className="mb-6 px-3">
+						<h2 className="text-xl font-semibold app-text-strong">Journal</h2>
+						<p className="text-xs app-text-subtle">
+							Moments that shape who you are
+						</p>
+					</div>
 
-				<div className="mt-6 px-3">
-					<p className="text-xs app-text-subtle font-medium">Quick tip</p>
-					<p className="text-xs app-text-subtle mt-1">
-						Log a moment in under 15s — review weekly patterns.
-					</p>
+					<ul className="space-y-2">
+						{items.map((it) => {
+							const isActive = currentActive === it.id;
+							return (
+								<li key={it.id}>
+									<button
+										type="button"
+										onClick={() => handleClick(it)}
+										className={`flex items-center w-full gap-3 px-3 py-2 rounded-md text-left transition-colors text-sm font-medium ${
+											isActive
+												? "bg-gradient-to-r from-blue-600 to-blue-500 text-white shadow"
+												: "app-text-strong hover:app-bg-surface-alt"
+										}`}
+									>
+										<span className="opacity-90">{it.icon}</span>
+										<span className="flex-1">{it.label}</span>
+									</button>
+								</li>
+							);
+						})}
+					</ul>
+
+					<div className="mt-6 px-3">
+						<p className="text-xs app-text-subtle font-medium">Quick tip</p>
+						<p className="text-xs app-text-subtle mt-1">
+							Log a moment in under 15s — review weekly patterns.
+						</p>
+					</div>
 				</div>
-			</div>
-		</nav>
+			</nav>
+		</>
 	);
 }
