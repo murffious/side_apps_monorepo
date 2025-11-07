@@ -162,7 +162,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 					);
 					// In a production app, show a "Please check your email" message
 				}
-				return loginSuccess;
+				return true;
 			}
 			return false;
 		}
