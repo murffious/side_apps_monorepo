@@ -16,6 +16,7 @@ import {
 	updateSuccessDefinition,
 	type SuccessDefinition,
 } from "@/lib/api-client-entities";
+import { getMessageClassName } from "@/lib/ui-utils";
 import { createFileRoute } from "@tanstack/react-router";
 import {
 	BookOpen,
@@ -573,13 +574,11 @@ function RouteComponent() {
 							)}
 						</Button>
 						{saveMessage && (
-							<p
-								className={`text-sm text-center ${saveMessage.includes("Failed") ? "text-red-600" : "app-text-strong"}`}
-							>
+							<p className={getMessageClassName(saveMessage)}>
 								{saveMessage}
 							</p>
 						)}
-						{definition && definition.updatedAt && (
+						{definition?.updatedAt && (
 							<p className="text-xs text-center app-text-muted">
 								Last updated:{" "}
 								{new Date(definition.updatedAt).toLocaleDateString()}

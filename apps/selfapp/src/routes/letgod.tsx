@@ -16,6 +16,7 @@ import {
 	listLetGodEntries,
 	type LetGodEntry,
 } from "@/lib/api-client-entities";
+import { getMessageClassName } from "@/lib/ui-utils";
 import { createFileRoute } from "@tanstack/react-router";
 import {
 	CheckCircle,
@@ -403,9 +404,7 @@ function RouteComponent() {
 							</Button>
 						</div>
 						{saveMessage && (
-							<p
-								className={`text-sm text-center font-medium ${saveMessage.includes("Failed") ? "text-red-600" : "text-blue-600 dark:text-blue-400"}`}
-							>
+							<p className={getMessageClassName(saveMessage, "text-sm text-center font-medium", "text-red-600", "text-blue-600 dark:text-blue-400")}>
 								{saveMessage}
 							</p>
 						)}

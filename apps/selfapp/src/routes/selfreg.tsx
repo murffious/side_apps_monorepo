@@ -15,6 +15,7 @@ import {
 	listSelfRegEntries,
 	type SelfRegEntry,
 } from "@/lib/api-client-entities";
+import { getMessageClassName } from "@/lib/ui-utils";
 import { createFileRoute } from "@tanstack/react-router";
 import { Check, Loader2, Sparkles, Trash2 } from "lucide-react";
 import type React from "react";
@@ -252,11 +253,7 @@ function RouteComponent() {
 							</Button>
 						</div>
 						{saveMessage && (
-							<p
-								className={`text-sm ${saveMessage.includes("Failed") ? "text-red-600" : "app-text-strong"}`}
-							>
-								{saveMessage}
-							</p>
+							<p className={getMessageClassName(saveMessage)}>{saveMessage}</p>
 						)}
 					</form>
 				</CardContent>

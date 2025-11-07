@@ -223,7 +223,10 @@ async function updateEntity(userId, entryId, updateData) {
   const now = new Date().toISOString();
   
   // Remove fields that shouldn't be updated
-  const { userId: _, entryId: __, createdAt: ___, ...allowedUpdates } = updateData;
+  delete updateData.userId;
+  delete updateData.entryId;
+  delete updateData.createdAt;
+  delete updateData.entityType;
   
   // Build update expression dynamically
   const updateFields = [];
@@ -232,12 +235,12 @@ async function updateEntity(userId, entryId, updateData) {
     ':updatedAt': now,
   };
 
-  Object.keys(allowedUpdates).forEach(field => {
-    if (allowedUpdates[field] !== undefined) {
+  Object.keys(updateData).forEach(field => {
+    if (updateData[field] !== undefined) {
       const placeholder = `:${field}`;
       updateFields.push(`#${field} = ${placeholder}`);
       expressionAttributeNames[`#${field}`] = field;
-      expressionAttributeValues[placeholder] = allowedUpdates[field];
+      expressionAttributeValues[placeholder] = updateData[field];
     }
   });
 
