@@ -6,6 +6,10 @@ on:
       - main
   workflow_dispatch:
 
+concurrency:
+  group: deploy-become-${{ github.ref }}
+  cancel-in-progress: false
+
 env:
   AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
   NODE_VERSION: '20.x'
@@ -165,50 +169,38 @@ jobs:
 
       - name: Check and clear stale Terraform locks
         run: |
-          set +e  # Don't exit on error
+          set -e  # Exit on error
           echo "Checking for stale Terraform state locks..."
           
           # Construct the state lock key from bucket and key
           STATE_LOCK_KEY="${TF_STATE_BUCKET}/terraform.tfstate"
           
-          # Try to initialize terraform first to check lock status
-          terraform init -input=false
-          INIT_EXIT_CODE=$?
+          # Proactively check for any existing locks in DynamoDB
+          echo "Checking DynamoDB for existing locks..."
+          LOCK_INFO=$(aws dynamodb get-item \
+            --table-name "${TF_STATE_LOCK_TABLE}" \
+            --key "{\"LockID\":{\"S\":\"${STATE_LOCK_KEY}\"}}" \
+            --output json 2>/dev/null || echo "{}")
           
-          if [ $INIT_EXIT_CODE -ne 0 ]; then
-            echo "Terraform init failed, checking if it's due to a lock..."
+          # Check if a lock exists
+          if echo "$LOCK_INFO" | grep -q '"Item"'; then
+            echo "⚠️  Found existing lock in DynamoDB"
+            echo "$LOCK_INFO" | grep -o '"Info":{"S":"[^"]*"}' || true
             
-            # Get the lock ID from DynamoDB if it exists
-            LOCK_ID=$(aws dynamodb get-item \
+            # Always clear the lock - it's likely stale from a previous run
+            echo "Clearing lock from DynamoDB..."
+            aws dynamodb delete-item \
               --table-name "${TF_STATE_LOCK_TABLE}" \
-              --key "{\"LockID\":{\"S\":\"${STATE_LOCK_KEY}\"}}" \
-              --query 'Item.LockID.S' \
-              --output text 2>/dev/null)
+              --key "{\"LockID\":{\"S\":\"${STATE_LOCK_KEY}\"}}"
             
-            if [ ! -z "$LOCK_ID" ] && [ "$LOCK_ID" != "None" ]; then
-              echo "Found stale lock with ID: $LOCK_ID"
-              echo "Attempting to force-unlock..."
-              
-              # Force unlock using terraform
-              terraform force-unlock -force "$LOCK_ID" || true
-              
-              # If terraform force-unlock fails, try deleting the lock from DynamoDB directly
-              echo "Clearing lock from DynamoDB..."
-              aws dynamodb delete-item \
-                --table-name "${TF_STATE_LOCK_TABLE}" \
-                --key "{\"LockID\":{\"S\":\"${STATE_LOCK_KEY}\"}}" || true
-              
-              echo "✅ Stale lock cleared"
-            else
-              echo "No lock found in DynamoDB, error may be due to other issues"
-            fi
+            echo "✅ Stale lock cleared"
+            
+            # Wait a moment for the delete to propagate
+            sleep 2
           else
-            echo "✅ No stale locks detected"
+            echo "✅ No existing locks found in DynamoDB"
           fi
-          
-          set -e  # Re-enable exit on error
         working-directory: ./terraform
-        continue-on-error: true
 
       - name: Terraform Init
         run: terraform init
