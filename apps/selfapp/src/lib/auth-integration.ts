@@ -716,7 +716,7 @@ export function handleCognitoCallback(): Promise<boolean> {
 					.then((tokens) => {
 						if (!tokens || (!tokens.id_token && !tokens.access_token)) {
 							console.error("Token exchange failed");
-							return resolve(false);
+							throw new Error("Token exchange failed");
 						}
 
 						// Use id_token (contains user info) or access_token as fallback
