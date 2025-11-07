@@ -108,6 +108,21 @@ function DailyLogForm() {
 	const [needsImprovement, setNeedsImprovement] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [saveMessage, setSaveMessage] = useState("");
+	const [existingEntryId, setExistingEntryId] = useState<string | null>(null);
+
+	// Check if entry exists for the current date
+	useEffect(() => {
+		const checkExistingEntry = async () => {
+			try {
+				const existingEntries = await listDailyLogs();
+				const existingForDate = existingEntries.find((e) => e.date === date);
+				setExistingEntryId(existingForDate?.entryId || null);
+			} catch (error) {
+				console.error("Error checking existing entry:", error);
+			}
+		};
+		checkExistingEntry();
+	}, [date]);
 
 	const handleGoalChange = (index: number, value: string) => {
 		const newGoals = [...goals];
@@ -119,6 +134,17 @@ function DailyLogForm() {
 		const newStrengths = [...strengths];
 		newStrengths[index] = value;
 		setStrengths(newStrengths);
+	};
+
+	const handleDateChange = (newDate: string) => {
+		// Prevent future dates
+		const today = new Date().toISOString().split("T")[0];
+		if (newDate > today) {
+			setSaveMessage("Cannot select future dates");
+			setTimeout(() => setSaveMessage(""), 3000);
+			return;
+		}
+		setDate(newDate);
 	};
 
 	const handleSubmit = async () => {
@@ -227,7 +253,8 @@ function DailyLogForm() {
 						id="date"
 						type="date"
 						value={date}
-						onChange={(e) => setDate(e.target.value)}
+						max={new Date().toISOString().split("T")[0]}
+						onChange={(e) => handleDateChange(e.target.value)}
 					/>
 				</div>
 
@@ -421,13 +448,15 @@ function DailyLogForm() {
 								<Loader2 className="mr-2 h-4 w-4 animate-spin" />
 								Saving...
 							</>
+						) : existingEntryId ? (
+							"Update Entry"
 						) : (
 							"Save Entry"
 						)}
 					</Button>
 					{saveMessage && (
 						<p
-							className={`text-sm text-center ${saveMessage.includes("Error") ? "text-red-600" : "text-green-600"}`}
+							className={`text-sm text-center ${saveMessage.includes("Error") || saveMessage.includes("Cannot") ? "text-red-600" : "text-green-600"}`}
 						>
 							{saveMessage}
 						</p>

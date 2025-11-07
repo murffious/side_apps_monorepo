@@ -33,6 +33,7 @@ function RouteComponent() {
 	const [loading, setLoading] = useState(true);
 	const [error, setError] = useState<string | null>(null);
 	const [submitting, setSubmitting] = useState(false);
+	const [existingEntryForDate, setExistingEntryForDate] = useState<Entry | null>(null);
 	const [currentEntry, setCurrentEntry] = useState<
 		Omit<Entry, "userId" | "entryId" | "createdAt" | "updatedAt">
 	>({
@@ -46,6 +47,12 @@ function RouteComponent() {
 		serviceBlessedOthers: false,
 		reflection: "",
 	});
+
+	// Check if entry exists for the current date
+	useEffect(() => {
+		const existing = entries.find((e) => e.date === currentEntry.date);
+		setExistingEntryForDate(existing || null);
+	}, [currentEntry.date, entries]);
 
 	// Load entries from API
 	useEffect(() => {
@@ -77,6 +84,20 @@ function RouteComponent() {
 		loadEntries();
 	}, [isAuthenticated]);
 
+	const handleDateChange = (newDate: string) => {
+		// Prevent future dates
+		const today = new Date().toISOString().split("T")[0];
+		if (newDate > today) {
+			setError("Cannot select future dates");
+			setTimeout(() => setError(null), 3000);
+			return;
+		}
+		setCurrentEntry({
+			...currentEntry,
+			date: newDate,
+		});
+	};
+
 	const handleSubmit = async (e: React.FormEvent) => {
 		e.preventDefault();
 
@@ -89,10 +110,25 @@ function RouteComponent() {
 			setSubmitting(true);
 			setError(null);
 
-			const newEntry = await apiClient.createEntry(currentEntry);
+			let savedEntry: Entry;
 
-			// Add to local state
-			setEntries([newEntry, ...entries]);
+			// Check if we're updating an existing entry for this date
+			if (existingEntryForDate && existingEntryForDate.entryId) {
+				savedEntry = await apiClient.updateEntry(
+					existingEntryForDate.entryId,
+					currentEntry,
+				);
+				// Update in local state
+				setEntries(
+					entries.map((e) =>
+						e.entryId === existingEntryForDate.entryId ? savedEntry : e,
+					),
+				);
+			} else {
+				savedEntry = await apiClient.createEntry(currentEntry);
+				// Add to local state
+				setEntries([savedEntry, ...entries]);
+			}
 
 			// Reset form
 			setCurrentEntry({
@@ -310,12 +346,8 @@ function RouteComponent() {
 								<input
 									type="date"
 									value={currentEntry.date}
-									onChange={(e) =>
-										setCurrentEntry({
-											...currentEntry,
-											date: e.target.value,
-										})
-									}
+									max={new Date().toISOString().split("T")[0]}
+									onChange={(e) => handleDateChange(e.target.value)}
 									className="w-full p-2 border rounded"
 									required
 								/>
@@ -462,6 +494,8 @@ function RouteComponent() {
 									<Loader2 className="w-4 h-4 animate-spin" />
 									Saving...
 								</>
+							) : existingEntryForDate ? (
+								"Update Progress"
 							) : (
 								"Record Progress"
 							)}
