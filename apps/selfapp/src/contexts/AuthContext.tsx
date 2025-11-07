@@ -1,10 +1,12 @@
 import {
+	authenticateWithPassword,
 	getAuthTokenAsync,
 	handleCognitoCallback,
 	initializeAuthIntegration,
 	isCognitoConfigured,
 	loginWithCognito,
 	setAuthTokenAsync,
+	signUpWithPassword,
 } from "@/lib/auth-integration";
 import { decodeJWT } from "@/lib/jwt-utils";
 import {
@@ -80,10 +82,41 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 	}, []);
 
 	const login = async (email: string, password: string): Promise<boolean> => {
-		// If Cognito is configured, redirect to hosted UI (signup/signin handled there)
+		// If Cognito is configured, use password authentication API
 		if (cognitoEnabled) {
-			loginWithCognito();
-			return true; // This won't be used since we redirect
+			const tokens = await authenticateWithPassword(email, password);
+			if (tokens && (tokens.idToken || tokens.accessToken)) {
+				const token = tokens.idToken || tokens.accessToken;
+				await setAuthTokenAsync(token as string);
+
+				// Decode token and set user
+				try {
+					const payload = decodeJWT(token as string);
+					if (payload) {
+						const newUser: User = {
+							id: payload.sub || payload.username || payload.user_id || "",
+							email:
+								payload.email ||
+								payload.username ||
+								payload["cognito:username"] ||
+								"",
+							name:
+								payload.name ||
+								payload.given_name ||
+								payload.email ||
+								payload["cognito:username"] ||
+								"",
+						};
+						setUser(newUser);
+						localStorage.setItem("user", JSON.stringify(newUser));
+					}
+				} catch (e) {
+					console.error("Failed to parse JWT payload", e);
+				}
+
+				return true;
+			}
+			return false;
 		}
 
 		// Local fallback (existing behavior)
@@ -111,9 +144,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		name: string,
 	): Promise<boolean> => {
 		if (cognitoEnabled) {
-			// Use hosted UI for signup as well
-			loginWithCognito();
-			return true;
+			// Use Cognito signup API
+			const success = await signUpWithPassword(email, password, name);
+			if (success) {
+				// After signup, the user may need to confirm their email
+				// For now, we'll try to log them in immediately
+				// In production, you'd want to show a confirmation screen
+				return await login(email, password);
+			}
+			return false;
 		}
 
 		const users = JSON.parse(localStorage.getItem("users") || "[]");

@@ -45,13 +45,6 @@ function LoginPage() {
 		setError("");
 		setLoading(true);
 
-		if (cognitoConfigured) {
-			// For Cognito, redirect immediately - authentication happens via callback
-			await login(loginEmail, loginPassword);
-			// This won't return for Cognito (redirects happen)
-			return;
-		}
-
 		const success = await login(loginEmail, loginPassword);
 		if (success) {
 			navigate({ to: "/" });
@@ -72,18 +65,11 @@ function LoginPage() {
 			return;
 		}
 
-		if (cognitoConfigured) {
-			// For Cognito, redirect immediately - authentication happens via callback
-			await signup(signupEmail, signupPassword, signupName);
-			// This won't return for Cognito (redirects happen)
-			return;
-		}
-
 		const success = await signup(signupEmail, signupPassword, signupName);
 		if (success) {
 			navigate({ to: "/" });
 		} else {
-			setError("Email already exists");
+			setError("Email already exists or signup failed");
 		}
 		setLoading(false);
 	};

@@ -284,6 +284,153 @@ export function createAuthenticatedFetch(): typeof fetch {
 }
 
 /**
+ * Authenticate with Cognito using username and password (no hosted UI)
+ * Uses Amazon Cognito Identity SDK for JavaScript
+ */
+async function authenticateWithPassword(
+	username: string,
+	password: string,
+): Promise<{ idToken?: string; accessToken?: string } | null> {
+	try {
+		const cfg =
+			(window as any).__SELFAPP_COGNITO__ || (window as any).AWS_CONFIG || {};
+		const userPoolId =
+			cfg.userPoolId || cfg.cognitoUserPoolId || cfg.cognito_user_pool_id;
+		const clientId =
+			cfg.cognitoClientId || cfg.cognito_client_id || cfg.clientId;
+
+		if (!userPoolId || !clientId) {
+			console.error("Cognito not configured for password authentication");
+			return null;
+		}
+
+		// Extract region from user pool ID (format: us-east-1_xxxxxxxxx)
+		const region = userPoolId.split("_")[0];
+
+		// Use Cognito's InitiateAuth API with USER_PASSWORD_AUTH flow
+		const endpoint = `https://cognito-idp.${region}.amazonaws.com/`;
+
+		const requestBody = {
+			AuthFlow: "USER_PASSWORD_AUTH",
+			ClientId: clientId,
+			AuthParameters: {
+				USERNAME: username,
+				PASSWORD: password,
+			},
+		};
+
+		console.log("Authenticating with Cognito using username/password...");
+		const response = await fetch(endpoint, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-amz-json-1.1",
+				"X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth",
+			},
+			body: JSON.stringify(requestBody),
+		});
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			console.error(
+				"Password authentication failed:",
+				response.status,
+				errorText,
+			);
+			return null;
+		}
+
+		const result = await response.json();
+		console.log("Successfully authenticated with password");
+
+		if (result.AuthenticationResult) {
+			return {
+				idToken: result.AuthenticationResult.IdToken,
+				accessToken: result.AuthenticationResult.AccessToken,
+			};
+		}
+
+		// Handle challenge (e.g., NEW_PASSWORD_REQUIRED)
+		if (result.ChallengeName) {
+			console.error("Authentication challenge required:", result.ChallengeName);
+			return null;
+		}
+
+		return null;
+	} catch (error) {
+		console.error("Error authenticating with password:", error);
+		return null;
+	}
+}
+
+/**
+ * Sign up a new user with Cognito using username and password
+ */
+async function signUpWithPassword(
+	email: string,
+	password: string,
+	name: string,
+): Promise<boolean> {
+	try {
+		const cfg =
+			(window as any).__SELFAPP_COGNITO__ || (window as any).AWS_CONFIG || {};
+		const userPoolId =
+			cfg.userPoolId || cfg.cognitoUserPoolId || cfg.cognito_user_pool_id;
+		const clientId =
+			cfg.cognitoClientId || cfg.cognito_client_id || cfg.clientId;
+
+		if (!userPoolId || !clientId) {
+			console.error("Cognito not configured for signup");
+			return false;
+		}
+
+		// Extract region from user pool ID
+		const region = userPoolId.split("_")[0];
+		const endpoint = `https://cognito-idp.${region}.amazonaws.com/`;
+
+		const requestBody = {
+			ClientId: clientId,
+			Username: email, // Use email as username since we configured username_attributes = ["email"]
+			Password: password,
+			UserAttributes: [
+				{
+					Name: "email",
+					Value: email,
+				},
+				{
+					Name: "name",
+					Value: name,
+				},
+			],
+		};
+
+		console.log("Signing up new user with Cognito...");
+		const response = await fetch(endpoint, {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/x-amz-json-1.1",
+				"X-Amz-Target": "AWSCognitoIdentityProviderService.SignUp",
+			},
+			body: JSON.stringify(requestBody),
+		});
+
+		if (!response.ok) {
+			const errorText = await response.text();
+			console.error("Signup failed:", response.status, errorText);
+			return false;
+		}
+
+		const result = await response.json();
+		console.log("Signup successful, confirmation may be required");
+
+		// Note: User may need to confirm their email before they can sign in
+		return true;
+	} catch (error) {
+		console.error("Error signing up:", error);
+		return false;
+	}
+}
+
+/**
  * Cognito integration helpers
  * - configureCognito({ domain, clientId, redirectUri }) to enable hosted UI flows
  * - loginWithCognito() redirects to the hosted UI
@@ -581,6 +728,11 @@ export async function setAuthTokenAsync(token: string | null): Promise<void> {
  * Async-friendly getter for token (compat with callers expecting async API).
  */
 // NOTE: getAuthTokenAsync/setAuthTokenAsync are exported above; no duplicate definitions.
+
+/**
+ * Authenticate with Cognito using username and password (for custom login form)
+ */
+export { authenticateWithPassword, signUpWithPassword };
 
 // Export default for convenience
 export default authIntegration;
