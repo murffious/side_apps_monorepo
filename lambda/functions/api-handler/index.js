@@ -17,6 +17,7 @@ const { CognitoJwtVerifier } = require('aws-jwt-verify');
 // Environment variables
 const ENTRIES_TABLE_NAME = process.env.ENTRIES_TABLE_NAME;
 const USER_POOL_ID = process.env.USER_POOL_ID;
+const CLIENT_ID = process.env.CLIENT_ID;
 const AWS_REGION = process.env.AWS_REGION || 'us-east-1';
 
 // Initialize AWS SDK clients
@@ -26,7 +27,7 @@ const dynamoDbClient = new DynamoDBClient({ region: AWS_REGION });
 const verifier = CognitoJwtVerifier.create({
   userPoolId: USER_POOL_ID,
   tokenUse: 'id',
-  clientId: null, // Accept any client
+  clientId: CLIENT_ID, // Restrict to specific client for security
 });
 
 /**
