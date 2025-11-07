@@ -304,8 +304,19 @@ async function authenticateWithPassword(
 			return null;
 		}
 
-		// Extract region from user pool ID (format: us-east-1_xxxxxxxxx)
-		const region = userPoolId.split("_")[0];
+		// Validate and extract region from user pool ID (format: us-east-1_xxxxxxxxx)
+		const parts = userPoolId.split("_");
+		if (parts.length !== 2) {
+			console.error("Invalid user pool ID format:", userPoolId);
+			return null;
+		}
+		const region = parts[0];
+
+		// Validate region format (basic sanity check)
+		if (!/^[a-z]{2}-[a-z]+-\d+$/.test(region)) {
+			console.error("Invalid AWS region format:", region);
+			return null;
+		}
 
 		// Use Cognito's InitiateAuth API with USER_PASSWORD_AUTH flow
 		const endpoint = `https://cognito-idp.${region}.amazonaws.com/`;
@@ -320,42 +331,62 @@ async function authenticateWithPassword(
 		};
 
 		console.log("Authenticating with Cognito using username/password...");
-		const response = await fetch(endpoint, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-amz-json-1.1",
-				"X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth",
-			},
-			body: JSON.stringify(requestBody),
-		});
 
-		if (!response.ok) {
-			const errorText = await response.text();
-			console.error(
-				"Password authentication failed:",
-				response.status,
-				errorText,
-			);
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+		try {
+			const response = await fetch(endpoint, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-amz-json-1.1",
+					"X-Amz-Target": "AWSCognitoIdentityProviderService.InitiateAuth",
+				},
+				body: JSON.stringify(requestBody),
+				signal: controller.signal,
+			});
+
+			clearTimeout(timeoutId);
+
+			if (!response.ok) {
+				const errorText = await response.text();
+				console.error(
+					"Password authentication failed:",
+					response.status,
+					errorText,
+				);
+				return null;
+			}
+
+			const result = await response.json();
+			console.log("Successfully authenticated with password");
+
+			if (result.AuthenticationResult) {
+				return {
+					idToken: result.AuthenticationResult.IdToken,
+					accessToken: result.AuthenticationResult.AccessToken,
+				};
+			}
+
+			// Handle challenge (e.g., NEW_PASSWORD_REQUIRED)
+			if (result.ChallengeName) {
+				console.error(
+					"Authentication challenge required:",
+					result.ChallengeName,
+				);
+				return null;
+			}
+
+			return null;
+		} catch (error) {
+			clearTimeout(timeoutId);
+			if (error instanceof Error && error.name === "AbortError") {
+				console.error("Authentication request timed out");
+			} else {
+				throw error;
+			}
 			return null;
 		}
-
-		const result = await response.json();
-		console.log("Successfully authenticated with password");
-
-		if (result.AuthenticationResult) {
-			return {
-				idToken: result.AuthenticationResult.IdToken,
-				accessToken: result.AuthenticationResult.AccessToken,
-			};
-		}
-
-		// Handle challenge (e.g., NEW_PASSWORD_REQUIRED)
-		if (result.ChallengeName) {
-			console.error("Authentication challenge required:", result.ChallengeName);
-			return null;
-		}
-
-		return null;
 	} catch (error) {
 		console.error("Error authenticating with password:", error);
 		return null;
@@ -383,8 +414,20 @@ async function signUpWithPassword(
 			return false;
 		}
 
-		// Extract region from user pool ID
-		const region = userPoolId.split("_")[0];
+		// Validate and extract region from user pool ID
+		const parts = userPoolId.split("_");
+		if (parts.length !== 2) {
+			console.error("Invalid user pool ID format:", userPoolId);
+			return false;
+		}
+		const region = parts[0];
+
+		// Validate region format (basic sanity check)
+		if (!/^[a-z]{2}-[a-z]+-\d+$/.test(region)) {
+			console.error("Invalid AWS region format:", region);
+			return false;
+		}
+
 		const endpoint = `https://cognito-idp.${region}.amazonaws.com/`;
 
 		const requestBody = {
@@ -404,26 +447,43 @@ async function signUpWithPassword(
 		};
 
 		console.log("Signing up new user with Cognito...");
-		const response = await fetch(endpoint, {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/x-amz-json-1.1",
-				"X-Amz-Target": "AWSCognitoIdentityProviderService.SignUp",
-			},
-			body: JSON.stringify(requestBody),
-		});
 
-		if (!response.ok) {
-			const errorText = await response.text();
-			console.error("Signup failed:", response.status, errorText);
+		const controller = new AbortController();
+		const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
+
+		try {
+			const response = await fetch(endpoint, {
+				method: "POST",
+				headers: {
+					"Content-Type": "application/x-amz-json-1.1",
+					"X-Amz-Target": "AWSCognitoIdentityProviderService.SignUp",
+				},
+				body: JSON.stringify(requestBody),
+				signal: controller.signal,
+			});
+
+			clearTimeout(timeoutId);
+
+			if (!response.ok) {
+				const errorText = await response.text();
+				console.error("Signup failed:", response.status, errorText);
+				return false;
+			}
+
+			const result = await response.json();
+			console.log("Signup successful, confirmation may be required");
+
+			// Note: User may need to confirm their email before they can sign in
+			return true;
+		} catch (error) {
+			clearTimeout(timeoutId);
+			if (error instanceof Error && error.name === "AbortError") {
+				console.error("Signup request timed out");
+			} else {
+				throw error;
+			}
 			return false;
 		}
-
-		const result = await response.json();
-		console.log("Signup successful, confirmation may be required");
-
-		// Note: User may need to confirm their email before they can sign in
-		return true;
 	} catch (error) {
 		console.error("Error signing up:", error);
 		return false;
