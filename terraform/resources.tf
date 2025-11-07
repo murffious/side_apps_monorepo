@@ -318,7 +318,6 @@ resource "aws_lambda_function" "api_handler" {
       ENTRIES_TABLE_NAME = aws_dynamodb_table.entries.name
       USER_POOL_ID       = aws_cognito_user_pool.main.id
       CLIENT_ID          = aws_cognito_user_pool_client.main.id
-      AWS_REGION         = var.aws_region
     }
   }
 
