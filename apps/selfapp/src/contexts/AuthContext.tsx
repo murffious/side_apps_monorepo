@@ -283,7 +283,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		if (cognitoEnabled) {
 			return await confirmForgotPassword(username, code, newPassword);
 		}
-		// For local mode, update the password in localStorage
+		// For local development mode only - update the password in localStorage
+		// In production with Cognito, passwords are never stored locally
 		const users = JSON.parse(localStorage.getItem("users") || "[]");
 		const userIndex = users.findIndex(
 			(u: User & { password: string }) => u.email === username,
@@ -303,7 +304,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 		if (cognitoEnabled) {
 			return await changePassword(oldPassword, newPassword);
 		}
-		// For local mode, verify old password and update
+		// For local development mode only - verify old password and update
+		// In production with Cognito, passwords are never stored locally
 		if (!user) {
 			return { success: false, error: "Not authenticated" };
 		}
