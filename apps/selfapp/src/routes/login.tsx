@@ -59,8 +59,8 @@ function LoginPage() {
 		setError("");
 		setLoading(true);
 
-		if (signupPassword.length < 6) {
-			setError("Password must be at least 6 characters");
+		if (signupPassword.length < 8) {
+			setError("Password must be at least 8 characters with uppercase, lowercase, numbers, and symbols");
 			setLoading(false);
 			return;
 		}
@@ -191,7 +191,7 @@ function LoginPage() {
 											required
 										/>
 										<p className="text-xs app-text-muted">
-											Must be at least 6 characters
+											Must be at least 8 characters with uppercase, lowercase, numbers, and symbols
 										</p>
 									</div>
 									{error && <p className="text-sm app-text-muted">{error}</p>}

@@ -316,11 +316,7 @@ async function authenticateWithPassword(
 		}
 		const region = parts[0];
 
-		// Validate region format (basic sanity check)
-		if (!/^[a-z]{2}-[a-z]+-\d+$/.test(region)) {
-			console.error("Invalid AWS region format:", region);
-			return null;
-		}
+		// Region is extracted from AWS-provided user pool ID, no additional validation needed
 
 		// Use Cognito's InitiateAuth API with USER_PASSWORD_AUTH flow
 		// Note: This requires the Cognito User Pool Client to have USER_PASSWORD_AUTH
@@ -388,10 +384,9 @@ async function authenticateWithPassword(
 			clearTimeout(timeoutId);
 			if (error instanceof Error && error.name === "AbortError") {
 				console.error("Authentication request timed out");
-			} else {
-				throw error;
+				return null;
 			}
-			return null;
+			throw error;
 		}
 	} catch (error) {
 		console.error("Error authenticating with password:", error);
@@ -428,6 +423,7 @@ async function signUpWithPassword(
 		}
 		const region = parts[0];
 
+		// Region is extracted from AWS-provided user pool ID, no additional validation needed
 		const endpoint = `https://cognito-idp.${region}.amazonaws.com/`;
 
 		const requestBody = {
@@ -470,7 +466,7 @@ async function signUpWithPassword(
 				return false;
 			}
 
-			const result = await response.json();
+			await response.json();
 			console.log("Signup successful, confirmation may be required");
 
 			// Note: User may need to confirm their email before they can sign in
@@ -480,9 +476,8 @@ async function signUpWithPassword(
 			if (error instanceof Error && error.name === "AbortError") {
 				console.error("Signup request timed out");
 				return false;
-			} else {
-				throw error;
 			}
+			throw error;
 		}
 	} catch (error) {
 		console.error("Error signing up:", error);
