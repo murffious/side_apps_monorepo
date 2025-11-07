@@ -47,17 +47,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
 			if (cognito) {
 				// If tokens present in URL from hosted UI, parse and persist them
-				await handleCognitoCallback();
+				const success = await handleCognitoCallback();
+				console.log("Cognito callback handled:", success);
 				const token = await getAuthTokenAsync();
 				if (token) {
 					try {
 						const payload = decodeJWT(token);
+						console.log("Decoded JWT payload:", payload);
 						if (payload) {
 							const newUser: User = {
-								id: payload.sub || payload.username || "",
-								email: payload.email || payload.username || "",
-								name: payload.name || payload.email || "",
+								id: payload.sub || payload.username || payload.user_id || "",
+								email:
+									payload.email || payload.username || payload["cognito:username"] || "",
+								name:
+									payload.name ||
+									payload.given_name ||
+									payload.email ||
+									payload["cognito:username"] ||
+									"",
 							};
+							console.log("Setting authenticated user:", newUser);
 							setUser(newUser);
 							localStorage.setItem("user", JSON.stringify(newUser));
 						}

@@ -5,6 +5,10 @@ export interface JWTPayload {
 	id?: string; // Direct ID field
 	email?: string; // User email
 	username?: string; // Username
+	name?: string; // Full name
+	given_name?: string; // First name
+	family_name?: string; // Last name
+	"cognito:username"?: string; // Cognito username field
 	exp?: number; // Expiration time
 	iat?: number; // Issued at time
 	[key: string]: unknown; // Allow other fields with unknown type for safety
