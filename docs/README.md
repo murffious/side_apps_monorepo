@@ -4,6 +4,19 @@ This directory contains comprehensive documentation for the Side Apps Monorepo p
 
 ## Certificate & Domain Setup
 
+### 🚀 [Certificate Quick Reference](./CERTIFICATE_QUICK_REFERENCE.md)
+**One-page guide for immediate action**
+
+Essential info on a single page:
+- Certificate details (ARN, ID)
+- 5-step verification process
+- Common mistakes and fixes
+- Quick command reference
+
+**Use Case**: You need to verify a certificate RIGHT NOW
+
+---
+
 ### 🔐 [Certificate Verification Guide](./CERTIFICATE_VERIFICATION.md)
 **Start here if you have a certificate pending validation**
 
@@ -79,7 +92,10 @@ Project task tracking and completion checklist
 
 ## Quick Links by Task
 
-### I need to verify an ACM certificate
+### I need to verify an ACM certificate RIGHT NOW
+→ **[Certificate Quick Reference](./CERTIFICATE_QUICK_REFERENCE.md)** ⚡
+
+### I need to verify an ACM certificate (detailed guide)
 → **[Certificate Verification Guide](./CERTIFICATE_VERIFICATION.md)**
 
 ### I need to add DNS records to Namecheap
