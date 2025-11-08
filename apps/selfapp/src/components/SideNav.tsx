@@ -7,6 +7,7 @@ import {
 	Calendar,
 	CreditCard,
 	Lock,
+	Shield,
 	Sparkles,
 	Target,
 	User,
@@ -51,6 +52,18 @@ const items: {
 		icon: <BarChart3 className="h-4 w-4" />,
 		path: "/",
 		premium: false, // Free tier (basic insights)
+	},
+	{
+		id: "insights",
+		label: "Insights",
+		icon: <Brain className="h-4 w-4" />,
+		path: "/",
+	},
+	{
+		id: "integrity",
+		label: "Integrity",
+		icon: <Shield className="h-4 w-4" />,
+		path: "/",
 	},
 	{
 		id: "become",
@@ -145,7 +158,7 @@ export default function SideNav({
 		}
 
 		if (item.path === "/") {
-			// For main page tabs (log, dashboard, insights)
+			// For main page tabs (log, dashboard, insights, integrity)
 			if (onChange) {
 				onChange(item.id);
 			}
