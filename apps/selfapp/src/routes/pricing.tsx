@@ -223,7 +223,7 @@ function PricingPage() {
 						{isPremium ? (
 							<Crown className="h-8 w-8 text-primary" />
 						) : (
-							<Sparkles className="h-8 w-8 text-green-500" />
+							<Sparkles className="h-8 w-8 text-muted-foreground" />
 						)}
 						<div>
 							<h3 className="font-semibold">
